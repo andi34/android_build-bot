@@ -17,8 +17,8 @@
 PRODUCT[0]="lt013g"			# phone model name (product folder name)
 LUNCHCMD[0]="lt013g"			# lunch command used for ROM
 
-# PRODUCT[1]="lt01wifi"
-# LUNCHCMD[1]="lt01wifi"
+PRODUCT[1]="lt01wifi"
+LUNCHCMD[1]="lt01wifi"
 
 # PRODUCT[2]="lt01lte"
 # LUNCHCMD[2]="lt01lte"
