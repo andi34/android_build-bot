@@ -205,10 +205,10 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
 		echo "Done."
 		echo "Moving flashable zip..."
 				if [ $AVF = "y" ]; then
-					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/$ROM*"HOMEMADE.zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
 				fi
 				if [ $AVF = "n" ]; then
-					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/${PRODUCT[$VAL]}/
+					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/$ROM*"HOMEMADE.zip" $STORAGE/${PRODUCT[$VAL]}/
 				fi
 		echo "Done."
 		fi
