@@ -205,10 +205,10 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
 		if [ $MD5 = "y" ]; then
 		echo -n "Moving md5..."
 				if [ $AVF = "y" ]; then
-					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/*"HOMEMADE.md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
+					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/*"HOMEMADE.zip.md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
 				fi
 				if [ $AVF = "n" ]; then
-					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/*"HOMEMADE.md5sum" $STORAGE/${PRODUCT[$VAL]}/
+					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/*"HOMEMADE.zip.md5sum" $STORAGE/${PRODUCT[$VAL]}/
 				fi
 		echo "done."
 		fi
