@@ -95,10 +95,6 @@ CCPICK=y
 # Source-place to cherrypick
 CCHERP=~/android/omni3/frameworks/base
 
-# cherry-pick the commit
-CCHERRY1=https://gerrit.omnirom.org/android_frameworks_base
-CCHERRY2=refs/changes/10/1510/14 
-
 # run mka installclean first (quick clean build)
 QCLEAN=y
 
@@ -141,8 +137,10 @@ fi
 if [ $CCPICK = "y" ]; then
 	echo -n "Changeing directory to cherry-pick..."
         cd $CCHERP
-	echo -n "cherry-pick commit..."
-        git fetch $CCHERRY1 $CCHERRY2 && git cherry-pick FETCH_HEAD
+	echo -n "cherry-pick commit 1..."
+	git fetch https://gerrit.omnirom.org/android_frameworks_base refs/changes/10/1510/14 && git cherry-pick FETCH_HEAD
+	echo -n "cherry-pick commit 2..."
+        git fetch https://gerrit.omnirom.org/android_frameworks_base refs/changes/11/3011/2 && git cherry-pick FETCH_HEAD
 	echo -n "Done! Moving to source directory..."
         cd $SAUCE
 fi
