@@ -14,19 +14,27 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-PRODUCT[0]="p3110"			# phone model name (product folder name)
-LUNCHCMD[0]="p3110"			# lunch command used for ROM
+PRODUCT[0]="p3110"                        # phone model name (product folder name)
+LUNCHCMD[0]="p3110"                       # lunch command used for ROM
 
+PRODUCT[1]="p5110"
+LUNCHCMD[1]="p5110"
 
-PRODUCT[1]="p3100"
-LUNCHCMD[1]="p3100"
-
-PRODUCT[2]="p5110"
-LUNCHCMD[2]="p5110"
-
+PRODUCT[2]="p3100"
+LUNCHCMD[2]="p3100"
 
 PRODUCT[3]="p5100"
 LUNCHCMD[3]="p5100"
+
+# Galaxy Tab 3 8.0
+# PRODUCT[4]="lt01wifi"
+# LUNCHCMD[4]="lt01wifi"
+
+# PRODUCT[5]="lt013g"
+# LUNCHCMD[5]="lt013g"
+
+# PRODUCT[6]="lt01lte"
+# LUNCHCMD[6]="lt01lte"
 
 #---------------------Build Settings------------------#
 
@@ -60,7 +68,7 @@ recov=y
 # If you are using an external storage device as seen in the example below, be sure to mount it via your file manager (open the drive in a file manager window) or thought the command prompt before you build, or the script will not find your drive.
 # If the storage location is on the same drive as your build folder, use a "~/" to begin. It should look like this usually: ~/your storage folder... assuming your storage folder is in your "home" directory.
 
-STORAGE=~/omni
+STORAGE=~/android/roms/omnirom
 
 # Do you want to make a folder for the version of android you are building? 
 
@@ -75,7 +83,7 @@ VER=4.4.2
 ROM=omni
 
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-SAUCE=~/android/omni3
+SAUCE=~/android/omnirom
 
 # REMOVE BUILD PROP (recomended for every build, otherwise the date of the build may not be changed, as well as other variables)
 
@@ -90,27 +98,24 @@ J=16
 SYNC=y
 
 # cherry-pick a commit?
+
 CCPICK=y
 
-# Source-place to cherrypick
-CCHERP=~/android/omni3/frameworks/base
-
 # run mka installclean first (quick clean build)
+
 QCLEAN=y
 
 # Run make clean first (Slow clean build. Will delete entire contents of out folder...)
 
 CLEAN=y
 
+# Run make clobber first (Realy slow clean build. Deletes all the object files AND the intermediate dependency files generated which specify the dependencies of the cpp files.)
+
+CLOBBER=n
+
 # leave alone
 DATE=`eval date +%y``eval date +%m``eval date +%d`
 
-#----------------------FTP Settings--------------------#
-
-# Set "FTP=y" if you want to enable FTP uploading
-# You must have moving to storage folder enabled first
-
-# REMOVED
 
 #---------------------Build Bot Code-------------------#
 # Very much not a good idea to change this unless you know what you are doing....
@@ -127,6 +132,11 @@ if [ $CLEAN = "y" ]; then
 	echo "done!"
 fi
 
+if [ $CLOBBER = "y" ]; then
+        echo -n "Running make clean..."
+        make clobber
+        echo "done!"
+fi
 
 if [ $SYNC = "y" ]; then
 	echo -n "Running repo sync..."
@@ -136,11 +146,15 @@ fi
 
 if [ $CCPICK = "y" ]; then
 	echo -n "Changeing directory to cherry-pick..."
-        cd $CCHERP
-	echo -n "cherry-pick commit 1..."
-	git fetch https://gerrit.omnirom.org/android_frameworks_base refs/changes/10/1510/14 && git cherry-pick FETCH_HEAD
-	echo -n "cherry-pick commit 2..."
+        cd ~/android/omnirom/frameworks/base
+	echo -n "input: Add workaround for broken hardware keyboard support"
         git fetch https://gerrit.omnirom.org/android_frameworks_base refs/changes/11/3011/2 && git cherry-pick FETCH_HEAD
+	echo -n "Changeing directory to cherry-pick..."
+        cd ~/android/omnirom/device/samsung/smdk4412-common
+	echo -n "smdk4412-common: Add support for Tab 3 8.0"
+        git fetch https://gerrit.omnirom.org/android_device_samsung_smdk4412-common refs/changes/37/6437/1 && git cherry-pick FETCH_HEAD
+	echo -n "smdk4412-common: Don't build torch for devices without flash"
+        git fetch https://gerrit.omnirom.org/android_device_samsung_smdk4412-common refs/changes/38/6438/3 && git cherry-pick FETCH_HEAD
 	echo -n "Done! Moving to source directory..."
         cd $SAUCE
 fi
@@ -233,9 +247,5 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
 		echo "done."
 		fi
 done
-
-#----------------------FTP Upload Code--------------------#
-
-# REMOVED
 
 echo "All done!"
