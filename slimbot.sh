@@ -15,7 +15,7 @@
 # Instructions and examples below:
 
 PRODUCT[0]="p3110"                        # phone model name (product folder name)
-LUNCHCMD[0]="p3110"                       # lunch command used for ROM
+LUNCHCMD[0]="p3110"                        # lunch command used for ROM
 
 PRODUCT[1]="p5110"
 LUNCHCMD[1]="p5110"
@@ -26,19 +26,10 @@ LUNCHCMD[2]="p3100"
 PRODUCT[3]="p5100"
 LUNCHCMD[3]="p5100"
 
-# Galaxy Rab 3 8.0
-# PRODUCT[4]="lt01wifi"
-# LUNCHCMD[4]="lt01wifi"
-
-# PRODUCT[5]="lt013g"
-# LUNCHCMD[5]="lt013g"
-
-# PRODUCT[6]="lt01lte"
-# LUNCHCMD[6]="lt01lte"
-
 #---------------------Build Settings------------------#
 
 # select "y" or "n"... Or fill in the blanks...
+
 
 
 #use ccache
@@ -47,7 +38,7 @@ CCACHE=y
 
 #what dir for ccache?
 
-CCSTORAGE=~/.ccache
+CCSTORAGE=/media/android-andi/ccache
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
@@ -67,7 +58,7 @@ recov=n
 # If you are using an external storage device as seen in the example below, be sure to mount it via your file manager (open the drive in a file manager window) or thought the command prompt before you build, or the script will not find your drive.
 # If the storage location is on the same drive as your build folder, use a "~/" to begin. It should look like this usually: ~/your storage folder... assuming your storage folder is in your "home" directory.
 
-STORAGE=~/android/roms/slimroms
+STORAGE=~/roms/slimroms
 
 # Do you want to make a folder for the version of android you are building?
 
@@ -94,18 +85,12 @@ J=16
 
 # Sync repositories before build
 
-SYNC=y
-
-# cherry-pick a commit?
-
-CCPICK=n
+SYNC=n
 
 # run mka installclean first (quick clean build)
-
 QCLEAN=y
 
 # Run make clean first (Slow clean build. Will delete entire contents of out folder...)
-
 CLEAN=y
 
 # Run make clobber first (Realy slow clean build. Deletes all the object files AND the intermediate dependency files generated which specify the dependencies of the cpp files.)
@@ -114,7 +99,6 @@ CLOBBER=n
 
 # leave alone
 DATE=`eval date +%y``eval date +%m``eval date +%d`
-
 
 #---------------------Build Bot Code-------------------#
 # Very much not a good idea to change this unless you know what you are doing....
@@ -131,11 +115,13 @@ if [ $CLEAN = "y" ]; then
         echo "done!"
 fi
 
+
 if [ $CLOBBER = "y" ]; then
         echo -n "Running make clean..."
         make clobber
         echo "done!"
 fi
+
 
 if [ $SYNC = "y" ]; then
         echo -n "Running repo sync..."
@@ -143,20 +129,12 @@ if [ $SYNC = "y" ]; then
         echo "done!"
 fi
 
-if [ $CCPICK = "y" ]; then
-        echo -n "Changeing directory to cherry-pick..."
-        echo -n "cherry-pick (screenoff) ..."
-        cd ~/android/slim/frameworks/base
-        git fetch https://gerrit.slimroms.net/SlimRoms/frameworks_base refs/changes/21/3521/3 && git cherry-pick FETCH_HEAD
-        echo -n "Done! Moving to source directory..."
-        cd $SAUCE
-fi
 
 if [ $CCACHE = "y" ]; then
                         export USE_CCACHE=1
                         export CCACHE_DIR=$CCSTORAGE
                         # set ccache due to your disk space,set it at your own risk
-                        prebuilts/misc/linux-x86/ccache/ccache -M 15G
+                        prebuilts/misc/linux-x86/ccache/ccache -M 200G
                 fi
 
 
@@ -188,7 +166,7 @@ lunch slim_${LUNCHCMD[$VAL]}-userdebug
 res1=$(date +%s.%N)
 
 # start compilation
-mka bacon
+mka bacon -j6
 
 echo "done!"
 
@@ -242,3 +220,4 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
 done
 
 echo "All done!"
+

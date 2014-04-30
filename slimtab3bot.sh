@@ -14,17 +14,14 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-PRODUCT[0]="p3110"                        # phone model name (product folder name)
-LUNCHCMD[0]="p3110"                        # lunch command used for ROM
+PRODUCT[0]="lt01wifi"			# phone model name (product folder name)
+LUNCHCMD[0]="lt01wifi"			# lunch command used for ROM
 
-PRODUCT[1]="p3100"
-LUNCHCMD[1]="p3100"
+PRODUCT[1]="lt013g"
+LUNCHCMD[1]="lt013g"
 
-PRODUCT[2]="p5110"
-LUNCHCMD[2]="p5110"
-
-PRODUCT[3]="p5100"
-LUNCHCMD[3]="p5100"
+PRODUCT[2]="lt01lte"
+LUNCHCMD[2]="lt01lte"
 
 #---------------------Build Settings------------------#
 
@@ -51,14 +48,14 @@ MOVE=y
 MD5=y
 
 # Do you want to move the Recovery.img after build is completed also?
-recov=y
+recov=n
 
 # Please fill in below the folder they should be moved to.
 # The "//" means root. if you are moving to an external HDD you should start with //media/your PC username/name of the storage device An example is below.
 # If you are using an external storage device as seen in the example below, be sure to mount it via your file manager (open the drive in a file manager window) or thought the command prompt before you build, or the script will not find your drive.
 # If the storage location is on the same drive as your build folder, use a "~/" to begin. It should look like this usually: ~/your storage folder... assuming your storage folder is in your "home" directory.
 
-STORAGE=~/android/roms/cm
+STORAGE=~/roms/slimroms
 
 # Do you want to make a folder for the version of android you are building?
 
@@ -70,10 +67,10 @@ VER=4.4.2
 
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
 
-ROM=cm-11
+ROM=Slim
 
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-SAUCE=~/android/cm11
+SAUCE=~/android/slimkat
 
 # REMOVE BUILD PROP (recomended for every build, otherwise the date of the build may not be changed, as well as other variables)
 
@@ -91,7 +88,6 @@ SYNC=n
 QCLEAN=y
 
 # Run make clean first (Slow clean build. Will delete entire contents of out folder...)
-
 CLEAN=y
 
 # Run make clobber first (Realy slow clean build. Deletes all the object files AND the intermediate dependency files generated which specify the dependencies of the cpp files.)
@@ -146,7 +142,7 @@ do
 echo -n "Starting build..."
 . build/envsetup.sh
 croot
-lunch cm_${LUNCHCMD[$VAL]}-userdebug
+lunch slim_${LUNCHCMD[$VAL]}-userdebug
 
 
                 if [ $BP = "y" ]; then
@@ -219,10 +215,6 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                 echo "done."
                 fi
 done
-
-#----------------------FTP Upload Code--------------------#
-
-# REMOVED
 
 echo "All done!"
 

@@ -14,17 +14,8 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-PRODUCT[0]="p3110"			# phone model name (product folder name)
-LUNCHCMD[0]="p3110"			# lunch command used for ROM
-
-PRODUCT[1]="p3100"
-LUNCHCMD[1]="p3100"
-
-PRODUCT[2]="p5110"
-LUNCHCMD[2]="p5110"
-
-PRODUCT[3]="p5100"
-LUNCHCMD[3]="p5100"
+PRODUCT[0]="golden"			# phone model name (product folder name)
+LUNCHCMD[0]="golden"			# lunch command used for ROM
 
 #---------------------Build Settings------------------#
 
