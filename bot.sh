@@ -7,14 +7,6 @@ echo "Starting setup"
 . $BASEDIR/build/envsetup.sh
 }
 
-# No need for ccache to just lunch
-if [ "$1" = "lunch" ] ; then
-    echo "Lets just lunch a device"
-    setup
-    lunch slim_$2-userdebug
-    exit
-fi
-
 # Exporting CCache crap
 echo "Settting up ccache"
 export CCACHE_DIR="/home/android-andi/cache"
