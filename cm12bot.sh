@@ -176,7 +176,7 @@ res1=$(date +%s.%N)
 
 # start compilation
 export RECOVERY_VARIANT=
-mka bacon -j6
+mka bacon -j8
 
 echo "done!"
 

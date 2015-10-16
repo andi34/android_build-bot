@@ -176,7 +176,7 @@ lunch omni_${LUNCHCMD[$VAL]}-userdebug
 res1=$(date +%s.%N)
 
 # start compilation
-mka bacon -j6
+mka bacon -j8
 
 echo "done!"
 

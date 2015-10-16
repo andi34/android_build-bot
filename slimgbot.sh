@@ -166,7 +166,7 @@ lunch slim_${LUNCHCMDG[$VAL]}-userdebug
 res1=$(date +%s.%N)
 
 # start compilation
-mka bacon -j4
+mka bacon -j8
 
 echo "done!"
 
