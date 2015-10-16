@@ -40,6 +40,11 @@ CCACHE=n
 
 CCSTORAGE=/ssd1/ccache
 
+# different out path
+DIFFERENTOUT=y
+# new path for out
+OUTPATH=/ssd1/out
+
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
 # or any other folder you want?
@@ -109,6 +114,11 @@ echo -n "Moving to source directory..."
 cd $SAUCE
 echo "done!"
 
+if [ $DIFFERENTOUT = "y" ]; then
+        echo "change path for out directory"
+        export OUT_DIR_COMMON_BASE=$OUTPATH
+        echo "done!"
+fi
 
 if [ $CLEAN = "y" ]; then
 	echo -n "Running make clean..."

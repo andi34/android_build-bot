@@ -40,6 +40,11 @@ CCACHE=y
 
 CCSTORAGE=/ssd1/ccache
 
+# different out path
+DIFFERENTOUT=y
+# new path for out
+OUTPATH=/ssd1/out
+
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
 # or any other folder you want?
@@ -108,6 +113,12 @@ DATE=`eval date +%y``eval date +%m``eval date +%d`
 echo -n "Moving to source directory..."
 cd $SAUCE
 echo "done!"
+
+if [ $DIFFERENTOUT = "y" ]; then
+        echo "change path for out directory"
+        export OUT_DIR_COMMON_BASE=$OUTPATH
+        echo "done!"
+fi
 
 if [ $CCACHE = "y" ]; then
                         export USE_CCACHE=1
@@ -224,6 +235,6 @@ done
 
 echo "All done!"
 
-cd /home/android-andi/android
-rm -rf /home/android-andi/android/cm-12.1/out
+cd ~/android
+rm -rf ~/android/cm-12.1/out
 . omnibot-5.1.sh
