@@ -38,7 +38,7 @@ CCACHE=n
 
 #what dir for ccache?
 
-CCSTORAGE=/cache/omni51
+CCSTORAGE=/ssd1/ccache
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?

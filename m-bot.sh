@@ -38,7 +38,7 @@ CCACHE=y
 
 #what dir for ccache?
 
-CCSTORAGE=/cache/aosp51
+CCSTORAGE=/ssd1/ccache
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
@@ -66,14 +66,14 @@ AVF=n
 
 # What version of android? (no".")(you only need to fill this out if you answered "y" to the question above)
 
-VER=5.1
+VER=6.0
 
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
 
 ROM=AOSP
 
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-SAUCE=~/android/aosp-5.1
+SAUCE=~/android/aosp-6.0
 
 # REMOVE BUILD PROP (recomended for every build, otherwise the date of the build may not be changed, as well as other variables)
 
