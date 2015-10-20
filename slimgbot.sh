@@ -14,28 +14,25 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-PRODUCTG[0]="golden"                        # phone model name (PRODUCTG folder name)
+PRODUCTG[0]="golden"                        # phone model name (product folder name)
 LUNCHCMDG[0]="golden"                        # lunch command used for ROM
-
 
 #---------------------Build Settings------------------#
 
 # select "y" or "n"... Or fill in the blanks...
 
 
-
-#use ccache
-
+# use ccache
 CCACHE=y
 
-#what dir for ccache?
-
+# what dir for ccache?
 CCSTORAGE=/ssd1/ccache
 
 # different out path
 DIFFERENTOUT=y
 # new path for out
 OUTPATH=/ssd1/out
+SECONDOUTPATH=/ssd1/out/lp5.1
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
@@ -92,7 +89,7 @@ CLEAN=y
 
 # Run make clobber first (Realy slow clean build. Deletes all the object files AND the intermediate dependency files generated which specify the dependencies of the cpp files.)
 
-CLOBBER=n
+CLOBBER=y
 
 # leave alone
 DATE=`eval date +%y``eval date +%m``eval date +%d`
@@ -124,7 +121,6 @@ if [ $CLEAN = "y" ]; then
         echo "done!"
 fi
 
-
 if [ $CLOBBER = "y" ]; then
         echo -n "Running make clobber..."
         make clobber
@@ -138,7 +134,6 @@ if [ $SYNC = "y" ]; then
         echo "done!"
 fi
 
-
 for VAL in "${!PRODUCTG[@]}"
 do
 
@@ -150,11 +145,10 @@ lunch slim_${LUNCHCMDG[$VAL]}-userdebug
 
                 if [ $BP = "y" ]; then
                 echo "Removing build.prop..."
-                rm $SAUCE/out/target/PRODUCT/${PRODUCTG[$VAL]}/system/build.prop
+                rm $SECONDOUTPATH/target/product/${PRODUCTG[$VAL]}/system/build.prop
                 echo "done!"
                 fi
 
-                
                 if [ $QCLEAN = "y" ]; then
                 echo -n "Running make install clean..."
                 mka installclean
@@ -173,7 +167,7 @@ echo "done!"
 # finished? get elapsed time
 res2=$(date +%s.%N)
 echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}"
-        
+
                 if [ $MOVE = "y" ]; then
                 echo -n "Moving to cloud or storage directory..."
                 echo -n "checking for directory, and creating as needed..."
@@ -188,21 +182,21 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                 echo "Done."
                 echo "Moving flashable zip..."
                                 if [ $AVF = "y" ]; then
-                                        mv $SAUCE/out/target/PRODUCT/${PRODUCTG[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCTG[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCTG[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCTG[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        mv $SAUCE/out/target/PRODUCT/${PRODUCTG[$VAL]}/$ROM*".zip" $STORAGE/${PRODUCTG[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCTG[$VAL]}/$ROM*".zip" $STORAGE/${PRODUCTG[$VAL]}/
                                 fi
                 echo "Done."
                 fi
-                
+
                 if [ $MD5 = "y" ]; then
                 echo -n "Moving md5..."
                                 if [ $AVF = "y" ]; then
-                                        mv $SAUCE/out/target/PRODUCT/${PRODUCTG[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCTG[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCTG[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCTG[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        mv $SAUCE/out/target/PRODUCT/${PRODUCTG[$VAL]}/*".md5sum" $STORAGE/${PRODUCTG[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCTG[$VAL]}/*".md5sum" $STORAGE/${PRODUCTG[$VAL]}/
                                 fi
                 echo "done."
                 fi
@@ -210,10 +204,10 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                 if [ $recov = "y" ]; then
                 echo -n "Moving recovery.img..."
                                 if [ $AVF = "y" ]; then
-                                        cp -r $SAUCE/out/target/PRODUCT/${PRODUCTG[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCTG[$VAL]}/
+                                        cp -r $SECONDOUTPATH/target/product/${PRODUCTG[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCTG[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        cp -r $SAUCE/out/target/PRODUCT/${PRODUCTG[$VAL]}/"recovery.img" $STORAGE/${PRODUCTG[$VAL]}/
+                                        cp -r $SECONDOUTPATH/target/product/${PRODUCTG[$VAL]}/"recovery.img" $STORAGE/${PRODUCTG[$VAL]}/
                                 fi
                 echo "done."
                 fi

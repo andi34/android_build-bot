@@ -17,27 +17,24 @@
 PRODUCT[0]="p3110"                        # phone model name (product folder name)
 LUNCHCMD[0]="p3110"                        # lunch command used for ROM
 
-#PRODUCT[1]="p3100"
-#LUNCHCMD[1]="p3100"
+PRODUCT[1]="p3100"
+LUNCHCMD[1]="p3100"
 
-#PRODUCT[2]="p5110"
-#LUNCHCMD[2]="p5110"
+PRODUCT[2]="p5110"
+LUNCHCMD[2]="p5110"
 
-#PRODUCT[3]="p5100"
-#LUNCHCMD[3]="p5100"
+PRODUCT[3]="p5100"
+LUNCHCMD[3]="p5100"
 
 #---------------------Build Settings------------------#
 
 # select "y" or "n"... Or fill in the blanks...
 
 
-
 #use ccache
-
 CCACHE=y
 
 #what dir for ccache?
-
 CCSTORAGE=/ssd1/ccache
 
 # different out path
@@ -132,7 +129,6 @@ if [ $CLEAN = "y" ]; then
         echo "done!"
 fi
 
-
 if [ $CLOBBER = "y" ]; then
         echo -n "Running make clobber..."
         make clobber
@@ -145,7 +141,6 @@ if [ $SYNC = "y" ]; then
         repo sync -j$J
         echo "done!"
 fi
-
 
 for VAL in "${!PRODUCT[@]}"
 do
@@ -181,7 +176,7 @@ echo "done!"
 # finished? get elapsed time
 res2=$(date +%s.%N)
 echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}"
-        
+
                 if [ $MOVE = "y" ]; then
                 echo -n "Moving to cloud or storage directory..."
                 echo -n "checking for directory, and creating as needed..."
@@ -203,7 +198,7 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                                 fi
                 echo "Done."
                 fi
-                
+
                 if [ $MD5 = "y" ]; then
                 echo -n "Moving md5..."
                                 if [ $AVF = "y" ]; then

@@ -14,8 +14,8 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-PRODUCT[0]="p3110"			# phone model name (product folder name)
-LUNCHCMD[0]="p3110"			# lunch command used for ROM
+PRODUCT[0]="p3110"                        # phone model name (product folder name)
+LUNCHCMD[0]="p3110"                        # lunch command used for ROM
 
 PRODUCT[1]="p3100"
 LUNCHCMD[1]="p3100"
@@ -31,25 +31,22 @@ LUNCHCMD[3]="p5100"
 # select "y" or "n"... Or fill in the blanks...
 
 
+# use ccache
+CCACHE=y
 
-#use ccache
-
-CCACHE=n
-
-#what dir for ccache?
-
+# what dir for ccache?
 CCSTORAGE=/ssd1/ccache
 
 # different out path
 DIFFERENTOUT=y
 # new path for out
 OUTPATH=/ssd1/out
+SECONDOUTPATH=/ssd1/out/android-5.1
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
 # or any other folder you want?
 # also required for FTP upload!!
-
 MOVE=y
 
 # Do you want to move the MD5 after build is completed also?
@@ -65,15 +62,15 @@ recov=y
 
 STORAGE=~/android/roms/omnirom
 
-# Do you want to make a folder for the version of android you are building? 
+# Do you want to make a folder for the version of android you are building?
 
 AVF=y
 
 # What version of android? (no".")(you only need to fill this out if you answered "y" to the question above)
 
-VER=5.1
+VER=5.1.1
 
-# The first few letters of your ROM name... this is needed to move the completed zip to your storage folder. 
+# The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
 
 ROM=omni
 
@@ -96,7 +93,6 @@ SYNC=n
 QCLEAN=y
 
 # Run make clean first (Slow clean build. Will delete entire contents of out folder...)
-
 CLEAN=y
 
 # Run make clobber first (Realy slow clean build. Deletes all the object files AND the intermediate dependency files generated which specify the dependencies of the cpp files.)
@@ -120,34 +116,30 @@ if [ $DIFFERENTOUT = "y" ]; then
         echo "done!"
 fi
 
+if [ $CCACHE = "y" ]; then
+                        export USE_CCACHE=1
+                        export CCACHE_DIR=$CCSTORAGE
+                        # set ccache due to your disk space,set it at your own risk
+                        prebuilts/misc/linux-x86/ccache/ccache -M 100G
+                fi
+
 if [ $CLEAN = "y" ]; then
-	echo -n "Running make clean..."
-	make clean
-	echo "done!"
+        echo -n "Running make clean..."
+        make clean
+        echo "done!"
 fi
 
-
 if [ $CLOBBER = "y" ]; then
-        echo -n "Running make clean..."
+        echo -n "Running make clobber..."
         make clobber
         echo "done!"
 fi
 
-
 if [ $SYNC = "y" ]; then
-	echo -n "Running repo sync..."
-	repo sync -j$J -f --no-clone-bundle
-	echo "done!"
+        echo -n "Running repo sync..."
+        repo sync -j$J
+        echo "done!"
 fi
-
-if [ $CCACHE = "y" ]; then
-			export USE_CCACHE=1
-			export CCACHE_DIR=$CCSTORAGE
-			# set ccache due to your disk space,set it at your own risk
-			prebuilts/misc/linux-x86/ccache/ccache -M 100G
-		fi
-
-
 
 for VAL in "${!PRODUCT[@]}"
 do
@@ -158,18 +150,17 @@ croot
 lunch omni_${LUNCHCMD[$VAL]}-userdebug
 
 
-		if [ $BP = "y" ]; then
-		echo "Removing build.prop..."
-		rm $SAUCE/out/target/product/${PRODUCT[$VAL]}/system/build.prop
-		echo "done!"
-		fi
+                if [ $BP = "y" ]; then
+                echo "Removing build.prop..."
+                rm $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/system/build.prop
+                echo "done!"
+                fi
 
-		
-		if [ $QCLEAN = "y" ]; then
-		echo -n "Running make install clean..."
-		mka installclean
-		echo "done!"
-		fi
+                if [ $QCLEAN = "y" ]; then
+                echo -n "Running make install clean..."
+                mka installclean
+                echo "done!"
+                fi
 
 
 # get time of startup
@@ -183,50 +174,50 @@ echo "done!"
 # finished? get elapsed time
 res2=$(date +%s.%N)
 echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}"
-	
-		if  [ $MOVE = "y" ]; then
-		echo -n "Moving to cloud or storage directory..."
-		echo -n "checking for directory, and creating as needed..."
-			mkdir -p $STORAGE
-				if [ $AVF = "y" ]; then
-					mkdir -p $STORAGE/$VER
-					mkdir -p $STORAGE/$VER/${PRODUCT[$VAL]}
-				fi
-				if [ $AVF = "n" ]; then
-					mkdir -p $STORAGE/${PRODUCT[$VAL]}
-				fi
-		echo "Done."
-		echo "Moving flashable zip..."
-				if [ $AVF = "y" ]; then
-					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/$ROM*"HOMEMADE.zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
-				fi
-				if [ $AVF = "n" ]; then
-					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/$ROM*"HOMEMADE.zip" $STORAGE/${PRODUCT[$VAL]}/
-				fi
-		echo "Done."
-		fi
-		
-		if [ $MD5 = "y" ]; then
-		echo -n "Moving md5..."
-				if [ $AVF = "y" ]; then
-					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/*"HOMEMADE.zip.md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
-				fi
-				if [ $AVF = "n" ]; then
-					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/*"HOMEMADE.zip.md5sum" $STORAGE/${PRODUCT[$VAL]}/
-				fi
-		echo "done."
-		fi
 
-		if [ $recov = "y" ]; then
-		echo -n "Moving recovery.img..."
-				if [ $AVF = "y" ]; then
-					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
-				fi
-				if [ $AVF = "n" ]; then
-					mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/${PRODUCT[$VAL]}/
-				fi
-		echo "done."
-		fi
+                if [ $MOVE = "y" ]; then
+                echo -n "Moving to cloud or storage directory..."
+                echo -n "checking for directory, and creating as needed..."
+                        mkdir -p $STORAGE
+                                if [ $AVF = "y" ]; then
+                                        mkdir -p $STORAGE/$VER
+                                        mkdir -p $STORAGE/$VER/${PRODUCT[$VAL]}
+                                fi
+                                if [ $AVF = "n" ]; then
+                                        mkdir -p $STORAGE/${PRODUCT[$VAL]}
+                                fi
+                echo "Done."
+                echo "Moving flashable zip..."
+                                if [ $AVF = "y" ]; then
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                fi
+                                if [ $AVF = "n" ]; then
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/${PRODUCT[$VAL]}/
+                                fi
+                echo "Done."
+                fi
+
+                if [ $MD5 = "y" ]; then
+                echo -n "Moving md5..."
+                                if [ $AVF = "y" ]; then
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                fi
+                                if [ $AVF = "n" ]; then
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/${PRODUCT[$VAL]}/
+                                fi
+                echo "done."
+                fi
+
+                if [ $recov = "y" ]; then
+                echo -n "Moving recovery.img..."
+                                if [ $AVF = "y" ]; then
+                                        cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                fi
+                                if [ $AVF = "n" ]; then
+                                        cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/${PRODUCT[$VAL]}/
+                                fi
+                echo "done."
+                fi
 done
 
 echo "All done!"

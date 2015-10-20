@@ -31,19 +31,17 @@ LUNCHCMD[3]="p5100"
 # select "y" or "n"... Or fill in the blanks...
 
 
-
-#use ccache
-
+# use ccache
 CCACHE=y
 
-#what dir for ccache?
-
+# what dir for ccache?
 CCSTORAGE=/ssd1/ccache
 
 # different out path
 DIFFERENTOUT=y
 # new path for out
 OUTPATH=/ssd1/out
+SECONDOUTPATH=/ssd1/out/cm-12.1
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
@@ -56,7 +54,7 @@ MOVE=y
 MD5=y
 
 # Do you want to move the Recovery.img after build is completed also?
-recov=y
+recov=n
 
 # Please fill in below the folder they should be moved to.
 # The "//" means root. if you are moving to an external HDD you should start with //media/your PC username/name of the storage device An example is below.
@@ -96,7 +94,6 @@ SYNC=n
 QCLEAN=y
 
 # Run make clean first (Slow clean build. Will delete entire contents of out folder...)
-
 CLEAN=y
 
 # Run make clobber first (Realy slow clean build. Deletes all the object files AND the intermediate dependency files generated which specify the dependencies of the cpp files.)
@@ -133,13 +130,11 @@ if [ $CLEAN = "y" ]; then
         echo "done!"
 fi
 
-
 if [ $CLOBBER = "y" ]; then
-        echo -n "Running make clean..."
+        echo -n "Running make clobber..."
         make clobber
         echo "done!"
 fi
-
 
 if [ $SYNC = "y" ]; then
         echo -n "Running repo sync..."
@@ -159,11 +154,10 @@ lunch cm_${LUNCHCMD[$VAL]}-userdebug
 
                 if [ $BP = "y" ]; then
                 echo "Removing build.prop..."
-                rm $SAUCE/out/target/product/${PRODUCT[$VAL]}/system/build.prop
+                rm $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/system/build.prop
                 echo "done!"
                 fi
 
-                
                 if [ $QCLEAN = "y" ]; then
                 echo -n "Running make install clean..."
                 mka installclean
@@ -175,7 +169,6 @@ lunch cm_${LUNCHCMD[$VAL]}-userdebug
 res1=$(date +%s.%N)
 
 # start compilation
-export RECOVERY_VARIANT=
 mka bacon -j8
 
 echo "done!"
@@ -183,7 +176,7 @@ echo "done!"
 # finished? get elapsed time
 res2=$(date +%s.%N)
 echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}"
-        
+
                 if [ $MOVE = "y" ]; then
                 echo -n "Moving to cloud or storage directory..."
                 echo -n "checking for directory, and creating as needed..."
@@ -198,21 +191,21 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                 echo "Done."
                 echo "Moving flashable zip..."
                                 if [ $AVF = "y" ]; then
-                                        mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/${PRODUCT[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/${PRODUCT[$VAL]}/
                                 fi
                 echo "Done."
                 fi
-                
+
                 if [ $MD5 = "y" ]; then
                 echo -n "Moving md5..."
                                 if [ $AVF = "y" ]; then
-                                        mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/${PRODUCT[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/${PRODUCT[$VAL]}/
                                 fi
                 echo "done."
                 fi
@@ -220,17 +213,13 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                 if [ $recov = "y" ]; then
                 echo -n "Moving recovery.img..."
                                 if [ $AVF = "y" ]; then
-                                        mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                        cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/${PRODUCT[$VAL]}/
+                                        cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/${PRODUCT[$VAL]}/
                                 fi
                 echo "done."
                 fi
 done
-
-#----------------------FTP Upload Code--------------------#
-
-# REMOVED
 
 echo "All done!"
