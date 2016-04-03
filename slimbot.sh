@@ -14,17 +14,12 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-PRODUCT[0]="p3110"                        # phone model name (product folder name)
-LUNCHCMD[0]="p3110"                        # lunch command used for ROM
+PRODUCT[0]="p5110"                        # phone model name (product folder name)
+LUNCHCMD[0]="p5110"                        # lunch command used for ROM
 
-PRODUCT[1]="p3100"
-LUNCHCMD[1]="p3100"
+PRODUCT[1]="p5100"
+LUNCHCMD[1]="p5100"
 
-PRODUCT[2]="p5110"
-LUNCHCMD[2]="p5110"
-
-PRODUCT[3]="p5100"
-LUNCHCMD[3]="p5100"
 
 #---------------------Build Settings------------------#
 
@@ -41,8 +36,8 @@ CCSTORAGE=/ssd1/ccache
 # different out path
 DIFFERENTOUT=y
 # new path for out
-OUTPATH=/ssd1/out
-SECONDOUTPATH=/ssd1/out/lp5.1
+OUTPATH=/ssd2/out
+SECONDOUTPATH=/ssd2/out/lp5.1
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?

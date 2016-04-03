@@ -14,37 +14,30 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
-LUNCHCMD[0]="espressowifi"                        # lunch command used for ROM
+PRODUCT[0]="espresso"                        # phone model name (product folder name)
+LUNCHCMD[0]="espresso"                        # lunch command used for ROM
 
 PRODUCT[1]="espresso3g"
 LUNCHCMD[1]="espresso3g"
-
-# PRODUCT[0]="p3110"
-# LUNCHCMD[0]="p3110"
-# PRODUCT[1]="p3100"
-# LUNCHCMD[1]="p3100"
-# PRODUCT[2]="p5110"
-# LUNCHCMD[2]="p5110"
-# PRODUCT[3]="p5100"
-# LUNCHCMD[3]="p5100"
 
 #---------------------Build Settings------------------#
 
 # select "y" or "n"... Or fill in the blanks...
 
 
-# use ccache
+
+#use ccache
+
 CCACHE=y
 
-# what dir for ccache?
+#what dir for ccache?
+
 CCSTORAGE=/ssd1/ccache
 
 # different out path
 DIFFERENTOUT=y
 # new path for out
-OUTPATH=/ssd2/out
-SECONDOUTPATH=/ssd2/out/cm-12.1
+OUTPATH=/ssd1/out
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
@@ -64,7 +57,7 @@ recov=n
 # If you are using an external storage device as seen in the example below, be sure to mount it via your file manager (open the drive in a file manager window) or thought the command prompt before you build, or the script will not find your drive.
 # If the storage location is on the same drive as your build folder, use a "~/" to begin. It should look like this usually: ~/your storage folder... assuming your storage folder is in your "home" directory.
 
-STORAGE=~/android/roms/cm
+STORAGE=~/android/roms/slimroms
 
 # Do you want to make a folder for the version of android you are building?
 
@@ -72,14 +65,14 @@ AVF=y
 
 # What version of android? (no".")(you only need to fill this out if you answered "y" to the question above)
 
-VER=5.1.1
+VER=4.4.4
 
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
 
-ROM=cm-12
+ROM=Slim
 
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-SAUCE=~/android/cm-12.1
+SAUCE=~/android/kk4.4
 
 # REMOVE BUILD PROP (recomended for every build, otherwise the date of the build may not be changed, as well as other variables)
 
@@ -126,6 +119,9 @@ if [ $CCACHE = "y" ]; then
                         # set ccache due to your disk space,set it at your own risk
                         prebuilts/misc/linux-x86/ccache/ccache -M 100G
                 fi
+. build/envsetup.sh
+croot
+lunch slim_${LUNCHCMD[$VAL]}-userdebug
 
 if [ $CLEAN = "y" ]; then
         echo -n "Running make clean..."
@@ -133,11 +129,13 @@ if [ $CLEAN = "y" ]; then
         echo "done!"
 fi
 
+
 if [ $CLOBBER = "y" ]; then
         echo -n "Running make clobber..."
         make clobber
         echo "done!"
 fi
+
 
 if [ $SYNC = "y" ]; then
         echo -n "Running repo sync..."
@@ -152,15 +150,16 @@ do
 echo -n "Starting build..."
 . build/envsetup.sh
 croot
-lunch cm_${LUNCHCMD[$VAL]}-userdebug
+lunch slim_${LUNCHCMD[$VAL]}-userdebug
 
 
                 if [ $BP = "y" ]; then
                 echo "Removing build.prop..."
-                rm $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/system/build.prop
+                rm $SAUCE/out/target/product/${PRODUCT[$VAL]}/system/build.prop
                 echo "done!"
                 fi
 
+                
                 if [ $QCLEAN = "y" ]; then
                 echo -n "Running make install clean..."
                 mka installclean
@@ -179,7 +178,7 @@ echo "done!"
 # finished? get elapsed time
 res2=$(date +%s.%N)
 echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}"
-
+        
                 if [ $MOVE = "y" ]; then
                 echo -n "Moving to cloud or storage directory..."
                 echo -n "checking for directory, and creating as needed..."
@@ -194,21 +193,21 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                 echo "Done."
                 echo "Moving flashable zip..."
                                 if [ $AVF = "y" ]; then
-                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                        mv /ssd1/out/kk4.4/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/${PRODUCT[$VAL]}/
+                                        mv /ssd1/out/kk4.4/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/${PRODUCT[$VAL]}/
                                 fi
                 echo "Done."
                 fi
-
+                
                 if [ $MD5 = "y" ]; then
                 echo -n "Moving md5..."
                                 if [ $AVF = "y" ]; then
-                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                        mv /ssd1/out/kk4.4/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/${PRODUCT[$VAL]}/
+                                        mv /ssd1/out/kk4.4/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/${PRODUCT[$VAL]}/
                                 fi
                 echo "done."
                 fi
@@ -216,13 +215,14 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                 if [ $recov = "y" ]; then
                 echo -n "Moving recovery.img..."
                                 if [ $AVF = "y" ]; then
-                                        cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                        cp -r /ssd1/out/kk4.4/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/${PRODUCT[$VAL]}/
+                                        cp -r /ssd1/out/kk4.4/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/${PRODUCT[$VAL]}/
                                 fi
                 echo "done."
                 fi
 done
 
 echo "All done!"
+

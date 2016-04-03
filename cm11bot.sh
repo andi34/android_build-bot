@@ -14,20 +14,11 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
-LUNCHCMD[0]="espressowifi"                        # lunch command used for ROM
+PRODUCT[0]="espresso"                        # phone model name (product folder name)
+LUNCHCMD[0]="espresso"                        # lunch command used for ROM
 
 PRODUCT[1]="espresso3g"
 LUNCHCMD[1]="espresso3g"
-
-# PRODUCT[0]="p3110"
-# LUNCHCMD[0]="p3110"
-# PRODUCT[1]="p3100"
-# LUNCHCMD[1]="p3100"
-# PRODUCT[2]="p5110"
-# LUNCHCMD[2]="p5110"
-# PRODUCT[3]="p5100"
-# LUNCHCMD[3]="p5100"
 
 #---------------------Build Settings------------------#
 
@@ -43,8 +34,8 @@ CCSTORAGE=/ssd1/ccache
 # different out path
 DIFFERENTOUT=y
 # new path for out
-OUTPATH=/ssd2/out
-SECONDOUTPATH=/ssd2/out/cm-12.1
+OUTPATH=/ssd1/out
+SECONDOUTPATH=/ssd1/out/cm-11.0
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
@@ -72,14 +63,14 @@ AVF=y
 
 # What version of android? (no".")(you only need to fill this out if you answered "y" to the question above)
 
-VER=5.1.1
+VER=4.4.4
 
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
 
-ROM=cm-12
+ROM=cm-11
 
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-SAUCE=~/android/cm-12.1
+SAUCE=~/android/cm-11.0
 
 # REMOVE BUILD PROP (recomended for every build, otherwise the date of the build may not be changed, as well as other variables)
 

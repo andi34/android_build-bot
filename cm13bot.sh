@@ -20,12 +20,16 @@ LUNCHCMD[0]="espressowifi"                        # lunch command used for ROM
 PRODUCT[1]="espresso3g"
 LUNCHCMD[1]="espresso3g"
 
-# PRODUCT[0]="p3110"
-# LUNCHCMD[0]="p3110"
+
+# PRODUCT[0]="p3110"                        # phone model name (product folder name)
+# LUNCHCMD[0]="p3110"                        # lunch command used for ROM
+
 # PRODUCT[1]="p3100"
 # LUNCHCMD[1]="p3100"
+
 # PRODUCT[2]="p5110"
 # LUNCHCMD[2]="p5110"
+
 # PRODUCT[3]="p5100"
 # LUNCHCMD[3]="p5100"
 
@@ -44,7 +48,7 @@ CCSTORAGE=/ssd1/ccache
 DIFFERENTOUT=y
 # new path for out
 OUTPATH=/ssd2/out
-SECONDOUTPATH=/ssd2/out/cm-12.1
+SECONDOUTPATH=/ssd2/out/cm-13.0
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
@@ -72,14 +76,14 @@ AVF=y
 
 # What version of android? (no".")(you only need to fill this out if you answered "y" to the question above)
 
-VER=5.1.1
+VER=6.0.1
 
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
 
-ROM=cm-12
+ROM=cm-13
 
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-SAUCE=~/android/cm-12.1
+SAUCE=~/android/cm-13.0
 
 # REMOVE BUILD PROP (recomended for every build, otherwise the date of the build may not be changed, as well as other variables)
 

@@ -14,17 +14,20 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-PRODUCT[0]="p3110"                        # phone model name (product folder name)
-LUNCHCMD[0]="p3110"                        # lunch command used for ROM
+PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
+LUNCHCMD[0]="espressowifi"                        # lunch command used for ROM
 
-PRODUCT[1]="p3100"
-LUNCHCMD[1]="p3100"
+PRODUCT[1]="espresso3g"
+LUNCHCMD[1]="espresso3g"
 
-PRODUCT[2]="p5110"
-LUNCHCMD[2]="p5110"
-
-PRODUCT[3]="p5100"
-LUNCHCMD[3]="p5100"
+# PRODUCT[0]="p3110"
+# LUNCHCMD[0]="p3110"
+# PRODUCT[1]="p3100"
+# LUNCHCMD[1]="p3100"
+# PRODUCT[2]="p5110"
+# LUNCHCMD[2]="p5110"
+# PRODUCT[3]="p5100"
+# LUNCHCMD[3]="p5100"
 
 #---------------------Build Settings------------------#
 
@@ -35,13 +38,13 @@ LUNCHCMD[3]="p5100"
 CCACHE=y
 
 # what dir for ccache?
-CCSTORAGE=/ssd1/ccache
+CCSTORAGE=/ssd2/ccache
 
 # different out path
 DIFFERENTOUT=y
 # new path for out
-OUTPATH=/ssd1/out
-SECONDOUTPATH=/ssd1/out/android-5.1
+OUTPATH=/ssd2/out
+SECONDOUTPATH=/ssd2/out/android-5.1
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
@@ -189,10 +192,10 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                 echo "Done."
                 echo "Moving flashable zip..."
                                 if [ $AVF = "y" ]; then
-                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM-*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/${PRODUCT[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM-*".zip" $STORAGE/${PRODUCT[$VAL]}/
                                 fi
                 echo "Done."
                 fi
