@@ -14,11 +14,11 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-PRODUCT[0]="p5110"                        # phone model name (product folder name)
-LUNCHCMD[0]="p5110"                        # lunch command used for ROM
+PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
+LUNCHCMD[0]="espressowifi"                        # lunch command used for ROM
 
-PRODUCT[1]="p5100"
-LUNCHCMD[1]="p5100"
+PRODUCT[1]="espresso3g"
+LUNCHCMD[1]="espresso3g"
 
 
 #---------------------Build Settings------------------#

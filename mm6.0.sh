@@ -14,17 +14,12 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-PRODUCT[0]="p3110"                        # phone model name (product folder name)
-LUNCHCMD[0]="p3110"                        # lunch command used for ROM
+PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
+LUNCHCMD[0]="espressowifi"                        # lunch command used for ROM
 
-PRODUCT[1]="p3100"
-LUNCHCMD[1]="p3100"
+PRODUCT[1]="espresso3g"
+LUNCHCMD[1]="espresso3g"
 
-PRODUCT[2]="p5110"
-LUNCHCMD[2]="p5110"
-
-PRODUCT[3]="p5100"
-LUNCHCMD[3]="p5100"
 
 #---------------------Build Settings------------------#
 
@@ -32,53 +27,52 @@ LUNCHCMD[3]="p5100"
 
 
 
-#use ccache
-
+# use ccache
 CCACHE=y
 
-#what dir for ccache?
-
+# what dir for ccache?
 CCSTORAGE=/ssd1/ccache
 
 # different out path
 DIFFERENTOUT=y
 # new path for out
-OUTPATH=/ssd1/out
+OUTPATH=/ssd2/out
+SECONDOUTPATH=/ssd2/out/mm6.0
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
 # or any other folder you want?
 # also required for FTP upload!!
 
-MOVE=n
+MOVE=y
 
 # Do you want to move the MD5 after build is completed also?
-MD5=n
+MD5=y
 
 # Do you want to move the Recovery.img after build is completed also?
-recov=n
+recov=y
 
 # Please fill in below the folder they should be moved to.
 # The "//" means root. if you are moving to an external HDD you should start with //media/your PC username/name of the storage device An example is below.
 # If you are using an external storage device as seen in the example below, be sure to mount it via your file manager (open the drive in a file manager window) or thought the command prompt before you build, or the script will not find your drive.
 # If the storage location is on the same drive as your build folder, use a "~/" to begin. It should look like this usually: ~/your storage folder... assuming your storage folder is in your "home" directory.
 
-STORAGE=~/android/roms/aosp
+STORAGE=~/android/roms/slimroms
 
 # Do you want to make a folder for the version of android you are building?
 
-AVF=n
+AVF=y
 
 # What version of android? (no".")(you only need to fill this out if you answered "y" to the question above)
 
-VER=6.0
+VER=6.0.1
 
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
 
-ROM=AOSP
+ROM=Slim
 
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-SAUCE=~/android/aosp-6.0
+SAUCE=~/android/mm6.0
 
 # REMOVE BUILD PROP (recomended for every build, otherwise the date of the build may not be changed, as well as other variables)
 
@@ -132,13 +126,11 @@ if [ $CLEAN = "y" ]; then
         echo "done!"
 fi
 
-
 if [ $CLOBBER = "y" ]; then
         echo -n "Running make clobber..."
         make clobber
         echo "done!"
 fi
-
 
 if [ $SYNC = "y" ]; then
         echo -n "Running repo sync..."
@@ -153,12 +145,12 @@ do
 echo -n "Starting build..."
 . build/envsetup.sh
 croot
-lunch aosp_${LUNCHCMD[$VAL]}-userdebug
+lunch slim_${LUNCHCMD[$VAL]}-userdebug
 
 
                 if [ $BP = "y" ]; then
                 echo "Removing build.prop..."
-                rm $SAUCE/out/target/product/${PRODUCT[$VAL]}/system/build.prop
+                rm $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/system/build.prop
                 echo "done!"
                 fi
 
@@ -181,7 +173,7 @@ echo "done!"
 # finished? get elapsed time
 res2=$(date +%s.%N)
 echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}"
-        
+
                 if [ $MOVE = "y" ]; then
                 echo -n "Moving to cloud or storage directory..."
                 echo -n "checking for directory, and creating as needed..."
@@ -196,21 +188,21 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                 echo "Done."
                 echo "Moving flashable zip..."
                                 if [ $AVF = "y" ]; then
-                                        mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/${PRODUCT[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/${PRODUCT[$VAL]}/
                                 fi
                 echo "Done."
                 fi
-                
+
                 if [ $MD5 = "y" ]; then
                 echo -n "Moving md5..."
                                 if [ $AVF = "y" ]; then
-                                        mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        mv $SAUCE/out/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/${PRODUCT[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/${PRODUCT[$VAL]}/
                                 fi
                 echo "done."
                 fi
@@ -218,14 +210,13 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                 if [ $recov = "y" ]; then
                 echo -n "Moving recovery.img..."
                                 if [ $AVF = "y" ]; then
-                                        cp -r $SAUCE/out/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                        cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        cp -r $SAUCE/out/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/${PRODUCT[$VAL]}/
+                                        cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/${PRODUCT[$VAL]}/
                                 fi
                 echo "done."
                 fi
 done
 
 echo "All done!"
-

@@ -35,7 +35,7 @@ CCSTORAGE=/ssd1/ccache
 DIFFERENTOUT=y
 # new path for out
 OUTPATH=/ssd2/out
-SECONDOUTPATH=/ssd2/out/cm-13.0
+SECONDOUTPATH=/ssd2/out/lp5.1
 
 # Please fill in below the folder they should be moved to.
 # The "//" means root. if you are moving to an external HDD you should start with //media/your PC username/name of the storage device An example is below.
@@ -44,7 +44,7 @@ SECONDOUTPATH=/ssd2/out/cm-13.0
 
 
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-SAUCE=~/android/cm-13.0
+SAUCE=~/android/lp5.1
 
 # Sync repositories before build
 SYNC=n
@@ -99,14 +99,6 @@ if [ $SYNC = "y" ]; then
         echo -n "Running repo sync..."
         repo sync -j$J
         echo "done!"
-        cd $SAUCE/build
-        echo "add back bootzip"
-        git fetch http://review.cyanogenmod.org/CyanogenMod/android_build refs/changes/78/107678/2 && git cherry-pick FETCH_HEAD
-        echo "----------------------------------------"
-        echo "Set metadata on bootzip"
-        git fetch https://review.slimroms.org/SlimRoms/android_build refs/changes/19/7219/4 && git cherry-pick FETCH_HEAD
-        echo "----------------------------------------"
-        cd $SAUCE
 fi
 
 
@@ -116,7 +108,7 @@ do
 echo -n "Starting build..."
 . build/envsetup.sh
 croot
-lunch cm_${LUNCHCMD[$VAL]}-userdebug
+lunch slim_${LUNCHCMD[$VAL]}-userdebug
 
 # get time of startup
 res1=$(date +%s.%N)

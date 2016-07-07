@@ -14,57 +14,56 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-PRODUCT[0]="p3110"                        # phone model name (product folder name)
-LUNCHCMD[0]="p3110"                        # lunch command used for ROM
+PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
+LUNCHCMD[0]="espressowifi"                        # lunch command used for ROM
 
-PRODUCT[1]="p3100"
-LUNCHCMD[1]="p3100"
+PRODUCT[1]="espresso3g"
+LUNCHCMD[1]="espresso3g"
 
-PRODUCT[2]="p5110"
-LUNCHCMD[2]="p5110"
-
-PRODUCT[3]="p5100"
-LUNCHCMD[3]="p5100"
+# PRODUCT[0]="p3110"
+# LUNCHCMD[0]="p3110"
+# PRODUCT[1]="p3100"
+# LUNCHCMD[1]="p3100"
+# PRODUCT[2]="p5110"
+# LUNCHCMD[2]="p5110"
+# PRODUCT[3]="p5100"
+# LUNCHCMD[3]="p5100"
 
 #---------------------Build Settings------------------#
 
 # select "y" or "n"... Or fill in the blanks...
 
 
-
-#use ccache
-
+# use ccache
 CCACHE=y
 
-#what dir for ccache?
-
-CCSTORAGE=/ssd1/ccache
+# what dir for ccache?
+CCSTORAGE=/ssd2/ccache
 
 # different out path
 DIFFERENTOUT=y
 # new path for out
-OUTPATH=/ssd1/out
-SECONDOUTPATH=/ssd1/out/cm-12.1
+OUTPATH=/ssd2/out
+SECONDOUTPATH=/ssd2/out/android-6.0
 
 # should they be moved out of the output folder?
 # like a dropbox or other cloud storage folder?
 # or any other folder you want?
 # also required for FTP upload!!
-
 MOVE=y
 
 # Do you want to move the MD5 after build is completed also?
 MD5=y
 
 # Do you want to move the Recovery.img after build is completed also?
-recov=n
+recov=y
 
 # Please fill in below the folder they should be moved to.
 # The "//" means root. if you are moving to an external HDD you should start with //media/your PC username/name of the storage device An example is below.
 # If you are using an external storage device as seen in the example below, be sure to mount it via your file manager (open the drive in a file manager window) or thought the command prompt before you build, or the script will not find your drive.
 # If the storage location is on the same drive as your build folder, use a "~/" to begin. It should look like this usually: ~/your storage folder... assuming your storage folder is in your "home" directory.
 
-STORAGE=~/android/roms/cm
+STORAGE=~/android/roms/omnirom
 
 # Do you want to make a folder for the version of android you are building?
 
@@ -72,14 +71,14 @@ AVF=y
 
 # What version of android? (no".")(you only need to fill this out if you answered "y" to the question above)
 
-VER=5.1.1
+VER=6.0.1
 
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
 
-ROM=cm-12
+ROM=omni
 
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-SAUCE=~/android/cm-12.1
+SAUCE=~/android/android-6.0
 
 # REMOVE BUILD PROP (recomended for every build, otherwise the date of the build may not be changed, as well as other variables)
 
@@ -133,13 +132,11 @@ if [ $CLEAN = "y" ]; then
         echo "done!"
 fi
 
-
 if [ $CLOBBER = "y" ]; then
         echo -n "Running make clobber..."
         make clobber
         echo "done!"
 fi
-
 
 if [ $SYNC = "y" ]; then
         echo -n "Running repo sync..."
@@ -147,14 +144,13 @@ if [ $SYNC = "y" ]; then
         echo "done!"
 fi
 
-
 for VAL in "${!PRODUCT[@]}"
 do
 
 echo -n "Starting build..."
 . build/envsetup.sh
 croot
-lunch cm_${LUNCHCMD[$VAL]}-userdebug
+lunch omni_${LUNCHCMD[$VAL]}-userdebug
 
 
                 if [ $BP = "y" ]; then
@@ -163,7 +159,6 @@ lunch cm_${LUNCHCMD[$VAL]}-userdebug
                 echo "done!"
                 fi
 
-                
                 if [ $QCLEAN = "y" ]; then
                 echo -n "Running make install clean..."
                 mka installclean
@@ -197,14 +192,14 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                 echo "Done."
                 echo "Moving flashable zip..."
                                 if [ $AVF = "y" ]; then
-                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM-*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
                                 fi
                                 if [ $AVF = "n" ]; then
-                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/${PRODUCT[$VAL]}/
+                                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM-*".zip" $STORAGE/${PRODUCT[$VAL]}/
                                 fi
                 echo "Done."
                 fi
-                
+
                 if [ $MD5 = "y" ]; then
                 echo -n "Moving md5..."
                                 if [ $AVF = "y" ]; then
@@ -229,8 +224,3 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
 done
 
 echo "All done!"
-
-cd ~/android
-rm -rf ~/android/cm-12.1/out
-rm -rf $SECONDOUTPATH
-. omnibot-5.1.sh
