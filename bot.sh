@@ -1,0 +1,276 @@
+#!/bin/bash
+
+# BuildBot script for android builds
+# Severely modified by:
+# daavvis
+# Find me on XDA Developers
+# Originally written by:
+# Shane Faulkner
+# http://shanefaulkner.com
+# You are free to modify and distribute this code,
+# So long as you keep our names and URL in it.
+# Lots of thanks go out to TeamBAMF
+
+#-------------------ROMS To Be Built------------------#
+# Instructions and examples below:
+
+PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
+LUNCHCMD[0]="espressowifi"                        # lunch command used for ROM
+
+PRODUCT[1]="espresso3g"
+LUNCHCMD[1]="espresso3g"
+
+#---------------------Build Settings------------------#
+
+# use ccache
+CCACHE=y
+
+# what dir for ccache?
+CCSTORAGE=/ssd1/ccache
+
+# new out path
+OUTPATH=/ssd2/out
+
+# should they be moved out of the output folder?
+MOVE=y
+
+# Sync repositories before build
+SYNC=y
+
+# run mka installclean first (quick clean build)
+QCLEAN=y
+
+# Run make clean first (Slow clean build. Will delete entire contents of out folder...)
+CLEAN=y
+
+# Run make clobber first (Realy slow clean build. Deletes all the object files AND the intermediate dependency files generated which specify the dependencies of the cpp files.)
+CLOBBER=y
+
+
+if [ "$1" = "android-5.1" ] ; then
+# Please fill in below the folder the files should be moved to
+    STORAGE=~/android/roms/omnirom
+# Android Version
+    VER=5.1.1
+# The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
+    ROM=omni
+# Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
+    SAUCE=~/android/android-5.1
+
+    TAB2CHANGES=y
+    STABLEKERNEL=y
+    LUNCHROM=omni
+    SECONDOUTPATH=/ssd2/out/android-5.1
+fi
+
+
+if [ "$1" = "android-6.0" ] ; then
+# Please fill in below the folder the files should be moved to
+    STORAGE=~/android/roms/omnirom
+# Android Version
+    VER=6.0.1
+# The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
+    ROM=omni
+# Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
+    SAUCE=~/android/android-6.0
+
+    TAB2CHANGES=y
+    STABLEKERNEL=y
+    LUNCHROM=omni
+    SECONDOUTPATH=/ssd2/out/android-6.0
+
+    UPLOADCROWDIN=y
+fi
+
+
+if [ "$1" = "lp5.1" ] ; then
+# Please fill in below the folder the files should be moved to
+    STORAGE=~/android/roms/slimroms
+# Android Version
+    VER=5.1.1
+# The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
+    ROM=Slim
+# Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
+    SAUCE=~/android/lp5.1
+
+    TAB2CHANGES=y
+    STABLEKERNEL=y
+    LUNCHROM=slim
+    SECONDOUTPATH=/ssd2/out/lp5.1
+fi
+
+
+if [ "$1" = "mm6.0" ] ; then
+# Please fill in below the folder the files should be moved to
+    STORAGE=~/android/roms/slimroms
+# Android Version
+    VER=6.0.1
+# The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
+    ROM=Slim
+# Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
+    SAUCE=~/android/mm6.0
+
+    TAB2CHANGES=y
+    STABLEKERNEL=y
+    LUNCHROM=slim
+    SECONDOUTPATH=/ssd2/out/mm6.0
+
+    UPLOADCROWDIN=y
+fi
+
+
+if [ "$1" = "cm-12.1" ] ; then
+# Please fill in below the folder the files should be moved to
+    STORAGE=~/android/roms/cm
+# Android Version
+    VER=5.1.1
+# The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
+    ROM=cm-12
+# Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
+    SAUCE=~/android/cm-12.1
+
+    TAB2CHANGES=y
+    STABLEKERNEL=y
+    LUNCHROM=cm
+    SECONDOUTPATH=/ssd2/out/cm-12.1
+fi
+
+
+if [ "$1" = "cm-13.0" ] ; then
+# Please fill in below the folder the files should be moved to
+    STORAGE=~/android/roms/cm
+# Android Version
+    VER=6.0.1
+# The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
+    ROM=cm-13
+# Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
+    SAUCE=~/android/cm-13.0
+
+    TAB2CHANGES=y
+    STABLEKERNEL=y
+    LUNCHROM=cm
+    SECONDOUTPATH=/ssd2/out/cm-13.0
+fi
+
+
+# leave alone
+DATE=`eval date +%y``eval date +%m``eval date +%d`
+
+#---------------------Build Bot Code-------------------#
+# Very much not a good idea to change this unless you know what you are doing....
+
+
+echo -n "Moving to source directory..."
+cd $SAUCE
+echo "done!"
+
+echo "change path for out directory"
+export OUT_DIR_COMMON_BASE=$OUTPATH
+echo "done!"
+
+if [ "$CCACHE" = "y" ]; then
+                        export USE_CCACHE=1
+                        export CCACHE_DIR=$CCSTORAGE
+                        # set ccache due to your disk space,set it at your own risk
+                        prebuilts/misc/linux-x86/ccache/ccache -M 100G
+                fi
+
+if [ "$SYNC" = "y" ]; then
+        echo -n "Running repo sync..."
+        repo sync -c -d -f -j16 --force-sync
+        echo "done!"
+        if [ "$STABLEKERNEL" = "y" ]; then
+                cd $SAUCE/kernel/samsung/espresso10
+                git remote add omap4aosp https://github.com/OMAP4-AOSP/android_kernel_samsung_espresso.git
+                git fetch omap4aosp
+                git checkout omap4aosp/stable
+                cd $SAUCE
+        fi
+        if [ "$TAB2CHANGES" = "y" ]; then
+                cd $SAUCE
+                . pull/tab2
+                if [ "$1" = "lp5.1" ]; then
+                    . pull/globalmenu
+                fi
+        fi
+
+        if [ "$UPLOADCROWDIN" = "y" ]; then
+                cd $SAUCE
+                if [ "$1" = "android-6.0" ]; then
+                    ./crowdin_sync.py -u Android-Andi -b android-6.0 --upload-sources
+                fi
+                if [ "$1" = "mm6.0" ]; then
+                    ./crowdin_sync.py -u andi34 -b mm6.0 --upload-sources
+                fi
+                cd $SAUCE
+
+        fi
+fi
+
+for VAL in "${!PRODUCT[@]}"
+do
+
+echo -n "Starting build..."
+. build/envsetup.sh
+croot
+lunch "$LUNCHROM"_${LUNCHCMD[$VAL]}-userdebug
+
+if [ "$BP" = "y" ]; then
+        echo "Removing build.prop..."
+        rm $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/system/build.prop
+        echo "done!"
+fi
+
+if [ "$QCLEAN" = "y" ]; then
+        echo -n "Running make install clean..."
+        make installclean
+        echo "done!"
+fi
+
+if [ "$CLEAN" = "y" ]; then
+        echo -n "Running make clean..."
+        make clean
+        echo "done!"
+fi
+
+if [ "$CLOBBER" = "y" ]; then
+        echo -n "Running make clobber..."
+        make clobber
+        echo "done!"
+fi
+
+
+# get time of startup
+res1=$(date +%s.%N)
+
+# start compilation
+make bacon -j8
+
+echo "done!"
+
+# finished? get elapsed time
+res2=$(date +%s.%N)
+echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}"
+
+
+                echo -n "Moving to cloud or storage directory..."
+                echo -n "checking for directory, and creating as needed..."
+                        mkdir -p $STORAGE
+                        mkdir -p $STORAGE/$VER
+                        mkdir -p $STORAGE/$VER/${PRODUCT[$VAL]}
+
+                echo "Moving flashable zip..."
+                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+
+                echo -n "Moving md5..."
+                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
+
+                echo -n "Moving recovery.img..."
+                        cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
+
+
+make clobber
+
+done
+
+echo "All done!"
