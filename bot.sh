@@ -61,6 +61,9 @@ if [ "$1" = "android-5.1" ] ; then
     STABLEKERNEL=y
     LUNCHROM=omni
     SECONDOUTPATH=/ssd2/out/android-5.1
+# JavaVersion
+    JAVAVERTARGET=7
+
 fi
 
 
@@ -78,6 +81,8 @@ if [ "$1" = "android-6.0" ] ; then
     STABLEKERNEL=y
     LUNCHROM=omni
     SECONDOUTPATH=/ssd2/out/android-6.0
+# JavaVersion
+    JAVAVERTARGET=7
 
     UPLOADCROWDIN=y
 fi
@@ -97,6 +102,8 @@ if [ "$1" = "lp5.1" ] ; then
     STABLEKERNEL=y
     LUNCHROM=slim
     SECONDOUTPATH=/ssd2/out/lp5.1
+# JavaVersion
+    JAVAVERTARGET=7
 fi
 
 
@@ -115,7 +122,28 @@ if [ "$1" = "mm6.0" ] ; then
     LUNCHROM=slim
     SECONDOUTPATH=/ssd2/out/mm6.0
 
+# JavaVersion
+    JAVAVERTARGET=7
+
     UPLOADCROWDIN=y
+fi
+
+if [ "$1" = "cm-11.0" ] ; then
+# Please fill in below the folder the files should be moved to
+    STORAGE=~/android/roms/cm
+# Android Version
+    VER=4.4.4
+# The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
+    ROM=cm-11
+# Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
+    SAUCE=~/android/cm-11.0
+
+    TAB2CHANGES=n
+    STABLEKERNEL=y
+    LUNCHROM=cm
+    SECONDOUTPATH=/ssd2/out/cm-11.0
+# JavaVersion
+    JAVAVERTARGET=6
 fi
 
 
@@ -133,6 +161,8 @@ if [ "$1" = "cm-12.1" ] ; then
     STABLEKERNEL=y
     LUNCHROM=cm
     SECONDOUTPATH=/ssd2/out/cm-12.1
+# JavaVersion
+    JAVAVERTARGET=7
 fi
 
 
@@ -150,6 +180,8 @@ if [ "$1" = "cm-13.0" ] ; then
     STABLEKERNEL=y
     LUNCHROM=cm
     SECONDOUTPATH=/ssd2/out/cm-13.0
+# JavaVersion
+    JAVAVERTARGET=7
 fi
 
 
@@ -159,6 +191,11 @@ DATE=`eval date +%y``eval date +%m``eval date +%d`
 #---------------------Build Bot Code-------------------#
 # Very much not a good idea to change this unless you know what you are doing....
 
+# Check for Java version first
+echo "Checking Java Version..."
+JAVAVER=`java -version 2>&1 | grep "java version" | awk '{print $3}' | tr -d \" | awk '{split($0, array, ".")} END{print array[2]}'`
+if [[ $JAVAVER = $JAVAVERTARGET ]]; then
+    echo "Java version OK."
 
 echo -n "Moving to source directory..."
 cd $SAUCE
@@ -268,9 +305,31 @@ echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|
                 echo -n "Moving recovery.img..."
                         cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
 
+done
 
 make clobber
 
-done
-
 echo "All done!"
+
+else
+    echo " #####################################################"
+    echo " #"
+    echo " # Wrong Java version."
+    echo " # Your Java version is $JAVAVER ; needed is $JAVAVERTARGET"
+    echo " #"
+    echo " #"
+    echo " #"
+    echo " # Please run:"
+    echo " #"
+    echo " #   sudo update-alternatives --config java"
+    echo " #"
+    echo " # and"
+    echo " #"
+    echo " #   sudo update-alternatives --config javac"
+    echo " #"
+    echo " # and choose the right Java version!"
+    echo " #"
+    echo " # Aborted!"
+    echo " #"
+    echo " #####################################################"
+fi
