@@ -138,7 +138,7 @@ if [ "$1" = "cm-11.0" ] ; then
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
     SAUCE=~/android/cm-11.0
 
-    TAB2CHANGES=n
+    TAB2CHANGES=y
     STABLEKERNEL=y
     LUNCHROM=cm
     SECONDOUTPATH=/ssd2/out/cm-11.0
@@ -193,6 +193,7 @@ DATE=`eval date +%y``eval date +%m``eval date +%d`
 
 # Check for Java version first
 echo "Checking Java Version..."
+# adapted from http://notepad2.blogspot.de/2011/05/bash-script-to-check-java-version.html
 JAVAVER=`java -version 2>&1 | grep "java version" | awk '{print $3}' | tr -d \" | awk '{split($0, array, ".")} END{print array[2]}'`
 if [[ $JAVAVER = $JAVAVERTARGET ]]; then
     echo "Java version OK."
@@ -205,16 +206,9 @@ echo "change path for out directory"
 export OUT_DIR_COMMON_BASE=$OUTPATH
 echo "done!"
 
-if [ "$CCACHE" = "y" ]; then
-                        export USE_CCACHE=1
-                        export CCACHE_DIR=$CCSTORAGE
-                        # set ccache due to your disk space,set it at your own risk
-                        prebuilts/misc/linux-x86/ccache/ccache -M 100G
-                fi
-
 if [ "$SYNC" = "y" ]; then
         echo -n "Running repo sync..."
-        repo sync -c -d -f -j16 --force-sync
+        repo sync -d -f -j8 --force-sync
         echo "done!"
         if [ "$STABLEKERNEL" = "y" ]; then
                 cd $SAUCE/kernel/samsung/espresso10
@@ -235,14 +229,24 @@ if [ "$SYNC" = "y" ]; then
                 cd $SAUCE
                 if [ "$1" = "android-6.0" ]; then
                     ./crowdin_sync.py -u Android-Andi -b android-6.0 --upload-sources
+                    #./crowdin_sync.py -u Android-Andi -b android-6.0 --download
                 fi
                 if [ "$1" = "mm6.0" ]; then
                     ./crowdin_sync.py -u andi34 -b mm6.0 --upload-sources
+                    #./crowdin_sync.py -u andi34 -b mm6.0 --download
+                    #. pull/translation
                 fi
                 cd $SAUCE
 
         fi
 fi
+
+if [ "$CCACHE" = "y" ]; then
+                        export USE_CCACHE=1
+                        export CCACHE_DIR=$CCSTORAGE
+                        # set ccache due to your disk space,set it at your own risk
+                        prebuilts/misc/linux-x86/ccache/ccache -M 100G
+                fi
 
 for VAL in "${!PRODUCT[@]}"
 do
