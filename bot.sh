@@ -71,9 +71,12 @@ if [ -z "$BUILD_TARGETS" ]; then
 	BUILD_TARGETS="otapackage"
 fi
 
-#---------------------Build Bot Code-------------------#
+
+#---------------------Build Variables-------------------#
 # Very much not a good idea to change this unless you know what you are doing....
-prompterr() { read -p "Continue? ($2/N) " prompt; [ "$prompt" = "$2" ] || exit 0; }
+prompterr() {
+	read -p "Continue? ($2/N) " prompt; [ "$prompt" = "$2" ] || exit 0;
+}
 
 # leave alone
 getdate() {
@@ -87,6 +90,12 @@ starttime() {
 totaltime() {
 	res2=$(date +%s.%N)
 	echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}"
+}
+
+setbuildjobs() {
+	# Set build jobs
+	JOBS=$(expr 0 + $(grep -c ^processor /proc/cpuinfo))
+	echo "Set build jobs to $JOBS"
 }
 
 javacheck() {
@@ -209,6 +218,8 @@ movefiles() {
 	fi
 }
 
+
+#---------------------Build Process -------------------#
 javacheck
 
 if [ "$SYNC" = "y" ]; then
@@ -240,9 +251,7 @@ if [ "$DIFFERENTOUTPATH" = "y" ]; then
 	echo "done!"
 fi
 
-# Set build jobs
-JOBS=$(expr 0 + $(grep -c ^processor /proc/cpuinfo))
-echo "Set build jobs to $JOBS"
+setbuildjobs
 
 for VAL in "${!PRODUCT[@]}"
 do
