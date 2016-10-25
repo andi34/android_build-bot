@@ -106,7 +106,7 @@ javacheck() {
 	if [[ $JAVAVER = $JAVAVERTARGET ]]; then
 		echo "Java version OK."
 
-		echo -n "Moving to source directory..."
+		echo "Moving to source directory..."
 		cd $SAUCE
 		echo "done!"
 	else
@@ -148,7 +148,7 @@ crowdinupload() {
 }
 
 sourcesync() {
-	echo -n "Running repo sync..."
+	echo "Running repo sync..."
 	repo sync -d -f -j8 --force-sync
 	echo "done!"
 }
@@ -180,7 +180,7 @@ cleansource() {
 		echo "CLEAN_TARGETS not specified, using make clobber as default..."
 		CLEAN_TARGETS=clobber
 	else
-		echo -n "Running make $CLEAN_TARGETS..."
+		echo "Running make $CLEAN_TARGETS..."
 	fi
 
 	make $CLEAN_TARGETS
@@ -188,8 +188,8 @@ cleansource() {
 }
 
 movefiles() {
-	echo -n "Moving to cloud or storage directory..."
-	echo -n "checking for directory, and creating as needed..."
+	echo "Moving to cloud or storage directory..."
+	echo "checking for directory, and creating as needed..."
 	mkdir -p $STORAGE
 	mkdir -p $STORAGE/$VER
 	mkdir -p $STORAGE/$VER/${PRODUCT[$VAL]}
@@ -207,12 +207,12 @@ movefiles() {
 		fi
 
 		if [ -f $OUT/*".md5sum" ]; then
-			echo -n "Moving md5..."
+			echo "Moving md5..."
 			mv $OUT/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
 		fi
 
 		if [ -f $OUT/"recovery.img" ]; then
-			echo -n "Moving recovery.img..."
+			echo "Moving recovery.img..."
 			cp -r $OUT/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
 		fi
 	fi
@@ -256,7 +256,7 @@ setbuildjobs
 for VAL in "${!PRODUCT[@]}"
 do
 
-echo -n "Starting build..."
+echo "Starting build..."
 . build/envsetup.sh
 croot
 lunch "$LUNCHROM"_${LUNCHCMD[$VAL]}-userdebug
