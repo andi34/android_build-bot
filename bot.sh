@@ -55,54 +55,103 @@ DATE=`eval date +%y``eval date +%m``eval date +%d`
 
 #---------------------Build Bot Code-------------------#
 # Very much not a good idea to change this unless you know what you are doing....
+prompterr() { read -p "Continue? ($2/N) " prompt; [ "$prompt" = "$2" ] || exit 0; }
 
-# Check for Java version first
-echo "Checking Java Version..."
-# adapted from http://notepad2.blogspot.de/2011/05/bash-script-to-check-java-version.html
-JAVAVER=`java -version 2>&1 | grep "java version" | awk '{print $3}' | tr -d \" | awk '{split($0, array, ".")} END{print array[2]}'`
-if [[ $JAVAVER = $JAVAVERTARGET ]]; then
-    echo "Java version OK."
+javacheck() {
+	# Check for Java version first
+	echo "Checking Java Version..."
+	# adapted from http://notepad2.blogspot.de/2011/05/bash-script-to-check-java-version.html
+	JAVAVER=`java -version 2>&1 | grep "java version" | awk '{print $3}' | tr -d \" | awk '{split($0, array, ".")} END{print array[2]}'`
+	if [[ $JAVAVER = $JAVAVERTARGET ]]; then
+		echo "Java version OK."
 
-echo -n "Moving to source directory..."
-cd $SAUCE
-echo "done!"
+		echo -n "Moving to source directory..."
+		cd $SAUCE
+		echo "done!"
+	else
+		echo " #####################################################"
+		echo " #"
+		echo " # Wrong Java version."
+		echo " # Your Java version is $JAVAVER ; needed is $JAVAVERTARGET"
+		echo " #"
+		echo " #"
+		echo " #"
+		echo " # Please run:"
+		echo " #"
+		echo " #   sudo update-alternatives --config java"
+		echo " #"
+		echo " # and"
+		echo " #"
+		echo " #   sudo update-alternatives --config javac"
+		echo " #"
+		echo " # and choose the right Java version!"
+		echo " #"
+		echo " #"
+		echo " #####################################################"
+		prompterr "Wrong Java version." "y"
+	fi
+}
 
-echo "change path for out directory"
-export OUT_DIR_COMMON_BASE=$OUTPATH
-echo "done!"
+crowdinupload() {
+	cd $SAUCE
+	if [ "$1" = "android-6.0" ]; then
+		./crowdin_sync.py -u Android-Andi -b android-6.0 --upload-sources
+		#./crowdin_sync.py -u Android-Andi -b android-6.0 --download
+	fi
+	if [ "$1" = "mm6.0" ]; then
+		./crowdin_sync.py -u andi34 -b mm6.0 --upload-sources
+		#./crowdin_sync.py -u andi34 -b mm6.0 --download
+		#. pull/translation
+	fi
+	cd $SAUCE
+}
+
+sourcesync() {
+	echo -n "Running repo sync..."
+	repo sync -d -f -j8 --force-sync
+	echo "done!"
+}
+
+unlegacykernel(){
+	cd $SAUCE/kernel/samsung/espresso10
+	git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_espresso.git
+	git fetch unlegacy
+	git checkout unlegacy/stable
+	cd $SAUCE
+}
+
+devicechanges(){
+	cd $SAUCE
+	. pull/tab2
+	if [ "$1" = "lp5.1" ]; then
+		. pull/globalmenu
+	fi
+}
+
+cleansource() {
+	if [ "$BP" = "y" ]; then
+		echo "Removing build.prop..."
+		rm $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/system/build.prop
+		echo "done!"
+	fi
+	echo -n "Running make $HOWCLEAN..."
+	make $HOWCLEAN
+	echo "done!"
+}
+
+javacheck
 
 if [ "$SYNC" = "y" ]; then
-        echo -n "Running repo sync..."
-        repo sync -d -f -j8 --force-sync
-        echo "done!"
+        sourcesync
+
         if [ "$STABLEKERNEL" = "y" ]; then
-                cd $SAUCE/kernel/samsung/espresso10
-                git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_espresso.git
-                git fetch unlegacy
-                git checkout unlegacy/stable
-                cd $SAUCE
+               unlegacykernel
         fi
         if [ "$TAB2CHANGES" = "y" ]; then
-                cd $SAUCE
-                . pull/tab2
-                if [ "$1" = "lp5.1" ]; then
-                    . pull/globalmenu
-                fi
+               devicechanges
         fi
-
         if [ "$UPLOADCROWDIN" = "y" ]; then
-                cd $SAUCE
-                if [ "$1" = "android-6.0" ]; then
-                    ./crowdin_sync.py -u Android-Andi -b android-6.0 --upload-sources
-                    #./crowdin_sync.py -u Android-Andi -b android-6.0 --download
-                fi
-                if [ "$1" = "mm6.0" ]; then
-                    ./crowdin_sync.py -u andi34 -b mm6.0 --upload-sources
-                    #./crowdin_sync.py -u andi34 -b mm6.0 --download
-                    #. pull/translation
-                fi
-                cd $SAUCE
-
+               crowdinupload
         fi
 fi
 
@@ -113,6 +162,10 @@ if [ "$CCACHE" = "y" ]; then
                         prebuilts/misc/linux-x86/ccache/ccache -M 100G
                 fi
 
+echo "change path for out directory"
+export OUT_DIR_COMMON_BASE=$OUTPATH
+echo "done!"
+
 for VAL in "${!PRODUCT[@]}"
 do
 
@@ -121,30 +174,7 @@ echo -n "Starting build..."
 croot
 lunch "$LUNCHROM"_${LUNCHCMD[$VAL]}-userdebug
 
-if [ "$BP" = "y" ]; then
-        echo "Removing build.prop..."
-        rm $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/system/build.prop
-        echo "done!"
-fi
-
-if [ "$QCLEAN" = "y" ]; then
-        echo -n "Running make install clean..."
-        make installclean
-        echo "done!"
-fi
-
-if [ "$CLEAN" = "y" ]; then
-        echo -n "Running make clean..."
-        make clean
-        echo "done!"
-fi
-
-if [ "$CLOBBER" = "y" ]; then
-        echo -n "Running make clobber..."
-        make clobber
-        echo "done!"
-fi
-
+cleansource
 
 # get time of startup
 res1=$(date +%s.%N)
@@ -186,26 +216,3 @@ done
 make clobber
 
 echo "All done!"
-
-else
-    echo " #####################################################"
-    echo " #"
-    echo " # Wrong Java version."
-    echo " # Your Java version is $JAVAVER ; needed is $JAVAVERTARGET"
-    echo " #"
-    echo " #"
-    echo " #"
-    echo " # Please run:"
-    echo " #"
-    echo " #   sudo update-alternatives --config java"
-    echo " #"
-    echo " # and"
-    echo " #"
-    echo " #   sudo update-alternatives --config javac"
-    echo " #"
-    echo " # and choose the right Java version!"
-    echo " #"
-    echo " # Aborted!"
-    echo " #"
-    echo " #####################################################"
-fi
