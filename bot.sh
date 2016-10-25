@@ -14,6 +14,7 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
+
 PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
 LUNCHCMD[0]="espressowifi"                        # lunch command used for ROM
 
@@ -94,11 +95,11 @@ javacheck() {
 
 crowdinupload() {
 	cd $SAUCE
-	if [ "$1" = "android-6.0" ]; then
+	if [ "$BRANCH" = "android-6.0" ]; then
 		./crowdin_sync.py -u Android-Andi -b android-6.0 --upload-sources
 		#./crowdin_sync.py -u Android-Andi -b android-6.0 --download
 	fi
-	if [ "$1" = "mm6.0" ]; then
+	if [ "$BRANCH" = "mm6.0" ]; then
 		./crowdin_sync.py -u andi34 -b mm6.0 --upload-sources
 		#./crowdin_sync.py -u andi34 -b mm6.0 --download
 		#. pull/translation
@@ -123,7 +124,7 @@ unlegacykernel(){
 devicechanges(){
 	cd $SAUCE
 	. pull/tab2
-	if [ "$1" = "lp5.1" ]; then
+	if [ "$BRANCH" = "lp5.1" ]; then
 		. pull/globalmenu
 	fi
 }
