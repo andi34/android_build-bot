@@ -25,17 +25,15 @@ readonly bldcya=$txtbld$cya  #  cyan
 readonly txtrst=$(tput sgr0) # Reset
 
 err() {
-  echo "$txtrst${red}$*$txtrst" >&2
+	echo "$txtrst${red}$*$txtrst" >&2
 }
 
 warn() {
-  echo "$txtrst${ylw}$*$txtrst" >&2
+	echo "$txtrst${ylw}$*$txtrst" >&2
 }
-
 info() {
-  echo "$txtrst${grn}$*$txtrst"
+	echo "$txtrst${grn}$*$txtrst"
 }
-
 
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
@@ -232,12 +230,12 @@ movefiles() {
 
 	info "Moving files if exist..."
 	if [ "$ROM" = "aosp" ]; then
-		if [ -f $OUT/$ROM*".zip"]; then
+		if [ -f $OUT/$ROM*".zip" ]; then
 			info "Moving flashable zip..."
 			mv $OUT/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/$ROM"_"${PRODUCT[$VAL]}-$VER-$ROMDATE".zip"
 		fi
 	else
-		if [ -f $OUT/$ROM*".zip"]; then
+		if [ -f $OUT/$ROM*".zip" ]; then
 			info "Moving flashable zip..."
 			$OUT/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
 		fi
