@@ -14,12 +14,24 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
+if [ "$ROM" = "aosp" ]; then
+	PRODUCT[0]="espresso"                        # phone model name (product folder name)
+	LUNCHCMD[0]="espresso"                        # lunch command used for ROM
 
-PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
-LUNCHCMD[0]="espressowifi"                        # lunch command used for ROM
+	PRODUCT[1]="espresso3g"
+	LUNCHCMD[1]="espresso3g"
 
-PRODUCT[1]="espresso3g"
-LUNCHCMD[1]="espresso3g"
+	ROMDATE=$(date +%Y%m%d-%H%M)
+	echo "AOSP Rom Date: $ROMDATE"
+
+else
+
+	PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
+	LUNCHCMD[0]="espressowifi"                        # lunch command used for ROM
+
+	PRODUCT[1]="espresso3g"
+	LUNCHCMD[1]="espresso3g"
+fi
 
 #---------------------Build Settings------------------#
 
@@ -180,8 +192,12 @@ cleansource
 # get time of startup
 res1=$(date +%s.%N)
 
-# start compilation
-make bacon -j8
+if [ "$ROM" = "aosp" ]; then
+	make otapackage -j8
+else
+	# start compilation
+	make bacon -j8
+fi
 
 echo "done!"
 
@@ -197,19 +213,27 @@ mkdir -p $STORAGE/$VER
 mkdir -p $STORAGE/$VER/${PRODUCT[$VAL]}
 
 echo "Moving files if exist..."
-if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip"]; then
-    echo "Moving flashable zip..."
-    mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
-fi
 
-if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" ]; then
-    echo -n "Moving md5..."
-    mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
-fi
+if [ "$ROM" = "aosp" ]; then
+	if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip"]; then
+		echo "Moving flashable zip..."
+		mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/$ROM"_"${PRODUCT[$VAL]}-$VER-$ROMDATE".zip"
+	fi
+else
+	if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip"]; then
+		echo "Moving flashable zip..."
+		mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+	fi
 
-if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" ]; then
-    echo -n "Moving recovery.img..."
-    cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
+	if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" ]; then
+		echo -n "Moving md5..."
+		mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
+	fi
+
+	if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" ]; then
+		echo -n "Moving recovery.img..."
+	cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
+	fi
 fi
 
 done
