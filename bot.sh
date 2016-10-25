@@ -143,7 +143,7 @@ if [ "$1" = "cm-11.0" ] ; then
     LUNCHROM=cm
     SECONDOUTPATH=/ssd2/out/cm-11.0
 # JavaVersion
-    JAVAVERTARGET=6
+    JAVAVERTARGET=7
 fi
 
 
