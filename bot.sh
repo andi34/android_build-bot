@@ -163,8 +163,15 @@ cleansource() {
 		rm $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/system/build.prop
 		echo "done!"
 	fi
-	echo -n "Running make $HOWCLEAN..."
-	make $HOWCLEAN
+
+	if [ -z "$CLEAN_TARGETS" ]; then
+		echo "CLEAN_TARGETS not specified, using make clobber as default..."
+		CLEAN_TARGETS=clobber
+	else
+		echo -n "Running make $CLEAN_TARGETS..."
+	fi
+
+	make $CLEAN_TARGETS
 	echo "done!"
 }
 
