@@ -1,0 +1,13 @@
+#!/bin/bash
+
+BRANCH=cm-13.0
+STORAGE=~/android/roms/cm
+VER=6.0.1
+ROM=cm-13
+TAB2CHANGES=y
+STABLEKERNEL=y
+LUNCHROM=cm
+JAVAVERTARGET=7
+UPLOADCROWDIN=n
+
+. `dirname $0`/bot.sh
