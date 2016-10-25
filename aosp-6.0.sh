@@ -9,6 +9,7 @@ STABLEKERNEL=y
 LUNCHROM=aosp
 JAVAVERTARGET=7
 HOWCLEAN=clobber
+BUILD_TARGETS="otapackage"
 UPLOADCROWDIN=n
 
 . `dirname $0`/bot.sh

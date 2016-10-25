@@ -10,6 +10,7 @@ LUNCHROM=cm
 SECONDOUTPATH=/ssd2/out/cm-11.0
 JAVAVERTARGET=7
 HOWCLEAN=clobber
+BUILD_TARGETS="bacon"
 UPLOADCROWDIN=n
 
 . `dirname $0`/bot.sh

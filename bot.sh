@@ -63,6 +63,10 @@ CLOBBER=y
 SAUCE=~/android/$BRANCH
 SECONDOUTPATH=$OUTPATH/$BRANCH
 
+if [ -z "$BUILD_TARGETS" ]; then
+	echo BUILD_TARGETS not specified, using otapackage as default...
+	BUILD_TARGETS="otapackage"
+fi
 
 #---------------------Build Bot Code-------------------#
 # Very much not a good idea to change this unless you know what you are doing....
@@ -240,12 +244,8 @@ cleansource
 getdate
 starttime
 
-if [ "$ROM" = "aosp" ]; then
-	make -j$JOBS otapackage
-else
-	# start compilation
-	make -j$JOBS bacon
-fi
+# start compilation
+make -j$JOBS $BUILD_TARGETS
 
 echo "done!"
 
