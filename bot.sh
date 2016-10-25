@@ -169,6 +169,13 @@ devicechanges() {
 	fi
 }
 
+setup() {
+	cd $SAUCE
+	. build/envsetup.sh
+	croot
+	lunch "$LUNCHROM"_${LUNCHCMD[$VAL]}-userdebug
+}
+
 cleansource() {
 	if [ "$BP" = "y" ]; then
 		echo "Removing build.prop..."
@@ -257,10 +264,7 @@ for VAL in "${!PRODUCT[@]}"
 do
 
 echo "Starting build..."
-. build/envsetup.sh
-croot
-lunch "$LUNCHROM"_${LUNCHCMD[$VAL]}-userdebug
-
+setup
 cleansource
 
 # get time of startup
