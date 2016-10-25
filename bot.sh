@@ -23,6 +23,7 @@ if [ "$ROM" = "aosp" ]; then
 
 	ROMDATE=$(date +%Y%m%d-%H%M)
 	echo "AOSP Rom Date: $ROMDATE"
+	KERNELNAME=espresso
 
 else
 
@@ -31,6 +32,8 @@ else
 
 	PRODUCT[1]="espresso3g"
 	LUNCHCMD[1]="espresso3g"
+
+	KERNELNAME=espresso10
 fi
 
 #---------------------Build Settings------------------#
@@ -142,7 +145,7 @@ sourcesync() {
 }
 
 unlegacykernel() {
-	cd $SAUCE/kernel/samsung/espresso10
+	cd $SAUCE/kernel/samsung/$KERNELNAME
 	git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_espresso.git
 	git fetch unlegacy
 	git checkout unlegacy/stable
