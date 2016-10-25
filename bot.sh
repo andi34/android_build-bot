@@ -223,11 +223,13 @@ if [ "$SYNC" = "y" ]; then
 fi
 
 if [ "$CCACHE" = "y" ]; then
-                        export USE_CCACHE=1
-                        export CCACHE_DIR=$CCSTORAGE
-                        # set ccache due to your disk space,set it at your own risk
-                        prebuilts/misc/linux-x86/ccache/ccache -M 100G
-                fi
+	export USE_CCACHE=1
+	#  CCACHE_NLEVELS: The environment variable CCACHE_NLEVELS allows you to choose the number of levels of hash in the cache directory. The default is 2. The minimum is 1 and the maximum is 8.
+	export CCACHE_NLEVELS=4
+	export CCACHE_DIR=$CCSTORAGE
+	# set ccache due to your disk space,set it at your own risk
+	prebuilts/misc/linux-x86/ccache/ccache -M 100G
+fi
 
 if [ "$DIFFERENTOUTPATH" = "y" ]; then
 	echo "Change path for out directory to $OUTPATH"
