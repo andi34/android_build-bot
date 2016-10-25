@@ -11,6 +11,32 @@
 # So long as you keep our names and URL in it.
 # Lots of thanks go out to TeamBAMF
 
+readonly red=$(tput setaf 1) #  red
+readonly grn=$(tput setaf 2) #  green
+readonly ylw=$(tput setaf 3) #  yellow
+readonly blu=$(tput setaf 4) #  blue
+readonly cya=$(tput setaf 6) #  cyan
+readonly txtbld=$(tput bold) # Bold
+readonly bldred=$txtbld$red  #  red
+readonly bldgrn=$txtbld$grn  #  green
+readonly bldylw=$txtbld$ylw  #  yellow
+readonly bldblu=$txtbld$blu  #  blue
+readonly bldcya=$txtbld$cya  #  cyan
+readonly txtrst=$(tput sgr0) # Reset
+
+err() {
+  echo "$txtrst${red}$*$txtrst" >&2
+}
+
+warn() {
+  echo "$txtrst${ylw}$*$txtrst" >&2
+}
+
+info() {
+  echo "$txtrst${grn}$*$txtrst"
+}
+
+
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
@@ -22,7 +48,7 @@ if [ "$ROM" = "aosp" ]; then
 	LUNCHCMD[1]="espresso3g"
 
 	ROMDATE=$(date +%Y%m%d-%H%M)
-	echo "AOSP Rom Date: $ROMDATE"
+	info "AOSP Rom Date: $ROMDATE"
 	KERNELNAME=espresso
 
 else
@@ -67,7 +93,7 @@ CLOBBER=y
 SAUCE=~/android/$BRANCH
 
 if [ -z "$BUILD_TARGETS" ]; then
-	echo BUILD_TARGETS not specified, using otapackage as default...
+	info "BUILD_TARGETS not specified, using otapackage as default..."
 	BUILD_TARGETS="otapackage"
 fi
 
@@ -95,21 +121,21 @@ totaltime() {
 setbuildjobs() {
 	# Set build jobs
 	JOBS=$(expr 0 + $(grep -c ^processor /proc/cpuinfo))
-	echo "Set build jobs to $JOBS"
+	info "Set build jobs to $JOBS"
 }
 
 javacheck() {
 	# Check for Java version first
-	echo "Checking Java Version..."
+	info "Checking Java Version..."
 	# adapted from http://notepad2.blogspot.de/2011/05/bash-script-to-check-java-version.html
 	JAVAVER=`java -version 2>&1 | grep "java version" | awk '{print $3}' | tr -d \" | awk '{split($0, array, ".")} END{print array[2]}'`
 	if [[ $JAVAVER = $JAVAVERTARGET ]]; then
-		echo "Java version OK."
-
-		echo "Moving to source directory..."
+		info "Java version OK."
+		info "Moving to source directory..."
 		cd $SAUCE
-		echo "done!"
+		info "done!"
 	else
+		echo -e "$bldred"
 		echo " #####################################################"
 		echo " #"
 		echo " # Wrong Java version."
@@ -130,6 +156,7 @@ javacheck() {
 		echo " #"
 		echo " #####################################################"
 		prompterr "Wrong Java version." "y"
+		echo -e "$txtrst"
 	fi
 }
 
@@ -148,9 +175,9 @@ crowdinupload() {
 }
 
 sourcesync() {
-	echo "Running repo sync..."
+	info "Running repo sync..."
 	repo sync -d -f -j8 --force-sync
-	echo "done!"
+	info "done!"
 }
 
 unlegacykernel() {
@@ -178,48 +205,48 @@ setup() {
 
 cleansource() {
 	if [ "$BP" = "y" ]; then
-		echo "Removing build.prop..."
+		info "Removing build.prop..."
 		rm $OUT/system/build.prop
-		echo "done!"
+		info "done!"
 	fi
 
 	if [ -z "$CLEAN_TARGETS" ]; then
-		echo "CLEAN_TARGETS not specified, using make clobber as default..."
+		warn "CLEAN_TARGETS not specified, using make clobber as default..."
 		CLEAN_TARGETS=clobber
 	else
-		echo "Running make $CLEAN_TARGETS..."
+		info "Running make $CLEAN_TARGETS..."
 	fi
 
 	make $CLEAN_TARGETS
-	echo "done!"
+	info "done!"
 }
 
 movefiles() {
-	echo "Moving to cloud or storage directory..."
-	echo "checking for directory, and creating as needed..."
+	info "Moving to cloud or storage directory..."
+	info "checking for directory, and creating as needed..."
 	mkdir -p $STORAGE
 	mkdir -p $STORAGE/$VER
 	mkdir -p $STORAGE/$VER/${PRODUCT[$VAL]}
 
-	echo "Moving files if exist..."
+	info "Moving files if exist..."
 	if [ "$ROM" = "aosp" ]; then
 		if [ -f $OUT/$ROM*".zip"]; then
-			echo "Moving flashable zip..."
+			info "Moving flashable zip..."
 			mv $OUT/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/$ROM"_"${PRODUCT[$VAL]}-$VER-$ROMDATE".zip"
 		fi
 	else
 		if [ -f $OUT/$ROM*".zip"]; then
-			echo "Moving flashable zip..."
+			info "Moving flashable zip..."
 			$OUT/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
 		fi
 
 		if [ -f $OUT/*".md5sum" ]; then
-			echo "Moving md5..."
+			info "Moving md5..."
 			mv $OUT/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
 		fi
 
 		if [ -f $OUT/"recovery.img" ]; then
-			echo "Moving recovery.img..."
+			info "Moving recovery.img..."
 			cp -r $OUT/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
 		fi
 	fi
@@ -253,9 +280,9 @@ if [ "$CCACHE" = "y" ]; then
 fi
 
 if [ "$DIFFERENTOUTPATH" = "y" ]; then
-	echo "Change path for out directory to $OUTPATH"
+	info "Change path for out directory to $OUTPATH"
 	export OUT_DIR_COMMON_BASE=$OUTPATH
-	echo "done!"
+	info "done!"
 fi
 
 setbuildjobs
@@ -263,7 +290,7 @@ setbuildjobs
 for VAL in "${!PRODUCT[@]}"
 do
 
-echo "Starting build..."
+info "Starting build..."
 setup
 cleansource
 
@@ -274,7 +301,7 @@ starttime
 # start compilation
 make -j$JOBS $BUILD_TARGETS
 
-echo "done!"
+info "done!"
 
 # finished? get elapsed time
 totaltime
@@ -283,6 +310,7 @@ movefiles
 
 done
 
+warn "running make clobber"
 make clobber
 
-echo "All done!"
+info "All done!"
