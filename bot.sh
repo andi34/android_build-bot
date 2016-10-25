@@ -42,6 +42,7 @@ CCACHE=y
 CCSTORAGE=/ssd1/ccache
 
 # new out path
+DIFFERENTOUTPATH=y
 OUTPATH=/ssd2/out
 
 # should they be moved out of the output folder?
@@ -228,9 +229,11 @@ if [ "$CCACHE" = "y" ]; then
                         prebuilts/misc/linux-x86/ccache/ccache -M 100G
                 fi
 
-echo "change path for out directory"
-export OUT_DIR_COMMON_BASE=$OUTPATH
-echo "done!"
+if [ "$DIFFERENTOUTPATH" = "y" ]; then
+	echo "Change path for out directory to $OUTPATH"
+	export OUT_DIR_COMMON_BASE=$OUTPATH
+	echo "done!"
+fi
 
 # Set build jobs
 JOBS=$(expr 0 + $(grep -c ^processor /proc/cpuinfo))
