@@ -49,18 +49,16 @@ CLOBBER=y
 
 if [ "$1" = "android-5.1" ] ; then
 # Please fill in below the folder the files should be moved to
+    BRANCH=android-5.1
     STORAGE=~/android/roms/omnirom
 # Android Version
     VER=5.1.1
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
     ROM=omni
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-    SAUCE=~/android/android-5.1
-
     TAB2CHANGES=y
     STABLEKERNEL=y
     LUNCHROM=omni
-    SECONDOUTPATH=/ssd2/out/android-5.1
 # JavaVersion
     JAVAVERTARGET=7
 
@@ -69,18 +67,16 @@ fi
 
 if [ "$1" = "android-6.0" ] ; then
 # Please fill in below the folder the files should be moved to
+    BRANCH=android-6.0
     STORAGE=~/android/roms/omnirom
 # Android Version
     VER=6.0.1
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
     ROM=omni
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-    SAUCE=~/android/android-6.0
-
     TAB2CHANGES=y
     STABLEKERNEL=y
     LUNCHROM=omni
-    SECONDOUTPATH=/ssd2/out/android-6.0
 # JavaVersion
     JAVAVERTARGET=7
 
@@ -90,18 +86,16 @@ fi
 
 if [ "$1" = "lp5.1" ] ; then
 # Please fill in below the folder the files should be moved to
+    BRANCH=lp5.1
     STORAGE=~/android/roms/slimroms
 # Android Version
     VER=5.1.1
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
     ROM=Slim
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-    SAUCE=~/android/lp5.1
-
     TAB2CHANGES=y
     STABLEKERNEL=y
     LUNCHROM=slim
-    SECONDOUTPATH=/ssd2/out/lp5.1
 # JavaVersion
     JAVAVERTARGET=7
 fi
@@ -109,19 +103,16 @@ fi
 
 if [ "$1" = "mm6.0" ] ; then
 # Please fill in below the folder the files should be moved to
+    BRANCH=mm6.0
     STORAGE=~/android/roms/slimroms
 # Android Version
     VER=6.0.1
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
     ROM=Slim
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-    SAUCE=~/android/mm6.0
-
     TAB2CHANGES=y
     STABLEKERNEL=y
     LUNCHROM=slim
-    SECONDOUTPATH=/ssd2/out/mm6.0
-
 # JavaVersion
     JAVAVERTARGET=7
 
@@ -130,18 +121,16 @@ fi
 
 if [ "$1" = "cm-11.0" ] ; then
 # Please fill in below the folder the files should be moved to
+    BRANCH=cm-11.0
     STORAGE=~/android/roms/cm
 # Android Version
     VER=4.4.4
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
     ROM=cm-11
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-    SAUCE=~/android/cm-11.0
-
     TAB2CHANGES=y
     STABLEKERNEL=y
     LUNCHROM=cm
-    SECONDOUTPATH=/ssd2/out/cm-11.0
 # JavaVersion
     JAVAVERTARGET=7
 fi
@@ -149,18 +138,16 @@ fi
 
 if [ "$1" = "cm-12.1" ] ; then
 # Please fill in below the folder the files should be moved to
+    BRANCH=cm-12.1
     STORAGE=~/android/roms/cm
 # Android Version
     VER=5.1.1
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
     ROM=cm-12
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-    SAUCE=~/android/cm-12.1
-
     TAB2CHANGES=y
     STABLEKERNEL=y
     LUNCHROM=cm
-    SECONDOUTPATH=/ssd2/out/cm-12.1
 # JavaVersion
     JAVAVERTARGET=7
 fi
@@ -168,22 +155,22 @@ fi
 
 if [ "$1" = "cm-13.0" ] ; then
 # Please fill in below the folder the files should be moved to
+    BRANCH=cm-13.0
     STORAGE=~/android/roms/cm
 # Android Version
     VER=6.0.1
 # The first few letters of your ROM name... this is needed to move the completed zip to your storage folder.
     ROM=cm-13
 # Your build source code directory path. In the example below the build source code directory path is in the "home" folder. If your source code directory is on an external HDD it should look like: //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-    SAUCE=~/android/cm-13.0
-
     TAB2CHANGES=y
     STABLEKERNEL=y
     LUNCHROM=cm
-    SECONDOUTPATH=/ssd2/out/cm-13.0
 # JavaVersion
     JAVAVERTARGET=7
 fi
 
+SAUCE=~/android/$BRANCH
+SECONDOUTPATH=$OUTPATH/$BRANCH
 
 # leave alone
 DATE=`eval date +%y``eval date +%m``eval date +%d`
