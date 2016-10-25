@@ -159,20 +159,27 @@ res2=$(date +%s.%N)
 echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}"
 
 
-                echo -n "Moving to cloud or storage directory..."
-                echo -n "checking for directory, and creating as needed..."
-                        mkdir -p $STORAGE
-                        mkdir -p $STORAGE/$VER
-                        mkdir -p $STORAGE/$VER/${PRODUCT[$VAL]}
+echo -n "Moving to cloud or storage directory..."
+echo -n "checking for directory, and creating as needed..."
+mkdir -p $STORAGE
+mkdir -p $STORAGE/$VER
+mkdir -p $STORAGE/$VER/${PRODUCT[$VAL]}
 
-                echo "Moving flashable zip..."
-                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+echo "Moving files if exist..."
+if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip"]; then
+    echo "Moving flashable zip..."
+    mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+fi
 
-                echo -n "Moving md5..."
-                        mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
+if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" ]; then
+    echo -n "Moving md5..."
+    mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
+fi
 
-                echo -n "Moving recovery.img..."
-                        cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
+if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" ]; then
+    echo -n "Moving recovery.img..."
+    cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
+fi
 
 done
 
