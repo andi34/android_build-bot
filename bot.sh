@@ -222,6 +222,10 @@ echo "change path for out directory"
 export OUT_DIR_COMMON_BASE=$OUTPATH
 echo "done!"
 
+# Set build jobs
+JOBS=$(expr 0 + $(grep -c ^processor /proc/cpuinfo))
+echo "Set build jobs to $JOBS"
+
 for VAL in "${!PRODUCT[@]}"
 do
 
@@ -237,10 +241,10 @@ getdate
 starttime
 
 if [ "$ROM" = "aosp" ]; then
-	make otapackage -j8
+	make -j$JOBS otapackage
 else
 	# start compilation
-	make bacon -j8
+	make -j$JOBS bacon
 fi
 
 echo "done!"
