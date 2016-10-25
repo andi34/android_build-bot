@@ -77,9 +77,9 @@ if [ "$SYNC" = "y" ]; then
         echo "done!"
         if [ "$STABLEKERNEL" = "y" ]; then
                 cd $SAUCE/kernel/samsung/espresso10
-                git remote add omap4aosp https://github.com/OMAP4-AOSP/android_kernel_samsung_espresso.git
-                git fetch omap4aosp
-                git checkout omap4aosp/stable
+                git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_espresso.git
+                git fetch unlegacy
+                git checkout unlegacy/stable
                 cd $SAUCE
         fi
         if [ "$TAB2CHANGES" = "y" ]; then
