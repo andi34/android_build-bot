@@ -63,12 +63,24 @@ CLOBBER=y
 SAUCE=~/android/$BRANCH
 SECONDOUTPATH=$OUTPATH/$BRANCH
 
-# leave alone
-DATE=`eval date +%y``eval date +%m``eval date +%d`
 
 #---------------------Build Bot Code-------------------#
 # Very much not a good idea to change this unless you know what you are doing....
 prompterr() { read -p "Continue? ($2/N) " prompt; [ "$prompt" = "$2" ] || exit 0; }
+
+# leave alone
+getdate() {
+	DATE=`eval date +%y``eval date +%m``eval date +%d`
+}
+
+starttime() {
+	res1=$(date +%s.%N)
+}
+
+totaltime() {
+	res2=$(date +%s.%N)
+	echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}"
+}
 
 javacheck() {
 	# Check for Java version first
@@ -125,7 +137,7 @@ sourcesync() {
 	echo "done!"
 }
 
-unlegacykernel(){
+unlegacykernel() {
 	cd $SAUCE/kernel/samsung/espresso10
 	git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_espresso.git
 	git fetch unlegacy
@@ -133,7 +145,7 @@ unlegacykernel(){
 	cd $SAUCE
 }
 
-devicechanges(){
+devicechanges() {
 	cd $SAUCE
 	. pull/tab2
 	if [ "$BRANCH" = "lp5.1" ]; then
@@ -150,6 +162,37 @@ cleansource() {
 	echo -n "Running make $HOWCLEAN..."
 	make $HOWCLEAN
 	echo "done!"
+}
+
+movefiles() {
+	echo -n "Moving to cloud or storage directory..."
+	echo -n "checking for directory, and creating as needed..."
+	mkdir -p $STORAGE
+	mkdir -p $STORAGE/$VER
+	mkdir -p $STORAGE/$VER/${PRODUCT[$VAL]}
+
+	echo "Moving files if exist..."
+	if [ "$ROM" = "aosp" ]; then
+		if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip"]; then
+			echo "Moving flashable zip..."
+			mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/$ROM"_"${PRODUCT[$VAL]}-$VER-$ROMDATE".zip"
+		fi
+	else
+		if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip"]; then
+			echo "Moving flashable zip..."
+			mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+		fi
+
+		if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" ]; then
+			echo -n "Moving md5..."
+			mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
+		fi
+
+		if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" ]; then
+			echo -n "Moving recovery.img..."
+		cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
+		fi
+	fi
 }
 
 javacheck
@@ -190,7 +233,8 @@ lunch "$LUNCHROM"_${LUNCHCMD[$VAL]}-userdebug
 cleansource
 
 # get time of startup
-res1=$(date +%s.%N)
+getdate
+starttime
 
 if [ "$ROM" = "aosp" ]; then
 	make otapackage -j8
@@ -202,39 +246,9 @@ fi
 echo "done!"
 
 # finished? get elapsed time
-res2=$(date +%s.%N)
-echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}"
+totaltime
 
-
-echo -n "Moving to cloud or storage directory..."
-echo -n "checking for directory, and creating as needed..."
-mkdir -p $STORAGE
-mkdir -p $STORAGE/$VER
-mkdir -p $STORAGE/$VER/${PRODUCT[$VAL]}
-
-echo "Moving files if exist..."
-
-if [ "$ROM" = "aosp" ]; then
-	if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip"]; then
-		echo "Moving flashable zip..."
-		mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/$ROM"_"${PRODUCT[$VAL]}-$VER-$ROMDATE".zip"
-	fi
-else
-	if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip"]; then
-		echo "Moving flashable zip..."
-		mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
-	fi
-
-	if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" ]; then
-		echo -n "Moving md5..."
-		mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
-	fi
-
-	if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" ]; then
-		echo -n "Moving recovery.img..."
-	cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
-	fi
-fi
+movefiles
 
 done
 

@@ -14,7 +14,6 @@
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-mexit() { echo "$1"; exit $2; }
 prompterr() { read -p "Continue? ($2/N) " prompt; [ "$prompt" = "$2" ] || exit 0; }
 
 JAVAVERTARGET=8
