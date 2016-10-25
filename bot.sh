@@ -224,9 +224,11 @@ cleansource() {
 movefiles() {
 	info "Moving to cloud or storage directory..."
 	info "checking for directory, and creating as needed..."
-	mkdir -p $STORAGE
-	mkdir -p $STORAGE/$VER
-	mkdir -p $STORAGE/$VER/${PRODUCT[$VAL]}
+	if [[ ! -d "$STORAGE/$VER/${PRODUCT[$VAL]}" ]]; then
+		mkdir -p $STORAGE/$VER/${PRODUCT[$VAL]}
+	else
+		info "Directory exist already"
+	fi
 
 	info "Moving files if exist..."
 	if [ "$ROM" = "aosp" ]; then
