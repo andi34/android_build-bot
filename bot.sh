@@ -61,7 +61,6 @@ CLOBBER=y
 
 
 SAUCE=~/android/$BRANCH
-SECONDOUTPATH=$OUTPATH/$BRANCH
 
 if [ -z "$BUILD_TARGETS" ]; then
 	echo BUILD_TARGETS not specified, using otapackage as default...
@@ -160,7 +159,7 @@ devicechanges() {
 cleansource() {
 	if [ "$BP" = "y" ]; then
 		echo "Removing build.prop..."
-		rm $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/system/build.prop
+		rm $OUT/system/build.prop
 		echo "done!"
 	fi
 
@@ -184,24 +183,24 @@ movefiles() {
 
 	echo "Moving files if exist..."
 	if [ "$ROM" = "aosp" ]; then
-		if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip"]; then
+		if [ -f $OUT/$ROM*".zip"]; then
 			echo "Moving flashable zip..."
-			mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/$ROM"_"${PRODUCT[$VAL]}-$VER-$ROMDATE".zip"
+			mv $OUT/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/$ROM"_"${PRODUCT[$VAL]}-$VER-$ROMDATE".zip"
 		fi
 	else
-		if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip"]; then
+		if [ -f $OUT/$ROM*".zip"]; then
 			echo "Moving flashable zip..."
-			mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+			$OUT/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
 		fi
 
-		if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" ]; then
+		if [ -f $OUT/*".md5sum" ]; then
 			echo -n "Moving md5..."
-			mv $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
+			mv $OUT/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
 		fi
 
-		if [ -f $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" ]; then
+		if [ -f $OUT/"recovery.img" ]; then
 			echo -n "Moving recovery.img..."
-		cp -r $SECONDOUTPATH/target/product/${PRODUCT[$VAL]}/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
+			cp -r $OUT/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
 		fi
 	fi
 }
