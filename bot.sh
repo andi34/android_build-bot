@@ -237,7 +237,7 @@ movefiles() {
 	else
 		if [ -f $OUT/$ROM*".zip" ]; then
 			info "Moving flashable zip..."
-			$OUT/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+			mv $OUT/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
 		fi
 
 		if [ -f $OUT/*".md5sum" ]; then
@@ -286,13 +286,14 @@ if [ "$DIFFERENTOUTPATH" = "y" ]; then
 fi
 
 setbuildjobs
+setup
+cleansource
 
 for VAL in "${!PRODUCT[@]}"
 do
 
 info "Starting build..."
 setup
-cleansource
 
 # get time of startup
 getdate
