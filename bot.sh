@@ -182,7 +182,7 @@ unlegacykernel() {
 	cd $SAUCE/kernel/samsung/$KERNELNAME
 	git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_espresso.git
 	git fetch unlegacy
-	git checkout unlegacy/stable
+	git checkout unlegacy/staging
 	cd $SAUCE
 }
 
