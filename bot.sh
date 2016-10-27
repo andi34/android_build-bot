@@ -197,6 +197,9 @@ devicechanges() {
 setup() {
 	cd $SAUCE
 	. build/envsetup.sh
+	if [ "$BRANCH" = "cm-11.0" ]; then
+	./vendor/cm/get-prebuilts
+	fi
 	croot
 	lunch "$LUNCHROM"_${LUNCHCMD[$VAL]}-userdebug
 }
