@@ -314,7 +314,7 @@ movefiles
 
 done
 
-warn "running make clobber"
-make clobber
+#warn "running make clobber"
+#make clobber
 
 info "All done!"
