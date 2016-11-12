@@ -25,10 +25,18 @@ info() {
 	echo "$txtrst${grn}$*$txtrst"
 }
 
+setbuildjobs() {
+	# Set build jobs
+	JOBS=$(expr 0 + $(grep -c ^processor /proc/cpuinfo))
+	info "Set build jobs to $JOBS"
+}
+
 info "Kernel source path: $KERNELSOURCE"
 info "PVR Source path: $PVRSAUCE"
 info "Working directory: $WORKINGDIR"
 info "resulting zImage and modules stored at: $WORKINGOUTDIR"
+
+setbuildjobs
 
 info "Moving to kernel source"
 cd $KERNELSOURCE
@@ -54,7 +62,7 @@ info "Change kernel configuration if needed using:"
 info "  make O=$WORKINGDIR menuconfig "
 
 info "lets build the kernel"
-make -j8 O=$WORKINGDIR
+make -j$JOBS O=$WORKINGDIR
 
 info "Copying the resulting zImage and modules to: $WORKINGOUTDIR"
 info "Creating directory..."
