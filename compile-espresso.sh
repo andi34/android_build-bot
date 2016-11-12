@@ -56,32 +56,35 @@ info "  make O=$WORKINGDIR menuconfig "
 info "lets build the kernel"
 make -j8 O=$WORKINGDIR
 
-info "Copy the resulting zImage and modules to different localtion"
-info "creating directory..."
+info "Copying the resulting zImage and modules to: $WORKINGOUTDIR"
+info "Creating directory..."
 mkdir -p $WORKINGOUTDIR
 mkdir -p $WORKINGOUTDIR/modules
 cp $WORKINGDIR/arch/arm/boot/zImage $WORKINGOUTDIR/
 find $WORKINGDIR/ -type f -name *.ko -exec cp {} $WORKINGOUTDIR/modules/ \;
 
-info "files moved"
+info "Files moved!"
 
-info "Point KERNELDIR to KERNEL_OUT directory"
+info "Pointing KERNELDIR to KERNEL_OUT directory"
 export KERNELDIR=$WORKINGDIR
 
-warn "Make sure the PVR source clean"
+warn "Make sure the PVR source clean."
+warn "Running 'make clean'..."
 make clean -C $PVRSAUCE/build/linux2/omap4430_android
 
-info "Build the PVR module"
+info "Building the PVR module..."
 make -j8 -C $PVRSAUCE/build/linux2/omap4430_android TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.1
 
-info "Copy the resulting PVR module to different localtion"
+info "Copying the resulting PVR module to: $WORKINGOUTDIR"
 mv $PVRSAUCE/binary2_540_120_omap4430_android_release/target/pvrsrvkm_sgx540_120.ko $WORKINGOUTDIR/modules/
 
-warn "Don't leave any module objects in PVR source"
+warn "Don't leave any module objects in PVR source!"
+warn "Running 'make clean'..."
 make clean -C $PVRSAUCE/build/linux2/omap4430_android
 
-info "Properly strip the kernel modules for smaller size, implified as stm command inside build.env"
-cd $WORKINGOUTDIR//modules
+info "Properly stripping the kernel modules for smaller size (implified as stm command inside build.env)..."
+cd $WORKINGOUTDIR/modules
 stm
-
-info "Done!"
+info "####################"
+info "#       Done!      #"
+info "####################"
