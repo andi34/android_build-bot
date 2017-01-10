@@ -1,12 +1,12 @@
 #!/bin/bash
 
 BRANCH=cm-13.0
-STORAGE=~/android/roms/cm
+STORAGE=~/android/roms/lineage
 VER=6.0.1
-ROM=cm-13
+ROM=lineage
 TAB2CHANGES=y
 STABLEKERNEL=y
-LUNCHROM=cm
+LUNCHROM=lineage
 JAVAVERTARGET=7
 CLEAN_TARGETS=clobber
 BUILD_TARGETS="bacon"
