@@ -3,7 +3,7 @@
 BRANCH=cm-13.0
 STORAGE=~/android/roms/lineage
 VER=6.0.1
-ROM=lineage
+ROM="lineage-"
 TAB2CHANGES=y
 STABLEKERNEL=y
 LUNCHROM=lineage
