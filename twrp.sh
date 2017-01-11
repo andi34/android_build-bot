@@ -78,7 +78,7 @@ SAUCE=~/android/android-6.0
 
 cd $SAUCE
 . build/envsetup.sh
-make clean
+make clobber
 for VAL in "${!DEVICENAME1[@]}"
 do
 cd $SAUCE
