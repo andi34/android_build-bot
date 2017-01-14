@@ -3,10 +3,10 @@
 BRANCH=aosp-6.0
 STORAGE=~/android/roms/aosp
 VER=6.0.1
-ROM=aosp
+ROM=ua
 TAB2CHANGES=y
 STABLEKERNEL=y
-LUNCHROM=aosp
+LUNCHROM=ua
 JAVAVERTARGET=7
 CLEAN_TARGETS=clobber
 BUILD_TARGETS="otapackage"

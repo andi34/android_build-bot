@@ -38,7 +38,7 @@ info() {
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
-if [ "$ROM" = "aosp" ]; then
+if [ "$ROM" = "ua" ]; then
 	PRODUCT[0]="espresso"                        # phone model name (product folder name)
 	LUNCHCMD[0]="espresso"                        # lunch command used for ROM
 
@@ -46,7 +46,7 @@ if [ "$ROM" = "aosp" ]; then
 	LUNCHCMD[1]="espresso3g"
 
 	ROMDATE=$(date +%Y%m%d-%H%M)
-	info "AOSP Rom Date: $ROMDATE"
+	info "Unlegacy Rom Date: $ROMDATE"
 	KERNELNAME=espresso
 
 else
@@ -232,7 +232,7 @@ movefiles() {
 	fi
 
 	info "Moving files if exist..."
-	if [ "$ROM" = "aosp" ]; then
+	if [ "$ROM" = "ua" ]; then
 		if [ -f $OUT/$ROM*".zip" ]; then
 			info "Moving flashable zip..."
 			mv $OUT/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/$ROM"_"${PRODUCT[$VAL]}-$VER-$ROMDATE".zip"
