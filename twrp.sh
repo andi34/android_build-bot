@@ -58,7 +58,7 @@ DEVICENAME2[0]="espresso-common"
 RECNAME1="TWRP"
 
 # recovery version number
-RECVER="3.0.3-0"
+RECVER="3.1.0-0"
 
 # path to move the *.tar.md5 
 #(*.img and *.zip will also get moved if MOVE=y)
