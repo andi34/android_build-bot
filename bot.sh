@@ -45,6 +45,9 @@ if [ "$ROM" = "ua" ]; then
 	PRODUCT[1]="espresso3g"
 	LUNCHCMD[1]="espresso3g"
 
+	PRODUCT[2]="tuna"
+	LUNCHCMD[2]="tuna"
+
 	ROMDATE=$(date +%Y%m%d-%H%M)
 	info "Unlegacy Rom Date: $ROMDATE"
 	KERNELNAME=espresso
@@ -56,6 +59,11 @@ else
 
 	PRODUCT[1]="espresso3g"
 	LUNCHCMD[1]="espresso3g"
+
+if [ "$BRANCH" = "mm6.0" ]; then
+	PRODUCT[2]="tuna"
+	LUNCHCMD[2]="tuna"
+fi
 
 	KERNELNAME=espresso10
 fi
@@ -129,9 +137,6 @@ javacheck() {
 	JAVAVER=`java -version 2>&1 | grep "java version" | awk '{print $3}' | tr -d \" | awk '{split($0, array, ".")} END{print array[2]}'`
 	if [[ $JAVAVER = $JAVAVERTARGET ]]; then
 		info "Java version OK."
-		info "Moving to source directory..."
-		cd $SAUCE
-		info "done!"
 	else
 		echo -e "$bldred"
 		echo " #####################################################"
@@ -197,9 +202,6 @@ devicechanges() {
 setup() {
 	cd $SAUCE
 	. build/envsetup.sh
-	if [ "$BRANCH" = "cm-11.0" ]; then
-	./vendor/cm/get-prebuilts
-	fi
 	croot
 	lunch "$LUNCHROM"_${LUNCHCMD[$VAL]}-userdebug
 }
@@ -258,10 +260,23 @@ movefiles() {
 
 #---------------------Build Process -------------------#
 javacheck
+info "Moving to source directory..."
+cd $SAUCE
 
 if [ "$SYNC" = "y" ]; then
         sourcesync
 
+        cd $SAUCE
+        . build/envsetup.sh
+        if [ "$BRANCH" = "cm-11.0" ]; then
+        ./vendor/cm/get-prebuilts
+        . pull/asb12017
+        . pull/asb22017
+        . pull/asb32017
+        fi
+        if [ "$BRANCH" = "mm6.0" ]; then
+        repopick -t asb
+        fi
         if [ "$STABLEKERNEL" = "y" ]; then
                unlegacykernel
         fi
