@@ -40,13 +40,8 @@ info() {
 
 if [ "$ROM" = "ua" ]; then
 	PRODUCT[0]="espresso"                        # phone model name (product folder name)
-	LUNCHCMD[0]="espresso"                        # lunch command used for ROM
-
 	PRODUCT[1]="espresso3g"
-	LUNCHCMD[1]="espresso3g"
-
 	PRODUCT[2]="tuna"
-	LUNCHCMD[2]="tuna"
 
 	ROMDATE=$(date +%Y%m%d-%H%M)
 	info "Unlegacy Rom Date: $ROMDATE"
@@ -55,17 +50,11 @@ if [ "$ROM" = "ua" ]; then
 else
 
 	PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
-	LUNCHCMD[0]="espressowifi"                        # lunch command used for ROM
-
 	PRODUCT[1]="espresso3g"
-	LUNCHCMD[1]="espresso3g"
 
 if [ "$BRANCH" = "mm6.0" ]; then
 	PRODUCT[2]="tuna"
-	LUNCHCMD[2]="tuna"
-
 	PRODUCT[3]="bacon"
-	LUNCHCMD[3]="bacon"
 fi
 
 	KERNELNAME=espresso10
@@ -212,7 +201,7 @@ setup() {
 	cd $SAUCE
 	. build/envsetup.sh
 	croot
-	lunch "$LUNCHROM"_${LUNCHCMD[$VAL]}-userdebug
+	lunch "$LUNCHROM"_${PRODUCT[$VAL]}-userdebug
 }
 
 cleansource() {
