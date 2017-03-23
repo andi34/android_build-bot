@@ -158,13 +158,23 @@ sourcesync() {
 
 unlegacykernel() {
 	cd $SAUCE/kernel/samsung/$KERNELNAME
-	git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_espresso.git
+        if git config remote.unlegacy.url > /dev/null; then
+          echo "Unlegacy remote exist already"
+        else
+          echo "adding Unlegacy remote"
+	  git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_espresso.git
+        fi
 	git fetch unlegacy
 	git checkout unlegacy/staging
 	cd $SAUCE
 
 	cd $SAUCE/kernel/samsung/tuna
-	git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_tuna.git
+        if git config remote.unlegacy.url > /dev/null; then
+          echo "Unlegacy remote exist already"
+        else
+          echo "adding Unlegacy remote"
+	  git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_tuna.git
+        fi
 	git fetch unlegacy
 	git checkout unlegacy/staging
 	cd $SAUCE
