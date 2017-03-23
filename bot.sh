@@ -192,6 +192,12 @@ unlegacykernel() {
 	git fetch unlegacy
 	git checkout unlegacy/staging
 	cd $SAUCE
+
+	cd $SAUCE/kernel/samsung/tuna
+	git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_tuna.git
+	git fetch unlegacy
+	git checkout unlegacy/staging
+	cd $SAUCE
 }
 
 devicechanges() {
