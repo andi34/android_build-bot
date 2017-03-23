@@ -63,6 +63,9 @@ else
 if [ "$BRANCH" = "mm6.0" ]; then
 	PRODUCT[2]="tuna"
 	LUNCHCMD[2]="tuna"
+
+	PRODUCT[3]="bacon"
+	LUNCHCMD[3]="bacon"
 fi
 
 	KERNELNAME=espresso10
