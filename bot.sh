@@ -123,36 +123,17 @@ setbuildjobs() {
 }
 
 javacheck() {
-	# Check for Java version first
-	info "Checking Java Version..."
-	# adapted from http://notepad2.blogspot.de/2011/05/bash-script-to-check-java-version.html
-	JAVAVER=`java -version 2>&1 | grep "java version" | awk '{print $3}' | tr -d \" | awk '{split($0, array, ".")} END{print array[2]}'`
-	if [[ $JAVAVER = $JAVAVERTARGET ]]; then
-		info "Java version OK."
-	else
-		echo -e "$bldred"
-		echo " #####################################################"
-		echo " #"
-		echo " # Wrong Java version."
-		echo " # Your Java version is $JAVAVER ; needed is $JAVAVERTARGET"
-		echo " #"
-		echo " #"
-		echo " #"
-		echo " # Please run:"
-		echo " #"
-		echo " #   sudo update-alternatives --config java"
-		echo " #"
-		echo " # and"
-		echo " #"
-		echo " #   sudo update-alternatives --config javac"
-		echo " #"
-		echo " # and choose the right Java version!"
-		echo " #"
-		echo " #"
-		echo " #####################################################"
-		prompterr "Wrong Java version." "y"
-		echo -e "$txtrst"
-	fi
+if [ "$JAVAVERTARGET" == "7" ]; then
+  echo "Setting default jdk to 1.7"
+  echo 2 | sudo /usr/bin/update-alternatives --config java > /dev/null
+  echo 2 | sudo /usr/bin/update-alternatives --config javac > /dev/null
+  echo 2 | sudo /usr/bin/update-alternatives --config javap > /dev/null
+else
+  echo "Setting default jdk to 1.8"
+  echo 3 | sudo /usr/bin/update-alternatives --config java > /dev/null
+  echo 3 | sudo /usr/bin/update-alternatives --config javac > /dev/null
+  echo 3 | sudo /usr/bin/update-alternatives --config javap > /dev/null
+fi
 }
 
 crowdinupload() {
