@@ -45,7 +45,7 @@ if [ "$ROM" = "ua" ]; then
 
 	ROMDATE=$(date +%Y%m%d-%H%M)
 	info "Unlegacy Rom Date: $ROMDATE"
-	KERNELNAME=espresso
+	KERNELNAMETAB2=espresso
 
 else
 
@@ -57,7 +57,7 @@ if [ "$BRANCH" = "mm6.0" ]; then
 	PRODUCT[3]="bacon"
 fi
 
-	KERNELNAME=espresso10
+	KERNELNAMETAB2=espresso10
 fi
 
 #---------------------Build Settings------------------#
@@ -143,7 +143,7 @@ sourcesync() {
 }
 
 unlegacykernel() {
-	cd $SAUCE/kernel/samsung/$KERNELNAME
+	cd $SAUCE/kernel/samsung/$KERNELNAMETAB2
         if git config remote.unlegacy.url > /dev/null; then
           echo "Unlegacy remote exist already"
         else
