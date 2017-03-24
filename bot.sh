@@ -38,6 +38,7 @@ info() {
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
+if [ "$ONEDEVICEONLY" = "n" ]; then
 if [ "$ROM" = "ua" ]; then
 	PRODUCT[0]="espresso"                        # phone model name (product folder name)
 	PRODUCT[1]="espresso3g"
@@ -55,6 +56,7 @@ if [ "$BRANCH" = "mm6.0" ]; then
 	PRODUCT[3]="bacon"
 fi
 
+fi
 fi
 
 #---------------------Build Settings------------------#
