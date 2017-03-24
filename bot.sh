@@ -45,8 +45,6 @@ if [ "$ROM" = "ua" ]; then
 
 	ROMDATE=$(date +%Y%m%d-%H%M)
 	info "Unlegacy Rom Date: $ROMDATE"
-	KERNELNAMETAB2=espresso
-
 else
 
 	PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
@@ -57,7 +55,6 @@ if [ "$BRANCH" = "mm6.0" ]; then
 	PRODUCT[3]="bacon"
 fi
 
-	KERNELNAMETAB2=espresso10
 fi
 
 #---------------------Build Settings------------------#
@@ -253,6 +250,11 @@ if [ "$SYNC" = "y" ]; then
         repopick -t asb
         fi
         if [ "$STABLEKERNEL" = "y" ]; then
+          if [ "$ROM" = "ua" ]; then
+	     KERNELNAMETAB2=espresso
+          else
+             KERNELNAMETAB2=espresso10
+          fi
                unlegacykernel
         fi
         if [ "$TAB2CHANGES" = "y" ]; then
