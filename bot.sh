@@ -75,9 +75,6 @@ MOVE=y
 # Sync repositories before build
 SYNC=y
 
-# run mka installclean first (quick clean build)
-QCLEAN=y
-
 # Run make clean first (Slow clean build. Will delete entire contents of out folder...)
 CLEAN=y
 
