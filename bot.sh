@@ -75,9 +75,6 @@ MOVE=y
 # Sync repositories before build
 SYNC=y
 
-# Run make clean first (Slow clean build. Will delete entire contents of out folder...)
-CLEAN=y
-
 # Run make clobber first (Realy slow clean build. Deletes all the object files AND the intermediate dependency files generated which specify the dependencies of the cpp files.)
 CLOBBER=y
 
