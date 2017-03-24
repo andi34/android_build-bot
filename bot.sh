@@ -240,9 +240,6 @@ if [ "$SYNC" = "y" ]; then
         . build/envsetup.sh
         if [ "$BRANCH" = "cm-11.0" ]; then
         ./vendor/cm/get-prebuilts
-        . pull/asb12017
-        . pull/asb22017
-        . pull/asb32017
         fi
         if [ "$BRANCH" = "mm6.0" ]; then
         repopick -t asb
