@@ -136,20 +136,6 @@ else
 fi
 }
 
-crowdinupload() {
-	cd $SAUCE
-	if [ "$BRANCH" = "android-6.0" ]; then
-		./crowdin_sync.py -u Android-Andi -b android-6.0 --upload-sources
-		#./crowdin_sync.py -u Android-Andi -b android-6.0 --download
-	fi
-	if [ "$BRANCH" = "mm6.0" ]; then
-		./crowdin_sync.py -u andi34 -b mm6.0 --upload-sources
-		#./crowdin_sync.py -u andi34 -b mm6.0 --download
-		#. pull/translation
-	fi
-	cd $SAUCE
-}
-
 sourcesync() {
 	info "Running repo sync..."
 	repo sync -d -f -j8 --force-sync
@@ -271,9 +257,6 @@ if [ "$SYNC" = "y" ]; then
         fi
         if [ "$TAB2CHANGES" = "y" ]; then
                devicechanges
-        fi
-        if [ "$UPLOADCROWDIN" = "y" ]; then
-               crowdinupload
         fi
 fi
 
