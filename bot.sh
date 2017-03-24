@@ -186,14 +186,12 @@ cleansource() {
 	fi
 
 	if [ -z "$CLEAN_TARGETS" ]; then
-		warn "CLEAN_TARGETS not specified, using make clobber as default..."
-		CLEAN_TARGETS=clobber
+		warn "CLEAN_TARGETS not specified, skipping..."
 	else
 		info "Running make $CLEAN_TARGETS..."
+		make $CLEAN_TARGETS
+		info "done!"
 	fi
-
-	make $CLEAN_TARGETS
-	info "done!"
 }
 
 movefiles() {
