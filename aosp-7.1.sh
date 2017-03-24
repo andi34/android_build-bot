@@ -10,7 +10,6 @@ LUNCHROM=ua
 JAVAVERTARGET=8
 CLEAN_TARGETS=clobber
 BUILD_TARGETS="otapackage"
-UPLOADCROWDIN=n
 
 if [[ ! -z $1 ]]; then
 	ONEDEVICEONLY=y
