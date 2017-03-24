@@ -176,6 +176,10 @@ setup() {
 	. build/envsetup.sh
 	croot
 	lunch "$LUNCHROM"_${PRODUCT[$VAL]}-userdebug
+	if [ "$ROM" = "ua" ]; then
+		ROMDATE=$(date +%Y%m%d-%H%M)
+		info "Unlegacy Rom Date: $ROMDATE"
+	fi
 }
 
 cleansource() {
