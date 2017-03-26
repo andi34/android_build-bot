@@ -127,32 +127,40 @@ fi
 
 sourcesync() {
 	info "Running repo sync..."
+	if [ -f "$SAUCE/.repo/local_manifests/roomservice.xml" ]; then
+		info "Removing roomservice.xml ..."
+		rm -rf $SAUCE/.repo/local_manifests/roomservice.xml
+	fi
 	repo sync -d -f -j8 --force-sync
 	info "done!"
 }
 
 unlegacykernel() {
-	cd $SAUCE/kernel/samsung/$KERNELNAMETAB2
-        if git config remote.unlegacy.url > /dev/null; then
-          echo "Unlegacy remote exist already"
-        else
-          echo "adding Unlegacy remote"
-	  git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_espresso.git
-        fi
-	git fetch unlegacy
-	git checkout unlegacy/staging
-	cd $SAUCE
+	if [[ -d "$SAUCE/kernel/samsung/$KERNELNAMETAB2" ]]; then
+		cd $SAUCE/kernel/samsung/$KERNELNAMETAB2
+		if git config remote.unlegacy.url > /dev/null; then
+			echo "Unlegacy remote exist already"
+		else
+			echo "adding Unlegacy remote"
+			git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_espresso.git
+		fi
+		git fetch unlegacy
+		git checkout unlegacy/staging
+		cd $SAUCE
+	fi
 
-	cd $SAUCE/kernel/samsung/tuna
-        if git config remote.unlegacy.url > /dev/null; then
-          echo "Unlegacy remote exist already"
-        else
-          echo "adding Unlegacy remote"
-	  git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_tuna.git
-        fi
-	git fetch unlegacy
-	git checkout unlegacy/staging
-	cd $SAUCE
+	if [[ -d "$SAUCE/kernel/samsung/tuna" ]]; then
+		cd $SAUCE/kernel/samsung/tuna
+		if git config remote.unlegacy.url > /dev/null; then
+			echo "Unlegacy remote exist already"
+		else
+			echo "adding Unlegacy remote"
+			git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_tuna.git
+		fi
+		git fetch unlegacy
+		git checkout unlegacy/staging
+		cd $SAUCE
+	fi
 }
 
 devicechanges() {
@@ -198,28 +206,27 @@ movefiles() {
 	else
 		info "Directory exist already"
 	fi
+	if [ "$ROM" = "ua" ]; then
+	if [ -f $OUT/*".andi.zip" ]; then
+		info "Removing ota zip..."
+		rm $OUT/*."andi.zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+	fi
+	fi
 
 	info "Moving files if exist..."
-	if [ "$ROM" = "ua" ]; then
-		if [ -f $OUT/$ROM*".zip" ]; then
-			info "Moving flashable zip..."
-			mv $OUT/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/$ROM"_"${PRODUCT[$VAL]}-$VER-$ROMDATE".zip"
-		fi
-	else
-		if [ -f $OUT/$ROM*".zip" ]; then
-			info "Moving flashable zip..."
-			mv $OUT/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
-		fi
+	if [ -f $OUT/$ROM*".zip" ]; then
+		info "Moving flashable zip..."
+		mv $OUT/$ROM*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+	fi
 
-		if [ -f $OUT/*".md5sum" ]; then
-			info "Moving md5..."
-			mv $OUT/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
-		fi
+	if [ -f $OUT/*".md5sum" ]; then
+		info "Moving md5..."
+		mv $OUT/*".md5sum" $STORAGE/$VER/${PRODUCT[$VAL]}/
+	fi
 
-		if [ -f $OUT/"recovery.img" ]; then
-			info "Moving recovery.img..."
-			cp -r $OUT/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
-		fi
+	if [ -f $OUT/"recovery.img" ]; then
+		info "Moving recovery.img..."
+		cp -r $OUT/"recovery.img" $STORAGE/$VER/${PRODUCT[$VAL]}/
 	fi
 }
 
