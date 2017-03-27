@@ -209,7 +209,7 @@ movefiles() {
 	if [ "$ROM" = "ua" ]; then
 	if [ -f $OUT/*".andi.zip" ]; then
 		info "Removing ota zip..."
-		rm $OUT/*."andi.zip" $STORAGE/$VER/${PRODUCT[$VAL]}/
+		rm -rf $OUT/*."andi.zip"
 	fi
 	fi
 
