@@ -74,8 +74,6 @@ OUTPATH=/ssd2/out
 # should they be moved out of the output folder?
 MOVE=y
 
-# Sync repositories before build
-SYNC=y
 
 SAUCE=~/android/$BRANCH
 
@@ -235,6 +233,17 @@ movefiles() {
 javacheck
 info "Moving to source directory..."
 cd $SAUCE
+
+read -p "Do you wish to sync source before compile? [y/N] " yn
+case $yn in
+    [Yy]* )
+         SYNC=y
+         echo "Syncing source...";;
+    [Nn]* )
+         SYNC=n
+         echo "Not syncing source...";;
+    * ) echo "Please answer y or n.";;
+esac
 
 if [ "$SYNC" = "y" ]; then
         sourcesync
