@@ -2,7 +2,7 @@
 
 BRANCH=aosp-7.1
 STORAGE=~/android/roms/aosp
-VER=7.1.1
+VER=7.1.2
 ROM=ua
 TAB2CHANGES=y
 STABLEKERNEL=n
