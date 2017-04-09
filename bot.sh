@@ -129,6 +129,9 @@ sourcesync() {
 		info "Removing roomservice.xml ..."
 		rm -rf $SAUCE/.repo/local_manifests/roomservice.xml
 	fi
+	if [ -f "$SAUCE/.repo/local_manifests/slim_manifest.xml" ]; then
+		rm -rf $SAUCE/.repo/local_manifests/slim_manifest.xml
+	fi
 	repo sync -d -f -j8 --force-sync
 	info "done!"
 }
