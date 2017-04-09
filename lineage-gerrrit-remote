@@ -1,0 +1,151 @@
+SAUCE=~/android2/official
+
+P3100REPOSITORIES=(
+    'p3100/cm-11.0'
+    'p3100/cm-12.1'
+    'p3100/cm-13.0'
+)
+
+P3110REPOSITORIES=(
+    'p3110/cm-11.0'
+    'p3110/cm-12.1'
+    'p3110/cm-13.0'
+)
+
+P5100REPOSITORIES=(
+    'p5100/cm-11.0'
+    'p5100/cm-12.1'
+    'p5100/cm-13.0'
+)
+
+P5110REPOSITORIES=(
+    'p5110/cm-11.0'
+    'p5110/cm-12.1'
+    'p5110/cm-13.0'
+)
+
+P5110REPOSITORIES=(
+    'p5110/cm-11.0'
+    'p5110/cm-12.1'
+    'p5110/cm-13.0'
+)
+
+ESPRESSOWIFIREPOSITORIES=(
+    'espressowifi/cm-11.0'
+    'espressowifi/cm-12.1'
+    'espressowifi/cm-13.0'
+)
+
+ESPRESSO3GREPOSITORIES=(
+    'espresso3g/cm-11.0'
+    'espresso3g/cm-12.1'
+    'espresso3g/cm-13.0'
+)
+
+ESPRESSOCOMMONREPOSITORIES=(
+    'espresso-common/cm-11.0'
+    'espresso-common/cm-12.1'
+    'espresso-common/cm-13.0'
+)
+
+KERNELREPOSITORIES=(
+    'kernel/espresso/cm-11.0'
+    'kernel/espresso/cm-12.1'
+    'kernel/espresso/cm-13.0'
+)
+
+for devicerepository in "${P3100REPOSITORIES[@]}"; do
+    cd "${SAUCE}/${devicerepository}"
+    echo "${devicerepository}"
+    if git config remote.gerrit.url > /dev/null; then
+        echo "gerrit remote exist already"
+    else
+        echo "adding gerrit remote"
+        git remote add gerrit ssh://Android-Andi@review.lineageos.org:29418/LineageOS/android_device_samsung_p3100
+    fi
+    cd "${SAUCE}"
+done
+
+for devicerepository in "${P3110REPOSITORIES[@]}"; do
+    cd "${SAUCE}/${devicerepository}"
+    echo "${devicerepository}"
+    if git config remote.gerrit.url > /dev/null; then
+        echo "gerrit remote exist already"
+    else
+        echo "adding gerrit remote"
+        git remote add gerrit ssh://Android-Andi@review.lineageos.org:29418/LineageOS/android_device_samsung_p3110
+    fi
+    cd "${SAUCE}"
+done
+
+for devicerepository in "${P5100REPOSITORIES[@]}"; do
+    cd "${SAUCE}/${devicerepository}"
+    echo "${devicerepository}"
+    if git config remote.gerrit.url > /dev/null; then
+        echo "gerrit remote exist already"
+    else
+        echo "adding gerrit remote"
+        git remote add gerrit ssh://Android-Andi@review.lineageos.org:29418/LineageOS/android_device_samsung_p5100
+    fi
+    cd "${SAUCE}"
+done
+
+for devicerepository in "${P5110REPOSITORIES[@]}"; do
+    cd "${SAUCE}/${devicerepository}"
+    echo "${devicerepository}"
+    if git config remote.gerrit.url > /dev/null; then
+        echo "gerrit remote exist already"
+    else
+        echo "adding gerrit remote"
+        git remote add gerrit ssh://Android-Andi@review.lineageos.org:29418/LineageOS/android_device_samsung_p5110
+    fi
+    cd "${SAUCE}"
+done
+
+for devicerepository in "${ESPRESSOWIFIREPOSITORIES[@]}"; do
+    cd "${SAUCE}/${devicerepository}"
+    if git config remote.gerrit.url > /dev/null; then
+        echo "gerrit remote exist already"
+    else
+        echo "adding gerrit remote"
+        git remote add gerrit ssh://Android-Andi@review.lineageos.org:29418/LineageOS/android_device_samsung_espressowifi
+    fi
+    cd "${SAUCE}"
+done
+
+for devicerepository in "${ESPRESSO3GREPOSITORIES[@]}"; do
+    cd "${SAUCE}/${devicerepository}"
+    echo "${devicerepository}"
+    if git config remote.gerrit.url > /dev/null; then
+        echo "gerrit remote exist already"
+    else
+        echo "adding gerrit remote"
+        git remote add gerrit ssh://Android-Andi@review.lineageos.org:29418/LineageOS/android_device_samsung_espresso3g
+    fi
+    cd "${SAUCE}"
+done
+
+for devicerepository in "${ESPRESSOCOMMONREPOSITORIES[@]}"; do
+    cd "${SAUCE}/${devicerepository}"
+    echo "${devicerepository}"
+    if git config remote.gerrit.url > /dev/null; then
+        echo "gerrit remote exist already"
+    else
+        echo "adding gerrit remote"
+        git remote add gerrit ssh://Android-Andi@review.lineageos.org:29418/LineageOS/android_device_samsung_espresso-common
+    fi
+    cd "${SAUCE}"
+done
+
+for kernelrepository in "${KERNELREPOSITORIES[@]}"; do
+    cd "${SAUCE}/${kernelrepository}"
+    echo "${kernelrepository}"
+    if git config remote.gerrit.url > /dev/null; then
+        echo "gerrit remote exist already"
+    else
+        echo "adding gerrit remote"
+        git remote add gerrit ssh://Android-Andi@review.lineageos.org:29418/LineageOS/android_kernel_samsung_espresso10
+    fi
+    cd "${SAUCE}"
+done
+
