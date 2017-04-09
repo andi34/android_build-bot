@@ -176,7 +176,7 @@ setup() {
 	cd $SAUCE
 	. build/envsetup.sh
 	croot
-	lunch "$LUNCHROM"_${PRODUCT[$VAL]}-userdebug
+	lunch "$LUNCHROM"_${PRODUCT[$VAL]}-"$LUNCHTYPE"
 	if [ "$ROM" = "ua" ]; then
 		ROMDATE=$(date +%Y%m%d-%H%M)
 		info "Unlegacy Rom Date: $ROMDATE"
