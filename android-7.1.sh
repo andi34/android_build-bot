@@ -2,7 +2,7 @@
 
 BRANCH=android-7.1
 STORAGE=~/android/roms/omnirom
-VER=7.1.1
+VER=7.1.2
 ROM="omni-"
 TAB2CHANGES=y
 STABLEKERNEL=n
