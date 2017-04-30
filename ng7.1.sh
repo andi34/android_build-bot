@@ -2,7 +2,7 @@
 
 BRANCH=ng7.1
 STORAGE=~/android/roms/slimroms
-VER=7.1.1
+VER=7.1.2
 ROM=Slim
 TAB2CHANGES=y
 STABLEKERNEL=n

@@ -2,7 +2,7 @@
 
 BRANCH=cm-14.1
 STORAGE=~/android/roms/lineage
-VER=7.1.1
+VER=7.1.2
 ROM="lineage-"
 TAB2CHANGES=y
 STABLEKERNEL=n
