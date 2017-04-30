@@ -260,9 +260,6 @@ if [ "$SYNC" = "y" ]; then
         if [ "$BRANCH" = "cm-11.0" ]; then
         ./vendor/cm/get-prebuilts
         fi
-        if [ "$BRANCH" = "mm6.0" ]; then
-        repopick -t asb
-        fi
         if [ "$STABLEKERNEL" = "y" ]; then
           if [ "$ROM" = "ua" ]; then
 	     KERNELNAMETAB2=espresso
