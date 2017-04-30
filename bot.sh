@@ -56,6 +56,10 @@ if [ "$BRANCH" = "mm6.0" ]; then
 	PRODUCT[3]="bacon"
 fi
 
+if [ "$BRANCH" = "ng7.1" ]; then
+	PRODUCT[2]="tuna"
+fi
+
 fi
 fi
 
