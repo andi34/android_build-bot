@@ -1,8 +1,8 @@
 #!/bin/bash
 
-SAUCE=~/android/kernelcompile
-PVRSAUCE=~/android/aosp-6.0/hardware/ti/omap4/pvr-source/eurasiacon
-KERNELSOURCE=~/android/official/kernel/stable
+SAUCE=~/android2/kernelcompile
+PVRSAUCE=~/android2/official/omap4/stable/pvr-source/eurasiacon
+KERNELSOURCE=~/android2/official/kernel/espresso/staging
 DEFCONFIGNAME=espresso_kitkat_defconfig
 WORKINGDIR=$SAUCE/espresso-kitkat
 WORKINGOUTDIR=$WORKINGDIR-bin
