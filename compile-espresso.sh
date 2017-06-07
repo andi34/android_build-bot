@@ -84,7 +84,8 @@ info "Building the PVR module..."
 make -j8 -C $PVRSAUCE/build/linux2/omap4430_android TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.1
 
 info "Copying the resulting PVR module to: $WORKINGOUTDIR"
-mv $PVRSAUCE/binary2_540_120_omap4430_android_release/target/pvrsrvkm_sgx540_120.ko $WORKINGOUTDIR/modules/
+cp -fr $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/pvrsrvkm_sgx540_120.ko
+mv $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/
 
 warn "Don't leave any module objects in PVR source!"
 warn "Running 'make clean'..."
