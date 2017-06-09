@@ -136,7 +136,7 @@ sourcesync() {
 	if [ -f "$SAUCE/.repo/local_manifests/slim_manifest.xml" ]; then
 		rm -rf $SAUCE/.repo/local_manifests/slim_manifest.xml
 	fi
-	repo sync -d -f -j8 --force-sync
+	repo sync -d -c -q --force-sync --jobs=8 --no-tags
 	info "done!"
 }
 
