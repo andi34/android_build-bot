@@ -196,9 +196,9 @@ privatekernel() {
 	fi
 }
 
-devicechanges() {
+applychanges() {
 	cd $SAUCE
-	. pull/tab2
+	. pull/patchrom
 	if [ "$BRANCH" = "lp5.1" ]; then
 		. pull/globalmenu
 	fi
@@ -304,8 +304,8 @@ if [ "$SYNC" = "y" ]; then
           fi
                privatekernel
         fi
-        if [ "$TAB2CHANGES" = "y" ]; then
-               devicechanges
+        if [ "$PATCHROM" = "y" ]; then
+               applychanges
         fi
 fi
 
