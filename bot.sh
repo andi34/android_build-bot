@@ -168,6 +168,34 @@ unlegacykernel() {
 	fi
 }
 
+privatekernel() {
+	if [[ -d "$SAUCE/kernel/samsung/$KERNELNAMETAB2" ]]; then
+		cd $SAUCE/kernel/samsung/$KERNELNAMETAB2
+		if git config remote.private.url > /dev/null; then
+			echo "Private remote exist already"
+		else
+			echo "adding Private remote"
+			git remote add private git@gitlab.com:andi34/android_kernel_ti_omap4.git
+		fi
+		git fetch private
+		git checkout private/staging
+		cd $SAUCE
+	fi
+
+	if [[ -d "$SAUCE/kernel/samsung/tuna" ]]; then
+		cd $SAUCE/kernel/samsung/tuna
+		if git config remote.private.url > /dev/null; then
+			echo "Private remote exist already"
+		else
+			echo "adding Private remote"
+			git remote add private git@gitlab.com:andi34/android_kernel_ti_omap4.git
+		fi
+		git fetch private
+		git checkout private/staging
+		cd $SAUCE
+	fi
+}
+
 devicechanges() {
 	cd $SAUCE
 	. pull/tab2
@@ -267,6 +295,14 @@ if [ "$SYNC" = "y" ]; then
              KERNELNAMETAB2=espresso10
           fi
                unlegacykernel
+        fi
+        if [ "$PRIVATEKERNEL" = "y" ]; then
+          if [ "$ROM" = "ua" ]; then
+	     KERNELNAMETAB2=espresso
+          else
+             KERNELNAMETAB2=espresso10
+          fi
+               privatekernel
         fi
         if [ "$TAB2CHANGES" = "y" ]; then
                devicechanges
