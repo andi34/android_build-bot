@@ -150,7 +150,7 @@ unlegacykernel() {
 			git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_espresso.git
 		fi
 		git fetch unlegacy
-		git checkout unlegacy/staging
+		git checkout unlegacy/stable
 		cd $SAUCE
 	fi
 
@@ -163,7 +163,7 @@ unlegacykernel() {
 			git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_tuna.git
 		fi
 		git fetch unlegacy
-		git checkout unlegacy/staging
+		git checkout unlegacy/stable
 		cd $SAUCE
 	fi
 }
