@@ -2,7 +2,7 @@
 
 SAUCE=~/android2/kernelcompile
 PVRSAUCE=~/android2/official/omap4/stable/pvr-source/eurasiacon
-KERNELSOURCE=~/android2/official/kernel/espresso/staging
+KERNELSOURCE=~/android2/official/kernel/android_kernel_ti_omap4
 DEFCONFIGNAME=espresso_defconfig
 WORKINGDIR=$SAUCE/espresso-marshmallow
 WORKINGOUTDIR=$WORKINGDIR-bin
