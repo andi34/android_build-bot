@@ -42,7 +42,8 @@ info "Moving to kernel source"
 cd $KERNELSOURCE
 
 info "Import toolchain environment setup"
-source  $SAUCE/build-gcc4.8.env
+info "Toolchain: $TOOLCHAIN"
+source  $SAUCE/build-$TOOLCHAIN.env
 
 info "Create a buid directory, known as KERNEL_OUT directory"
 # then always use "O=$SAUCE/espresso" in kernel compilation
@@ -64,36 +65,43 @@ info "  make O=$WORKINGDIR menuconfig "
 info "lets build the kernel"
 make -j$JOBS O=$WORKINGDIR
 
-info "Copying the resulting zImage and modules to: $WORKINGOUTDIR"
-info "Creating directory..."
-mkdir -p $WORKINGOUTDIR
-mkdir -p $WORKINGOUTDIR/modules
-cp $WORKINGDIR/arch/arm/boot/zImage $WORKINGOUTDIR/
-find $WORKINGDIR/ -type f -name *.ko -exec cp {} $WORKINGOUTDIR/modules/ \;
+if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
+	info "Copying the resulting zImage and modules to: $WORKINGOUTDIR"
+	info "Creating directory..."
+	mkdir -p $WORKINGOUTDIR
+	mkdir -p $WORKINGOUTDIR/modules
+	cp $WORKINGDIR/arch/arm/boot/zImage $WORKINGOUTDIR/
+	find $WORKINGDIR/ -type f -name *.ko -exec cp {} $WORKINGOUTDIR/modules/ \;
 
-info "Files moved!"
+	info "Files moved!"
 
-info "Pointing KERNELDIR to KERNEL_OUT directory"
-export KERNELDIR=$WORKINGDIR
+	info "Pointing KERNELDIR to KERNEL_OUT directory"
+	export KERNELDIR=$WORKINGDIR
 
-warn "Make sure the PVR source clean."
-warn "Running 'make clean'..."
-make clean -C $PVRSAUCE/build/linux2/omap4430_android
+	warn "Make sure the PVR source clean."
+	warn "Running 'make clean'..."
+	make clean -C $PVRSAUCE/build/linux2/omap4430_android
 
-info "Building the PVR module..."
-make -j8 -C $PVRSAUCE/build/linux2/omap4430_android TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.1
+	info "Building the PVR module..."
+	make -j8 -C $PVRSAUCE/build/linux2/omap4430_android TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.1
 
-info "Copying the resulting PVR module to: $WORKINGOUTDIR"
-cp -fr $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/pvrsrvkm_sgx540_120.ko
-mv $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/
+	info "Copying the resulting PVR module to: $WORKINGOUTDIR"
+	cp -fr $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/pvrsrvkm_sgx540_120.ko
+	mv $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/
 
-warn "Don't leave any module objects in PVR source!"
-warn "Running 'make clean'..."
-make clean -C $PVRSAUCE/build/linux2/omap4430_android
+	warn "Don't leave any module objects in PVR source!"
+	warn "Running 'make clean'..."
+	make clean -C $PVRSAUCE/build/linux2/omap4430_android
 
-info "Properly stripping the kernel modules for smaller size (implified as stm command inside build.env)..."
-cd $WORKINGOUTDIR/modules
-stm
-info "####################"
-info "#       Done!      #"
-info "####################"
+	info "Properly stripping the kernel modules for smaller size (implified as stm command inside build.env)..."
+	cd $WORKINGOUTDIR/modules
+	stm
+
+	info "####################"
+	info "#       Done!      #"
+	info "####################"
+else
+	warn "####################"
+	warn "#      FAILED!     #"
+	warn "####################"
+fi
