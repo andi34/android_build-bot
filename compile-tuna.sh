@@ -42,7 +42,7 @@ info "Moving to kernel source"
 cd $KERNELSOURCE
 
 info "Import toolchain environment setup"
-source  $SAUCE/build-gcc4.7.env
+source  $SAUCE/build-linaro4.7-14.01.env
 
 info "Create a buid directory, known as KERNEL_OUT directory"
 # then always use "O=$SAUCE/tuna" in kernel compilation
