@@ -105,3 +105,5 @@ else
 	warn "#      FAILED!     #"
 	warn "####################"
 fi
+
+cd $SAUCE
