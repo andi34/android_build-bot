@@ -3,7 +3,7 @@
 SAUCE=~/android2/kernelcompile
 PVRSAUCE=~/android2/official/omap4/stable/pvr-source/eurasiacon
 KERNELSOURCE=~/android2/official/kernel/android_kernel_ti_omap4
-TOOLCHAIN="linaro4.7-14.01"
+TOOLCHAIN="gcc4.7"
 DEFCONFIGNAME=tuna_kitkat_defconfig
 WORKINGDIR=$SAUCE/tuna-kitkat
 WORKINGOUTDIR=$WORKINGDIR-bin
