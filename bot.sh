@@ -51,6 +51,18 @@ else
 	PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
 	PRODUCT[1]="espresso3g"
 
+if [ "$BRANCH" = "android-4.4" ]; then
+	PRODUCT[2]="tuna"
+fi
+
+if [ "$BRANCH" = "android-6.0" ]; then
+	PRODUCT[2]="tuna"
+fi
+
+if [ "$BRANCH" = "android-7.1" ]; then
+	PRODUCT[2]="tuna"
+fi
+
 if [ "$BRANCH" = "mm6.0" ]; then
 	PRODUCT[2]="tuna"
 	PRODUCT[3]="bacon"
