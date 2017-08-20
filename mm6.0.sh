@@ -17,7 +17,7 @@ if [[ ! -z $1 ]]; then
 	ONEDEVICEONLY=y
 	PRODUCT[0]=$1
 	echo "Compiling for ${PRODUCT[$VAL]} only"
-	if ["$1" = "bacon" ]; then
+	if [ "$1" = "bacon" ]; then
 		OSSCAM=y
 		echo "Compiling with OSS camera HAL"
 	fi
