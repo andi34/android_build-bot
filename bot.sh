@@ -153,49 +153,23 @@ sourcesync() {
 }
 
 unlegacykernel() {
-	if [[ -d "$SAUCE/kernel/samsung/$KERNELNAMETAB2" ]]; then
-		cd $SAUCE/kernel/samsung/$KERNELNAMETAB2
+	if [[ -d "$SAUCE/kernel/ti/omap4" ]]; then
+		cd $SAUCE/kernel/ti/omap4
 		if git config remote.unlegacy.url > /dev/null; then
 			echo "Unlegacy remote exist already"
 		else
 			echo "adding Unlegacy remote"
-			git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_espresso.git
+			git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_ti_omap4.git
 		fi
 		git fetch unlegacy
-		git checkout unlegacy/stable
-		cd $SAUCE
-	fi
-
-	if [[ -d "$SAUCE/kernel/samsung/tuna" ]]; then
-		cd $SAUCE/kernel/samsung/tuna
-		if git config remote.unlegacy.url > /dev/null; then
-			echo "Unlegacy remote exist already"
-		else
-			echo "adding Unlegacy remote"
-			git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_samsung_tuna.git
-		fi
-		git fetch unlegacy
-		git checkout unlegacy/stable
+		git checkout unlegacy/3.0/common
 		cd $SAUCE
 	fi
 }
 
 privatekernel() {
-	if [[ -d "$SAUCE/kernel/samsung/$KERNELNAMETAB2" ]]; then
-		cd $SAUCE/kernel/samsung/$KERNELNAMETAB2
-		if git config remote.private.url > /dev/null; then
-			echo "Private remote exist already"
-		else
-			echo "adding Private remote"
-			git remote add private git@gitlab.com:andi34/android_kernel_ti_omap4.git
-		fi
-		git fetch private
-		git checkout private/staging
-		cd $SAUCE
-	fi
-
-	if [[ -d "$SAUCE/kernel/samsung/tuna" ]]; then
-		cd $SAUCE/kernel/samsung/tuna
+	if [[ -d "$SAUCE/kernel/ti/omap4" ]]; then
+		cd $SAUCE/kernel/ti/omap4
 		if git config remote.private.url > /dev/null; then
 			echo "Private remote exist already"
 		else
@@ -211,9 +185,6 @@ privatekernel() {
 applychanges() {
 	cd $SAUCE
 	. pull/patchrom
-	if [ "$BRANCH" = "lp5.1" ]; then
-		. pull/globalmenu
-	fi
 }
 
 setup() {
@@ -301,19 +272,9 @@ if [ "$SYNC" = "y" ]; then
         ./vendor/cm/get-prebuilts
         fi
         if [ "$STABLEKERNEL" = "y" ]; then
-          if [ "$ROM" = "ua" ]; then
-	     KERNELNAMETAB2=espresso
-          else
-             KERNELNAMETAB2=espresso10
-          fi
                unlegacykernel
         fi
         if [ "$PRIVATEKERNEL" = "y" ]; then
-          if [ "$ROM" = "ua" ]; then
-	     KERNELNAMETAB2=espresso
-          else
-             KERNELNAMETAB2=espresso10
-          fi
                privatekernel
         fi
         if [ "$PATCHROM" = "y" ]; then
