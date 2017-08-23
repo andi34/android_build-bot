@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BRANCH=cm-12.1
-STORAGE=~/android/roms/cm
+STORAGE=~/android2/roms/cm
 VER=5.1.1
 ROM=cm-12.1
 PATCHROM=y

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BRANCH=android-5.1
-STORAGE=~/android/roms/omnirom
+STORAGE=~/android2/roms/omnirom
 VER=5.1.1
 ROM=omni-
 PATCHROM=y

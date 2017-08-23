@@ -63,10 +63,10 @@ RECVER="3.1.1-$TW_DEVICE_VERSION"
 
 # path to move the *.tar.md5 
 #(*.img and *.zip will also get moved if MOVE=y)
-STORAGE=~/android/roms/recovery
+STORAGE=~/android2/roms/recovery
 
 # Place your pre-flashable-zip in this path. Nameing of the zip: DEVICENAME1-RECNAME1.zip
-ZIPBASE=~/android/roms/recovery_base
+ZIPBASE=~/android2/roms/recovery_base
 
 # Your build source code directory path.
 # If your source code directory is on an external HDD it should look like: 

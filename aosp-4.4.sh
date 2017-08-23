@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BRANCH=aosp-4.4
-STORAGE=~/android/roms/aosp
+STORAGE=~/android2/roms/aosp
 VER=4.4.4
 ROM=ua
 PATCHROM=y

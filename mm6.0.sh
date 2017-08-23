@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BRANCH=mm6.0
-STORAGE=~/android/roms/slimroms
+STORAGE=~/android2/roms/slimroms
 VER=6.0.1
 ROM=Slim
 PATCHROM=y

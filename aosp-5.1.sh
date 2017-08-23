@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BRANCH=aosp-5.1
-STORAGE=~/android/roms/aosp
+STORAGE=~/android2/roms/aosp
 VER=5.1.1
 ROM=ua
 PATCHROM=y

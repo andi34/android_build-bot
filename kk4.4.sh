@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BRANCH=kk4.4
-STORAGE=~/android/roms/slimroms
+STORAGE=~/android2/roms/slimroms
 VER=4.4.4
 ROM=Slim
 PATCHROM=y

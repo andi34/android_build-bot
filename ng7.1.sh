@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BRANCH=ng7.1
-STORAGE=~/android/roms/slimroms
+STORAGE=~/android2/roms/slimroms
 VER=7.1.2
 ROM=Slim
 PATCHROM=y

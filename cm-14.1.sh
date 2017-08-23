@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BRANCH=cm-14.1
-STORAGE=~/android/roms/lineage
+STORAGE=~/android2/roms/lineage
 VER=7.1.2
 ROM="lineage-"
 PATCHROM=y

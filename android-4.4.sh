@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BRANCH=android-4.4
-STORAGE=~/android/roms/omnirom
+STORAGE=~/android2/roms/omnirom
 VER=4.4.4
 ROM=omni-
 PATCHROM=n

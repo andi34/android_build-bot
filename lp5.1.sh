@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BRANCH=lp5.1
-STORAGE=~/android/roms/slimroms
+STORAGE=~/android2/roms/slimroms
 VER=5.1.1
 ROM=Slim
 PATCHROM=y
