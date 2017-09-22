@@ -51,6 +51,12 @@ else
 	PRODUCT[0]="espressowifi"                        # phone model name (product folder name)
 	PRODUCT[1]="espresso3g"
 
+if [ "$BRANCH" = "cm-13.0" ]; then
+	PRODUCT[2]="maguro"
+	PRODUCT[3]="toro"
+	PRODUCT[3]="toroplus"
+fi
+
 if [ "$BRANCH" = "android-4.4" ]; then
 	PRODUCT[2]="tuna"
 fi
@@ -248,6 +254,7 @@ movefiles() {
 
 
 #---------------------Build Process -------------------#
+
 javacheck
 info "Moving to source directory..."
 cd $SAUCE
