@@ -58,7 +58,15 @@ SAUCE=~/android/android-7.1
 #---------------------Convert & Move Code----------------#
 # Very much not a good idea to change this unless you know what you are doing....
 
+setjdk() {
+	echo "Setting default jdk to 1.8"
+	echo 3 | sudo /usr/bin/update-alternatives --config java > /dev/null
+	echo 3 | sudo /usr/bin/update-alternatives --config javac > /dev/null
+	echo 3 | sudo /usr/bin/update-alternatives --config javap > /dev/null
+}
+
 startcompile() {
+	setjdk
 	cd $SAUCE
 	. build/envsetup.sh
 	make clobber
@@ -125,7 +133,6 @@ abortcompile() {
 }
 
 #---------------------Device Settings------------------#
-
 
 
 if [[ ! -z $1 ]]; then
