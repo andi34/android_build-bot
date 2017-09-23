@@ -52,17 +52,28 @@ ZIPBASE=~/android2/roms/recovery_base
 # Your build source code directory path.
 # If your source code directory is on an external HDD it should look like: 
 # //media/your PC username/the name of your storage device/path/to/your/source/code/folder
+if [ "${DEVICENAME1[$VAL]}" = "golden" ]; then
+SAUCE=~/android/android-6.0
+else
 SAUCE=~/android/android-7.1
+fi
 
 
 #---------------------Convert & Move Code----------------#
 # Very much not a good idea to change this unless you know what you are doing....
 
 setjdk() {
-	echo "Setting default jdk to 1.8"
-	echo 3 | sudo /usr/bin/update-alternatives --config java > /dev/null
-	echo 3 | sudo /usr/bin/update-alternatives --config javac > /dev/null
-	echo 3 | sudo /usr/bin/update-alternatives --config javap > /dev/null
+	if [ "${DEVICENAME1[$VAL]}" = "golden" ]; then
+		echo "Setting default jdk to 1.7"
+		echo 2 | sudo /usr/bin/update-alternatives --config java > /dev/null
+		echo 2 | sudo /usr/bin/update-alternatives --config javac > /dev/null
+		echo 2 | sudo /usr/bin/update-alternatives --config javap > /dev/null
+	else
+		echo "Setting default jdk to 1.8"
+		echo 3 | sudo /usr/bin/update-alternatives --config java > /dev/null
+		echo 3 | sudo /usr/bin/update-alternatives --config javac > /dev/null
+		echo 3 | sudo /usr/bin/update-alternatives --config javap > /dev/null
+	fi
 }
 
 startcompile() {
