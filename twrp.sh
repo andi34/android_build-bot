@@ -79,6 +79,23 @@ setjdk() {
 startcompile() {
 	setjdk
 	cd $SAUCE
+
+	# we need a fixed TWRP source for STE devices (fix blank screen on boot)
+	if [ "${DEVICENAME1[$VAL]}" = "golden" ]; then
+		if [[ -d "$SAUCE/bootable/recovery" ]]; then
+			cd $SAUCE/bootable/recovery
+			if git config remote.private.url > /dev/null; then
+				echo "Private remote exist already"
+			else
+				echo "adding Private remote"
+				git remote add private https://github.com/andi34/Team-Win-Recovery-Project.git
+			fi
+			git fetch private
+			git checkout private/android-7.1-ste
+			cd $SAUCE
+		fi
+	fi
+
 	. build/envsetup.sh
 	make clobber
 	for VAL in "${!DEVICENAME1[@]}"
