@@ -252,6 +252,55 @@ movefiles() {
 	fi
 }
 
+makeota() {
+	ARCHIVE_DIR=$STORAGE/$VER/${PRODUCT[$VAL]}
+	DEVICE_TARGET_FILES_DIR=$ARCHIVE_DIR
+
+	export DEVICE_TARGET_FILES_PATH=$DEVICE_TARGET_FILES_DIR/$(date -u +%Y%m%d%H%M%S).zip
+
+	info "ARCHIVE_DIR: $ARCHIVE_DIR"
+	info "DEVICE_TARGET_FILES_DIR: $DEVICE_TARGET_FILES_DIR"
+	info "DEVICE_TARGET_FILES_PATH: $DEVICE_TARGET_FILES_PATH"
+
+	if [[ ! -d "$DEVICE_TARGET_FILES_DIR" ]]; then
+		mkdir -p $DEVICE_TARGET_FILES_DIR
+
+	fi
+		cp $OUT/obj/PACKAGING/target_files_intermediates/*target_files*.zip $DEVICE_TARGET_FILES_PATH
+	mv $DEVICE_TARGET_FILES_DIR/latest.zip $DEVICE_TARGET_FILES_DIR/last.zip 2>/dev/null
+	mv $DEVICE_TARGET_FILES_DIR/latest.prop $DEVICE_TARGET_FILES_DIR/last.prop 2>/dev/null
+	ln -sf $DEVICE_TARGET_FILES_PATH $DEVICE_TARGET_FILES_DIR/latest.zip
+	cp -f $OUT/system/build.prop $DEVICE_TARGET_FILES_DIR/latest.prop
+	cp -f $OUT/system/build.prop $ARCHIVE_DIR/build.prop
+
+	export OTA_OPTIONS="-v -p $ANDROID_HOST_OUT $OTA_COMMON_OPTIONS"
+	export OTA_FULL_OPTIONS="$OTA_OPTIONS $OTA_FULL_EXTRA_OPTIONS"
+
+	export OUTPUT_FILE_NAME="$ROM"_${PRODUCT[$VAL]}-$VER
+	export LATEST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/latest.prop +%Y%m%d%H%M%S)
+
+	if [ "$VER" = "4.4.4" ]; then
+		OTA_COMMON_OPTIONS=""
+		OTA_FULL_EXTRA_OPTIONS=""
+	else
+		OTA_COMMON_OPTIONS="-t $JOBS"
+		OTA_FULL_EXTRA_OPTIONS="--block"
+	fi
+
+	info "OTA_OPTIONS: $OTA_OPTIONS"
+	info "OTA_COMMON_OPTIONS: $OTA_COMMON_OPTIONS"
+	info "OTA_FULL_OPTIONS: $OTA_FULL_OPTIONS"
+	info "LATEST_DATE: $LATEST_DATE"
+	info "OTA_TYPE: $OTA_TYPE"
+
+	export FILE_NAME=$OUTPUT_FILE_NAME-$LATEST_DATE
+	info "FILE_NAME: $FILE_NAME"
+	./build/tools/releasetools/ota_from_target_files \
+	$OTA_FULL_OPTIONS \
+	$DEVICE_TARGET_FILES_DIR/latest.zip $ARCHIVE_DIR/$FILE_NAME.zip
+
+        md5sum $ARCHIVE_DIR/$FILE_NAME.zip | cut -d ' ' -f1 > $ARCHIVE_DIR/$FILE_NAME.zip.md5sum
+}
 
 #---------------------Build Process -------------------#
 
@@ -320,6 +369,10 @@ starttime
 
 # start compilation
 make -j$JOBS $BUILD_TARGETS
+
+if [ "$BUILD_TARGETS" = "target-files-package" ]; then
+	makeota
+fi
 
 info "done!"
 
