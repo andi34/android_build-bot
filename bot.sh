@@ -256,7 +256,7 @@ makeota() {
 	ARCHIVE_DIR=$STORAGE/$VER/${PRODUCT[$VAL]}
 	DEVICE_TARGET_FILES_DIR=$ARCHIVE_DIR
 
-	export DEVICE_TARGET_FILES_PATH=$DEVICE_TARGET_FILES_DIR/$(date -u +%Y%m%d%H%M%S).zip
+	export DEVICE_TARGET_FILES_PATH=$DEVICE_TARGET_FILES_DIR/$(date -u +%Y%m%d%H%M).zip
 
 	info "ARCHIVE_DIR: $ARCHIVE_DIR"
 	info "DEVICE_TARGET_FILES_DIR: $DEVICE_TARGET_FILES_DIR"
@@ -282,7 +282,7 @@ makeota() {
 	export OTA_INC_FAILED="false"
 
 	export OUTPUT_FILE_NAME="$OTANAME"_${PRODUCT[$VAL]}-$VER
-	export LATEST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/latest.prop +%Y%m%d%H%M%S)
+	export LATEST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/latest.prop +%Y%m%d%H%M)
 
 	if [ "$VER" = "4.4.4" ]; then
 		OTA_COMMON_OPTIONS=""
@@ -301,7 +301,7 @@ makeota() {
 
 	if [ -f $DEVICE_TARGET_FILES_DIR/last.zip ] && [ "$OTA_TYPE" == "incremental" ]
 	then
-		export LAST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/last.prop +%Y%m%d%H%M%S)
+		export LAST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/last.prop +%Y%m%d%H%M)
 		export FILE_NAME=$OUTPUT_FILE_NAME-$LAST_DATE-TO-$LATEST_DATE
 		info "FILE_NAME: $FILE_NAME"
 		./build/tools/releasetools/ota_from_target_files \
