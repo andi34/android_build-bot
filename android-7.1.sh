@@ -11,7 +11,9 @@ LUNCHROM=omni
 LUNCHTYPE=userdebug
 JAVAVERTARGET=8
 CLEAN_TARGETS=clobber
-BUILD_TARGETS="bacon"
+BUILD_TARGETS="target-files-package"
+OTANAME=omni
+OTA_TYPE="full"
 
 if [[ ! -z $1 ]]; then
 	ONEDEVICEONLY=y
