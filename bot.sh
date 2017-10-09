@@ -281,7 +281,7 @@ makeota() {
 	export OTA_INC_OPTIONS="$OTA_OPTIONS"
 	export OTA_INC_FAILED="false"
 
-	export OUTPUT_FILE_NAME="$ROM"_${PRODUCT[$VAL]}-$VER
+	export OUTPUT_FILE_NAME="$OTANAME"_${PRODUCT[$VAL]}-$VER
 	export LATEST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/latest.prop +%Y%m%d%H%M%S)
 
 	if [ "$VER" = "4.4.4" ]; then
