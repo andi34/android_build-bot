@@ -267,6 +267,9 @@ makeota() {
 
 	fi
 		cp $OUT/obj/PACKAGING/target_files_intermediates/*target_files*.zip $DEVICE_TARGET_FILES_PATH
+	rm -f $(readlink $DEVICE_TARGET_FILES_DIR/last.zip) 2>/dev/null
+	rm -f $DEVICE_TARGET_FILES_DIR/last.zip 2>/dev/null
+	rm -f $DEVICE_TARGET_FILES_DIR/last.prop 2>/dev/null
 	mv $DEVICE_TARGET_FILES_DIR/latest.zip $DEVICE_TARGET_FILES_DIR/last.zip 2>/dev/null
 	mv $DEVICE_TARGET_FILES_DIR/latest.prop $DEVICE_TARGET_FILES_DIR/last.prop 2>/dev/null
 	ln -sf $DEVICE_TARGET_FILES_PATH $DEVICE_TARGET_FILES_DIR/latest.zip
@@ -275,6 +278,8 @@ makeota() {
 
 	export OTA_OPTIONS="-v -p $ANDROID_HOST_OUT $OTA_COMMON_OPTIONS"
 	export OTA_FULL_OPTIONS="$OTA_OPTIONS $OTA_FULL_EXTRA_OPTIONS"
+	export OTA_INC_OPTIONS="$OTA_OPTIONS"
+	export OTA_INC_FAILED="false"
 
 	export OUTPUT_FILE_NAME="$ROM"_${PRODUCT[$VAL]}-$VER
 	export LATEST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/latest.prop +%Y%m%d%H%M%S)
@@ -290,16 +295,53 @@ makeota() {
 	info "OTA_OPTIONS: $OTA_OPTIONS"
 	info "OTA_COMMON_OPTIONS: $OTA_COMMON_OPTIONS"
 	info "OTA_FULL_OPTIONS: $OTA_FULL_OPTIONS"
+	info "OTA_INC_OPTIONS: $OTA_INC_OPTIONS"
 	info "LATEST_DATE: $LATEST_DATE"
 	info "OTA_TYPE: $OTA_TYPE"
 
-	export FILE_NAME=$OUTPUT_FILE_NAME-$LATEST_DATE
-	info "FILE_NAME: $FILE_NAME"
-	./build/tools/releasetools/ota_from_target_files \
-	$OTA_FULL_OPTIONS \
-	$DEVICE_TARGET_FILES_DIR/latest.zip $ARCHIVE_DIR/$FILE_NAME.zip
+	if [ -f $DEVICE_TARGET_FILES_DIR/last.zip ] && [ "$OTA_TYPE" == "incremental" ]
+	then
+		export LAST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/last.prop +%Y%m%d%H%M%S)
+		export FILE_NAME=$OUTPUT_FILE_NAME-$LAST_DATE-TO-$LATEST_DATE
+		info "FILE_NAME: $FILE_NAME"
+		./build/tools/releasetools/ota_from_target_files \
+		$OTA_INC_OPTIONS \
+		--incremental_from $DEVICE_TARGET_FILES_DIR/last.zip \
+		$DEVICE_TARGET_FILES_DIR/latest.zip $ARCHIVE_DIR/$FILE_NAME.zip
 
-        md5sum $ARCHIVE_DIR/$FILE_NAME.zip | cut -d ' ' -f1 > $ARCHIVE_DIR/$FILE_NAME.zip.md5sum
+		if [ -f $ARCHIVE_DIR/$FILE_NAME.zip ]
+		then
+			export OTA_INC_FAILED="false"
+			info "OTA_INC_FAILED: $OTA_INC_FAILED"
+			md5sum $ARCHIVE_DIR/$FILE_NAME.zip | cut -d ' ' -f1 > $ARCHIVE_DIR/$FILE_NAME.zip.md5sum
+		else
+			export OTA_INC_FAILED="true"
+			info "OTA_INC_FAILED: $OTA_INC_FAILED"
+		fi
+
+		if [ "$OTA_INC_FAILED" == "true" ]
+		then
+			export FILE_NAME=$OUTPUT_FILE_NAME-$LATEST_DATE
+			info "FILE_NAME: $FILE_NAME"
+			./build/tools/releasetools/ota_from_target_files \
+			$OTA_FULL_OPTIONS \
+			$DEVICE_TARGET_FILES_DIR/latest.zip $ARCHIVE_DIR/$FILE_NAME.zip
+
+			md5sum $ARCHIVE_DIR/$FILE_NAME.zip | cut -d ' ' -f1 > $ARCHIVE_DIR/$FILE_NAME.zip.md5sum
+		else
+			info "deleting $ARCHIVE_DIR/$FILE_NAME.*"
+			rm -f $ARCHIVE_DIR/$FILE_NAME.*
+		fi
+
+	else
+		export FILE_NAME=$OUTPUT_FILE_NAME-$LATEST_DATE
+		info "FILE_NAME: $FILE_NAME"
+		./build/tools/releasetools/ota_from_target_files \
+		$OTA_FULL_OPTIONS \
+		$DEVICE_TARGET_FILES_DIR/latest.zip $ARCHIVE_DIR/$FILE_NAME.zip
+
+		md5sum $ARCHIVE_DIR/$FILE_NAME.zip | cut -d ' ' -f1 > $ARCHIVE_DIR/$FILE_NAME.zip.md5sum
+	fi
 }
 
 #---------------------Build Process -------------------#
