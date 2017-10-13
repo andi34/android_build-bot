@@ -408,14 +408,14 @@ make -j$JOBS $BUILD_TARGETS
 
 if [ "$BUILD_TARGETS" = "target-files-package" ]; then
 	makeota
+else
+	movefiles
 fi
 
 info "done!"
 
 # finished? get elapsed time
 totaltime
-
-movefiles
 
 done
 
