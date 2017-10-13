@@ -31,6 +31,7 @@ err() {
 warn() {
 	echo "$txtrst${ylw}$*$txtrst" >&2
 }
+
 info() {
 	echo "$txtrst${grn}$*$txtrst"
 }
@@ -264,9 +265,9 @@ makeota() {
 
 	if [[ ! -d "$DEVICE_TARGET_FILES_DIR" ]]; then
 		mkdir -p $DEVICE_TARGET_FILES_DIR
-
 	fi
-		cp $OUT/obj/PACKAGING/target_files_intermediates/*target_files*.zip $DEVICE_TARGET_FILES_PATH
+
+	cp $OUT/obj/PACKAGING/target_files_intermediates/*target_files*.zip $DEVICE_TARGET_FILES_PATH
 	rm -f $(readlink $DEVICE_TARGET_FILES_DIR/last.zip) 2>/dev/null
 	rm -f $DEVICE_TARGET_FILES_DIR/last.zip 2>/dev/null
 	rm -f $DEVICE_TARGET_FILES_DIR/last.prop 2>/dev/null
@@ -299,7 +300,20 @@ makeota() {
 	info "LATEST_DATE: $LATEST_DATE"
 	info "OTA_TYPE: $OTA_TYPE"
 
-	if [ -f $DEVICE_TARGET_FILES_DIR/last.zip ] && [ "$OTA_TYPE" == "incremental" ]
+	export FILE_NAME=$OUTPUT_FILE_NAME-$LATEST_DATE
+	info "FILE_NAME: $FILE_NAME"
+	./build/tools/releasetools/ota_from_target_files \
+	$OTA_FULL_OPTIONS \
+	$DEVICE_TARGET_FILES_DIR/latest.zip $ARCHIVE_DIR/$FILE_NAME.zip
+
+	if [ -f $ARCHIVE_DIR/$FILE_NAME.zip ]
+	then
+		info "generating md5sum..."
+		md5sum $ARCHIVE_DIR/$FILE_NAME.zip | cut -d ' ' -f1 > $ARCHIVE_DIR/$FILE_NAME.zip.md5sum
+	fi
+
+	info "Trying to generate incremental update..."
+	if [ -f $DEVICE_TARGET_FILES_DIR/last.zip ]
 	then
 		export LAST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/last.prop +%Y%m%d%H%M)
 		export FILE_NAME=$OUTPUT_FILE_NAME-$LAST_DATE-TO-$LATEST_DATE
@@ -317,30 +331,10 @@ makeota() {
 		else
 			export OTA_INC_FAILED="true"
 			info "OTA_INC_FAILED: $OTA_INC_FAILED"
+			err "Incremental failed!"
 		fi
-
-		if [ "$OTA_INC_FAILED" == "true" ]
-		then
-			export FILE_NAME=$OUTPUT_FILE_NAME-$LATEST_DATE
-			info "FILE_NAME: $FILE_NAME"
-			./build/tools/releasetools/ota_from_target_files \
-			$OTA_FULL_OPTIONS \
-			$DEVICE_TARGET_FILES_DIR/latest.zip $ARCHIVE_DIR/$FILE_NAME.zip
-
-			md5sum $ARCHIVE_DIR/$FILE_NAME.zip | cut -d ' ' -f1 > $ARCHIVE_DIR/$FILE_NAME.zip.md5sum
-		else
-			info "deleting $ARCHIVE_DIR/$FILE_NAME.*"
-			rm -f $ARCHIVE_DIR/$FILE_NAME.*
-		fi
-
 	else
-		export FILE_NAME=$OUTPUT_FILE_NAME-$LATEST_DATE
-		info "FILE_NAME: $FILE_NAME"
-		./build/tools/releasetools/ota_from_target_files \
-		$OTA_FULL_OPTIONS \
-		$DEVICE_TARGET_FILES_DIR/latest.zip $ARCHIVE_DIR/$FILE_NAME.zip
-
-		md5sum $ARCHIVE_DIR/$FILE_NAME.zip | cut -d ' ' -f1 > $ARCHIVE_DIR/$FILE_NAME.zip.md5sum
+		warn "Incremental not possible!"
 	fi
 }
 
