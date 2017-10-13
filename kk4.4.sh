@@ -11,7 +11,7 @@ LUNCHROM=slim
 LUNCHTYPE=userdebug
 JAVAVERTARGET=7
 CLEAN_TARGETS=clobber
-BUILD_TARGETS="target-files-package"
+BUILD_TARGETS="bacon"
 OTANAME=SlimKat
 OTA_TYPE="full"
 
