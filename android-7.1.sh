@@ -11,7 +11,7 @@ LUNCHROM=omni
 LUNCHTYPE=userdebug
 JAVAVERTARGET=8
 CLEAN_TARGETS=clobber
-BUILD_TARGETS="target-files-package"
+BUILD_TARGETS="bacon"
 OTANAME=omni
 OTA_TYPE="full"
 

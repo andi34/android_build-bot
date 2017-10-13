@@ -11,7 +11,7 @@ LUNCHROM=lineage
 LUNCHTYPE=userdebug
 JAVAVERTARGET=8
 CLEAN_TARGETS=clobber
-BUILD_TARGETS="target-files-package"
+BUILD_TARGETS="bacon"
 OTANAME=$ROM-14.1
 OTA_TYPE="full"
 
