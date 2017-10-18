@@ -277,14 +277,6 @@ makeota() {
 	cp -f $OUT/system/build.prop $DEVICE_TARGET_FILES_DIR/latest.prop
 	cp -f $OUT/system/build.prop $ARCHIVE_DIR/build.prop
 
-	export OTA_OPTIONS="-v -p $ANDROID_HOST_OUT $OTA_COMMON_OPTIONS"
-	export OTA_FULL_OPTIONS="$OTA_OPTIONS $OTA_FULL_EXTRA_OPTIONS"
-	export OTA_INC_OPTIONS="$OTA_OPTIONS"
-	export OTA_INC_FAILED="false"
-
-	export OUTPUT_FILE_NAME="$OTANAME"_${PRODUCT[$VAL]}-$VER
-	export LATEST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/latest.prop +%Y%m%d%H%M)
-
 	if [ "$VER" = "4.4.4" ]; then
 		OTA_COMMON_OPTIONS=""
 		OTA_FULL_EXTRA_OPTIONS=""
@@ -292,6 +284,14 @@ makeota() {
 		OTA_COMMON_OPTIONS="-t $JOBS"
 		OTA_FULL_EXTRA_OPTIONS="--block"
 	fi
+
+	export OTA_OPTIONS="-v -p $ANDROID_HOST_OUT $OTA_COMMON_OPTIONS"
+	export OTA_FULL_OPTIONS="$OTA_OPTIONS $OTA_FULL_EXTRA_OPTIONS"
+	export OTA_INC_OPTIONS="$OTA_OPTIONS"
+	export OTA_INC_FAILED="false"
+
+	export OUTPUT_FILE_NAME="$OTANAME"_${PRODUCT[$VAL]}-$VER
+	export LATEST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/latest.prop +%Y%m%d%H%M)
 
 	info "OTA_OPTIONS: $OTA_OPTIONS"
 	info "OTA_COMMON_OPTIONS: $OTA_COMMON_OPTIONS"
