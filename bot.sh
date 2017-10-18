@@ -278,11 +278,11 @@ makeota() {
 	cp -f $OUT/system/build.prop $ARCHIVE_DIR/build.prop
 
 	if [ "$VER" = "4.4.4" ]; then
-		OTA_COMMON_OPTIONS=""
-		OTA_FULL_EXTRA_OPTIONS=""
+		export OTA_COMMON_OPTIONS=""
+		export OTA_FULL_EXTRA_OPTIONS=""
 	else
-		OTA_COMMON_OPTIONS="-t $JOBS"
-		OTA_FULL_EXTRA_OPTIONS="--block"
+		export OTA_COMMON_OPTIONS="-t $JOBS"
+		export OTA_FULL_EXTRA_OPTIONS="--block"
 	fi
 
 	export OTA_OPTIONS="-v -p $ANDROID_HOST_OUT $OTA_COMMON_OPTIONS"
