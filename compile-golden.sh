@@ -65,17 +65,18 @@ info "lets build the kernel"
 make -j$JOBS O=$WORKINGDIR
 
 if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
-	info "Copying the resulting zImage to: $WORKINGOUTDIR"
+	info "Copying the resulting zImage and modules to: $WORKINGOUTDIR"
 	info "Creating directory..."
 	mkdir -p $WORKINGOUTDIR
+	mkdir -p $WORKINGOUTDIR/modules
 	cp $WORKINGDIR/arch/arm/boot/zImage $WORKINGOUTDIR/
+	find $WORKINGDIR/ -type f -name *.ko -exec cp {} $WORKINGOUTDIR/modules/ \;
 
 	info "Properly stripping the kernel modules for smaller size (implified as stm command inside build.env)..."
 	cd $WORKINGOUTDIR/modules
 	stm
 
 	info "####################"
-	info "#   zImage moved!  #"
 	info "#       Done!      #"
 	info "####################"
 
