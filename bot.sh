@@ -312,24 +312,9 @@ makeota() {
 			md5sum $ARCHIVE_DIR/$FILE_NAME.zip | cut -d ' ' -f1 > $ARCHIVE_DIR/$FILE_NAME.zip.md5sum
 		fi
 
-		info "Trying to generate incremental update..."
 		if [ -f $DEVICE_TARGET_FILES_DIR/last.zip ]
 		then
-			export LAST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/last.prop +%Y%m%d-%H%M)
-			export FILE_NAME=$OUTPUT_FILE_NAME-$LAST_DATE-TO-$LATEST_DATE
-			info "FILE_NAME: $FILE_NAME"
-			./build/tools/releasetools/ota_from_target_files \
-			$OTA_INC_OPTIONS \
-			--incremental_from $DEVICE_TARGET_FILES_DIR/last.zip \
-			$DEVICE_TARGET_FILES_DIR/latest.zip $ARCHIVE_DIR/$FILE_NAME.zip
-
-			if [ -f $ARCHIVE_DIR/$FILE_NAME.zip ]
-			then
-				info "Incremental $FILE_NAME.zip done!"
-				md5sum $ARCHIVE_DIR/$FILE_NAME.zip | cut -d ' ' -f1 > $ARCHIVE_DIR/$FILE_NAME.zip.md5sum
-			else
-				err "Incremental failed!"
-			fi
+			makeincremental
 		else
 			warn "Incremental not possible!"
 		fi
@@ -338,6 +323,25 @@ makeota() {
 	fi
 }
 
+makeincremental() {
+	info "Trying to generate incremental update..."
+	export LAST_DATE=$(date -r $DEVICE_TARGET_FILES_DIR/last.prop +%Y%m%d-%H%M)
+	export FILE_NAME=$OUTPUT_FILE_NAME-$LAST_DATE-TO-$LATEST_DATE
+	info "FILE_NAME: $FILE_NAME"
+
+	./build/tools/releasetools/ota_from_target_files \
+	$OTA_INC_OPTIONS \
+	--incremental_from $DEVICE_TARGET_FILES_DIR/last.zip \
+	$DEVICE_TARGET_FILES_DIR/latest.zip $ARCHIVE_DIR/$FILE_NAME.zip
+
+	if [ -f $ARCHIVE_DIR/$FILE_NAME.zip ]
+	then
+		info "Incremental $FILE_NAME.zip done!"
+		md5sum $ARCHIVE_DIR/$FILE_NAME.zip | cut -d ' ' -f1 > $ARCHIVE_DIR/$FILE_NAME.zip.md5sum
+	else
+		err "Incremental failed!"
+	fi
+}
 #---------------------Build Process -------------------#
 
 javacheck
