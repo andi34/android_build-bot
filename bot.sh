@@ -55,7 +55,7 @@ else
 if [ "$BRANCH" = "cm-13.0" ]; then
 	PRODUCT[2]="maguro"
 	PRODUCT[3]="toro"
-	PRODUCT[3]="toroplus"
+	PRODUCT[4]="toroplus"
 fi
 
 if [ "$BRANCH" = "android-4.4" ]; then
