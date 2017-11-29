@@ -39,8 +39,8 @@ info() {
 RECNAME1="TWRP"
 
 # recovery version number
-export TW_DEVICE_VERSION=1
-RECVER="3.1.1-$TW_DEVICE_VERSION"
+export TW_DEVICE_VERSION=0
+RECVER="3.2.0-$TW_DEVICE_VERSION"
 
 # path to move the *.tar.md5 
 #(*.img and *.zip will also get moved if MOVE=y)
@@ -76,14 +76,26 @@ setjdk() {
 	fi
 }
 
+sourcesync() {
+	info "Running repo sync..."
+	cd $SAUCE
+	if [ -f "$SAUCE/.repo/local_manifests/roomservice.xml" ]; then
+		info "Removing roomservice.xml ..."
+		rm -rf $SAUCE/.repo/local_manifests/roomservice.xml
+	fi
+	repo sync -d -c -q --force-sync --jobs=8 --no-tags
+	info "done!"
+}
+
 startcompile() {
 	setjdk
 	cd $SAUCE
 
-	# we need a fixed TWRP source for STE devices (fix blank screen on boot)
-	if [ "${DEVICENAME1[$VAL]}" = "golden" ]; then
-		if [[ -d "$SAUCE/bootable/recovery" ]]; then
-			cd $SAUCE/bootable/recovery
+	if [[ -d "$SAUCE/bootable/recovery" ]]; then
+		cd $SAUCE/bootable/recovery
+
+		# we need a fixed TWRP source for STE devices (fix blank screen on boot)
+		if [ "${DEVICENAME1[$VAL]}" = "golden" ]; then
 			if git config remote.private.url > /dev/null; then
 				echo "Private remote exist already"
 			else
@@ -92,8 +104,18 @@ startcompile() {
 			fi
 			git fetch private
 			git checkout private/android-7.1-ste
-			cd $SAUCE
+		else
+		# always use latest TWRP Source
+			if git config remote.omnirom.url > /dev/null; then
+				echo "omnirom remote exist already"
+			else
+				echo "adding omnirom remote"
+				git remote add omnirom https://github.com/omnirom/android_bootable_recovery.git
+			fi
+			git fetch omnirom
+			git checkout omnirom/android-8.0
 		fi
+		cd $SAUCE
 	fi
 
 	. build/envsetup.sh
@@ -108,7 +130,7 @@ startcompile() {
 
 	mkdir -p $STORAGE/${DEVICENAME1[$VAL]}
 
-	if [[ "${DEVICENAME1[$VAL]}" = "espressocommon" || "${DEVICENAME1[$VAL]}" = "golden" ]]; then
+	if [[ "${DEVICENAME1[$VAL]}" = "espressocommon" || "${DEVICENAME1[$VAL]}" = "p3100" || "${DEVICENAME1[$VAL]}" = "p3110" || "${DEVICENAME1[$VAL]}" = "p3113" || "${DEVICENAME1[$VAL]}" = "p5100" || "${DEVICENAME1[$VAL]}" = "p5110" || "${DEVICENAME1[$VAL]}" = "p5113" || "${DEVICENAME1[$VAL]}" = "golden" ]]; then
 		samsungdevice
 	fi
 	moveimage
@@ -162,6 +184,33 @@ abortcompile() {
 
 #---------------------Device Settings------------------#
 
+read -p "Do you wish to sync source before compile? [y/N] " yn
+case $yn in
+    [Yy]* )
+         SYNC=y
+         echo "Syncing source...";;
+    [Nn]* )
+         SYNC=n
+         echo "Not syncing source...";;
+    * ) echo "Please answer y or n.";;
+esac
+
+if [ "$SYNC" = "y" ]; then
+        sourcesync
+
+	if [[ -d "$SAUCE/kernel/ti/omap4" ]]; then
+		cd $SAUCE/kernel/ti/omap4
+		if git config remote.unlegacy.url > /dev/null; then
+			echo "Unlegacy remote exist already"
+		else
+			echo "adding Unlegacy remote"
+			git remote add unlegacy https://github.com/Unlegacy-Android/android_kernel_ti_omap4.git
+		fi
+		git fetch unlegacy
+		git checkout unlegacy/3.0/common
+		cd $SAUCE
+	fi
+fi
 
 if [[ ! -z $1 ]]; then
     if [ "$1" = "golden" ]; then
