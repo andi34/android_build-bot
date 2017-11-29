@@ -243,3 +243,29 @@ else
 
     startcompile
 fi
+
+# always switch back to omni source
+if [[ -d "$SAUCE/bootable/recovery" ]]; then
+	cd $SAUCE/bootable/recovery
+	if git config remote.omnirom.url > /dev/null; then
+		echo "omnirom remote exist already"
+	else
+		echo "adding omnirom remote"
+		git remote add omnirom https://github.com/omnirom/android_bootable_recovery.git
+	fi
+
+	if [ "${DEVICENAME1[$VAL]}" = "golden" ]; then
+		if git config remote.omnisecurity.url > /dev/null; then
+			echo "omnisecurity remote exist already"
+		else
+			echo "adding omnisecurity remote"
+			git remote add omnisecurity https://github.com/omni-security/android_bootable_recovery.git
+		fi
+		git fetch omnisecurity
+		git checkout omnisecurity/android-6.0
+	else
+		git fetch omnirom
+		git checkout omnirom/android-7.1
+	fi
+	cd $SAUCE
+fi
