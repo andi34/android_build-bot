@@ -208,6 +208,9 @@ if [ "$SYNC" = "y" ]; then
 		fi
 		git fetch unlegacy
 		git checkout unlegacy/3.0/common
+		if [[ "${DEVICENAME1[$VAL]}" = "p3100" || "${DEVICENAME1[$VAL]}" = "p3110" || "${DEVICENAME1[$VAL]}" = "p3113" || "${DEVICENAME1[$VAL]}" = "p5100" || "${DEVICENAME1[$VAL]}" = "p5110" || "${DEVICENAME1[$VAL]}" = "p5113" ]]; then
+			git am --whitespace=nowarn $SAUCE/pull/kernel/ti/omap4/0001-NEVER-MERGE-Introduce-an-option-to-force-a-Tab2-vari.patch
+		fi
 		cd $SAUCE
 	fi
 fi
