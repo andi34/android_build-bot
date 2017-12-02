@@ -3,7 +3,7 @@
 BRANCH=cm-13.0
 STORAGE=~/android2/roms/lineage
 VER=6.0.1
-ROM="lineage-"
+ROM=lineage-13.0
 PATCHROM=y
 STABLEKERNEL=n
 PRIVATEKERNEL=y
@@ -12,7 +12,7 @@ LUNCHTYPE=user
 JAVAVERTARGET=7
 CLEAN_TARGETS=clobber
 BUILD_TARGETS="target-files-package"
-OTANAME=$ROM-13.0
+OTANAME=$ROM
 OTA_TYPE="full"
 
 if [[ ! -z $1 ]]; then
