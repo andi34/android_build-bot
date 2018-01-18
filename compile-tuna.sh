@@ -69,9 +69,9 @@ if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
 	info "Copying the resulting zImage and modules to: $WORKINGOUTDIR"
 	info "Creating directory..."
 	mkdir -p $WORKINGOUTDIR
-	mkdir -p $WORKINGOUTDIR/modules
+	mkdir -p $WORKINGOUTDIR/modules/system/lib/modules
 	cp $WORKINGDIR/arch/arm/boot/zImage $WORKINGOUTDIR/
-	find $WORKINGDIR/ -type f -name *.ko -exec cp {} $WORKINGOUTDIR/modules/ \;
+	find $WORKINGDIR/ -type f -name *.ko -exec cp {} $WORKINGOUTDIR/modules/system/lib/modules/ \;
 
 	info "Files moved!"
 
@@ -86,15 +86,15 @@ if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
 	make -j8 -C $PVRSAUCE/build/linux2/omap4430_android TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.1
 
 	info "Copying the resulting PVR module to: $WORKINGOUTDIR"
-	cp -fr $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/pvrsrvkm_sgx540_120.ko
-	mv $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/
+	cp -fr $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/system/lib/modules/pvrsrvkm_sgx540_120.ko
+	mv $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/system/lib/modules/
 
 	warn "Don't leave any module objects in PVR source!"
 	warn "Running 'make clean'..."
 	make clean -C $PVRSAUCE/build/linux2/omap4430_android
 
 	info "Properly stripping the kernel modules for smaller size (implified as stm command inside build.env)..."
-	cd $WORKINGOUTDIR/modules
+	cd $WORKINGOUTDIR/modules/system/lib/modules
 	stm
 
 	info "####################"
