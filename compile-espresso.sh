@@ -57,10 +57,19 @@ make O=$WORKINGDIR mrproper
 warn "Rebuild the kernel after a change, maybe we want to reset the compilation counter"
 echo 0 > $WORKINGDIR/.version
 
-info "Import kernel config file: $DEFCONFIGNAME"
-make O=$WORKINGDIR $DEFCONFIGNAME
-info "Change kernel configuration if needed using:"
-info "  make O=$WORKINGDIR menuconfig "
+if [ "$VARIANTDEFCONFIG" = "*p*" ]; then
+	info "Import kernel config file: $DEFCONFIGNAME"
+	info "Import variant config file: $VARIANTDEFCONFIGNAME"
+	make O=$WORKINGDIR VARIANT_DEFCONFIG=$VARIANTDEFCONFIG $DEFCONFIGNAME
+	info "Change kernel configuration if needed using:"
+	info "  make O=$WORKINGDIR menuconfig "
+	VARIANTDEFCONFIG=
+else
+	info "Import kernel config file: $DEFCONFIGNAME"
+	make O=$WORKINGDIR $DEFCONFIGNAME
+	info "Change kernel configuration if needed using:"
+	info "  make O=$WORKINGDIR menuconfig "
+fi
 
 info "lets build the kernel"
 make -j$JOBS O=$WORKINGDIR
@@ -77,6 +86,9 @@ if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
 
 	info "Pointing KERNELDIR to KERNEL_OUT directory"
 	export KERNELDIR=$WORKINGDIR
+
+	# we now use the default libion, our kernel was updated
+	export BOARD_USE_TI_LIBION=false
 
 	warn "Make sure the PVR source clean."
 	warn "Running 'make clean'..."

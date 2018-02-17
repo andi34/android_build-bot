@@ -78,6 +78,9 @@ if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
 	info "Pointing KERNELDIR to KERNEL_OUT directory"
 	export KERNELDIR=$WORKINGDIR
 
+	# we now use the default libion, our kernel was updated
+	export BOARD_USE_TI_LIBION=false
+
 	warn "Make sure the PVR source clean."
 	warn "Running 'make clean'..."
 	make clean -C $PVRSAUCE/build/linux2/omap4430_android
