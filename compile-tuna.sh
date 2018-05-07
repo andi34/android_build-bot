@@ -78,15 +78,13 @@ if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
 	info "Pointing KERNELDIR to KERNEL_OUT directory"
 	export KERNELDIR=$WORKINGDIR
 
-	# we now use the default libion, our kernel was updated
-	export BOARD_USE_TI_LIBION=false
-
 	warn "Make sure the PVR source clean."
 	warn "Running 'make clean'..."
 	make clean -C $PVRSAUCE/build/linux2/omap4430_android
 
 	info "Building the PVR module..."
-	make -j8 -C $PVRSAUCE/build/linux2/omap4430_android TARGET_PRODUCT="blaze_tablet" BOARD_USE_TI_LIBION=$(BOARD_USE_TI_LIBION) BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.1
+	# we now use the default libion, our kernel was updated
+	make -j8 -C $PVRSAUCE/build/linux2/omap4430_android TARGET_PRODUCT="blaze_tablet" BOARD_USE_TI_LIBION=false BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.1
 
 	info "Copying the resulting PVR module to: $WORKINGOUTDIR"
 	cp -fr $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/system/lib/modules/pvrsrvkm_sgx540_120.ko
