@@ -11,7 +11,7 @@ LUNCHROM=lineage
 LUNCHTYPE=user
 JAVAVERTARGET=7
 CLEAN_TARGETS=clobber
-BUILD_TARGETS="target-files-package"
+BUILD_TARGETS="bacon"
 OTANAME=$ROM
 OTA_TYPE="full"
 
