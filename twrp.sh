@@ -67,12 +67,19 @@ setjdk() {
 		echo "Setting default jdk to 1.7"
 		echo 2 | sudo /usr/bin/update-alternatives --config java > /dev/null
 		echo 2 | sudo /usr/bin/update-alternatives --config javac > /dev/null
+		echo 2 | sudo /usr/bin/update-alternatives --config javadoc > /dev/null
 		echo 2 | sudo /usr/bin/update-alternatives --config javap > /dev/null
+		echo 2 | sudo /usr/bin/update-alternatives --config jar > /dev/null
+		echo 2 | sudo /usr/bin/update-alternatives --config jarsigner > /dev/null
 	else
 		echo "Setting default jdk to 1.8"
 		echo 3 | sudo /usr/bin/update-alternatives --config java > /dev/null
 		echo 3 | sudo /usr/bin/update-alternatives --config javac > /dev/null
+		echo 3 | sudo /usr/bin/update-alternatives --config javadoc > /dev/null
 		echo 3 | sudo /usr/bin/update-alternatives --config javap > /dev/null
+		echo 3 | sudo /usr/bin/update-alternatives --config jar > /dev/null
+		echo 3 | sudo /usr/bin/update-alternatives --config jarsigner > /dev/null
+}
 	fi
 }
 
