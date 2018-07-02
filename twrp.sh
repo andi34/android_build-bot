@@ -40,7 +40,7 @@ RECNAME1="TWRP"
 
 # recovery version number
 export TW_DEVICE_VERSION=0
-RECVER="3.2.0-$TW_DEVICE_VERSION"
+RECVER="3.2.2-$TW_DEVICE_VERSION"
 
 # path to move the *.tar.md5 
 #(*.img and *.zip will also get moved if MOVE=y)
@@ -110,7 +110,7 @@ startcompile() {
 				git remote add private https://github.com/andi34/Team-Win-Recovery-Project.git
 			fi
 			git fetch private
-			git checkout private/android-7.1-ste
+			git checkout private/android-8.1-ste
 		else
 		# always use latest TWRP Source
 			if git config remote.omnirom.url > /dev/null; then
@@ -120,7 +120,7 @@ startcompile() {
 				git remote add omnirom https://github.com/omnirom/android_bootable_recovery.git
 			fi
 			git fetch omnirom
-			git checkout omnirom/android-8.0
+			git checkout omnirom/android-8.1
 		fi
 		cd $SAUCE
 	fi
