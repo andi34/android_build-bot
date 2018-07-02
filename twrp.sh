@@ -52,7 +52,7 @@ ZIPBASE=~/android2/roms/recovery_base
 # Your build source code directory path.
 # If your source code directory is on an external HDD it should look like: 
 # //media/your PC username/the name of your storage device/path/to/your/source/code/folder
-if [ "${DEVICENAME1[$VAL]}" = "golden" ]; then
+if [ "$1" = "golden" ]; then
 SAUCE=~/android/android-6.0
 else
 SAUCE=~/android/android-7.1
