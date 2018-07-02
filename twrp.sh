@@ -79,7 +79,6 @@ setjdk() {
 		echo 3 | sudo /usr/bin/update-alternatives --config javap > /dev/null
 		echo 3 | sudo /usr/bin/update-alternatives --config jar > /dev/null
 		echo 3 | sudo /usr/bin/update-alternatives --config jarsigner > /dev/null
-}
 	fi
 }
 
