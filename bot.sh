@@ -348,6 +348,18 @@ makeincremental() {
 		err "Incremental failed!"
 	fi
 }
+
+kernelzip() {
+	info "Making flashable userdebug kernel..."
+	lunch "$LUNCHROM"_${PRODUCT[$VAL]}-"userdebug"
+	make -j$JOBS bootzip
+	if [ -f $OUT/*"kernel"*".zip" ]; then
+		info "Moving flashable userdebug kernel zip..."
+		mv $OUT/*"kernel"*".zip" $STORAGE/$VER/${PRODUCT[$VAL]}/$ROM-${PRODUCT[$VAL]}"-userdebug-kernel-"$(date +%Y%m%d)".zip"
+	else
+		err "No userdebug kernel zip!"
+	fi
+}
 #---------------------Build Process -------------------#
 
 javacheck
@@ -422,6 +434,10 @@ else
 	movefiles
 fi
 
+if [ "$BRANCH" = "cm-13.0" ]; then
+	kernelzip
+fi
+
 info "done!"
 
 # finished? get elapsed time
@@ -431,5 +447,7 @@ done
 
 #warn "running make clobber"
 #make clobber
+info "generating Changelog"
+. ~/android2/buildbot/make_changelog.sh
 
 info "All done!"
