@@ -29,7 +29,7 @@ for REPOPATH in $REPOS ; do
     if [ ! "$REPOPATH" == "" ]; then
       if [ -d "$PROJECT_DIR"/"$REPOPATH" ]; then
         cd "$PROJECT_DIR"/"$REPOPATH"
-        GITOUT=$(git log HEAD --pretty="<li>%h (%cr) %s (%an)</li>" --since="5 days ago")
+        GITOUT=$(git log HEAD --pretty="<li>%h %s (%an)</li>" --since="5 days ago")
         if [ ! "$GITOUT" == "" ]; then
           echo "<font size="4"><b>$REPOPATH</b></font>" >> "$CHANGE_FILE"
           echo '<ul style="list-style-type:square">' >> "$CHANGE_FILE"
@@ -45,7 +45,7 @@ echo "</body></html>" >> "$CHANGE_FILE"
 echo ""
 echo "Most recent changes:"
 echo ""
-cat "$CHANGE_FILE" | grep -E 'hours ago|minutes ago|seconds ago' | sed 's/<br>//g' | sed 's/<\/li>//g' | sed 's/<li>//g'
+cat "$CHANGE_FILE" | grep -E '<li>' | sed 's/<br>//g' | sed 's/<\/li>//g' | sed 's/<li>//g'
 echo ""
 echo "Moving back to source directory."
 cd $SAUCE
