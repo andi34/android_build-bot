@@ -40,7 +40,7 @@ RECNAME1="TWRP"
 
 # recovery version number
 export TW_DEVICE_VERSION=0
-RECVER="3.2.2-$TW_DEVICE_VERSION"
+RECVER="3.2.3-$TW_DEVICE_VERSION"
 
 # path to move the *.tar.md5 
 #(*.img and *.zip will also get moved if MOVE=y)
@@ -119,7 +119,8 @@ startcompile() {
 				git remote add omnirom https://github.com/omnirom/android_bootable_recovery.git
 			fi
 			git fetch omnirom
-			git checkout omnirom/android-8.1
+			git checkout omnirom/android-9.0
+			git am *.patch || git am --abort
 		fi
 		cd $SAUCE
 	fi
