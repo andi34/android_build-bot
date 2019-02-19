@@ -215,9 +215,7 @@ if [ "$SYNC" = "y" ]; then
 		fi
 		git fetch unlegacy
 		git checkout unlegacy/3.0/common
-		if [[ "${DEVICENAME1[$VAL]}" = "p3100" || "${DEVICENAME1[$VAL]}" = "p3110" || "${DEVICENAME1[$VAL]}" = "p3113" || "${DEVICENAME1[$VAL]}" = "p5100" || "${DEVICENAME1[$VAL]}" = "p5110" || "${DEVICENAME1[$VAL]}" = "p5113" ]]; then
-			git am --whitespace=nowarn $SAUCE/pull/kernel/ti/omap4/0001-NEVER-MERGE-Introduce-an-option-to-force-a-Tab2-vari.patch
-		fi
+		git am --whitespace=nowarn $SAUCE/pull/kernel/ti/omap4/0001-NEVER-MERGE-Introduce-an-option-to-force-a-Tab2-vari.patch || git am --abort
 		cd $SAUCE
 	fi
 fi
@@ -243,6 +241,10 @@ else
     DEVICENAME1[1]="maguro"
     DEVICENAME1[2]="toro"
     DEVICENAME1[3]="toroplus"
+    DEVICENAME1[4]="p3100"
+    DEVICENAME1[5]="p3110"
+    DEVICENAME1[6]="p5100"
+    DEVICENAME1[7]="p5110"
 
     # 2nd device name to rename the *.tar.md5 and *.zip the right way
     # the odin-flashable tar.md5 will be name like this: DEVICENAME2_RECNAME1_RECVER.tar
@@ -250,6 +252,10 @@ else
     DEVICENAME2[1]="maguro"
     DEVICENAME2[2]="toro"
     DEVICENAME2[3]="toroplus"
+    DEVICENAME2[4]="GT-P3100"
+    DEVICENAME2[5]="GT-P3110"
+    DEVICENAME2[6]="GT-P5100"
+    DEVICENAME2[7]="GT-P5110"
 
     startcompile
 fi
