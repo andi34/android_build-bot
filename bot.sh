@@ -415,6 +415,9 @@ setbuildjobs
 setup
 cleansource
 
+info "generating Changelog"
+. ~/android2/buildbot/make_changelog.sh
+
 for VAL in "${!PRODUCT[@]}"
 do
 
@@ -438,6 +441,10 @@ if [ "$BRANCH" = "cm-13.0" ]; then
 	kernelzip
 fi
 
+if [ "$BRANCH" = "cm-14.1" ]; then
+	kernelzip
+fi
+
 info "done!"
 
 # finished? get elapsed time
@@ -447,7 +454,5 @@ done
 
 #warn "running make clobber"
 #make clobber
-info "generating Changelog"
-. ~/android2/buildbot/make_changelog.sh
 
 info "All done!"
