@@ -57,9 +57,9 @@ make O=$WORKINGDIR mrproper
 warn "Rebuild the kernel after a change, maybe we want to reset the compilation counter"
 echo 0 > $WORKINGDIR/.version
 
-if [ "$VARIANTDEFCONFIG" = "*p*" ]; then
+if [ -n "$VARIANTDEFCONFIG" ]; then
 	info "Import kernel config file: $DEFCONFIGNAME"
-	info "Import variant config file: $VARIANTDEFCONFIGNAME"
+	info "Import variant config file: $VARIANTDEFCONFIG"
 	make O=$WORKINGDIR VARIANT_DEFCONFIG=$VARIANTDEFCONFIG $DEFCONFIGNAME
 	info "Change kernel configuration if needed using:"
 	info "  make O=$WORKINGDIR menuconfig "
