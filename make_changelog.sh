@@ -1,28 +1,28 @@
 #!/bin/bash
 
-DATE=`eval date +%y``eval date +%m``eval date +%d`
+TODAY=$(date +%Y%m%d)
 
 # Path to changelog file
-CHANGE_FILE=$STORAGE/$VER/"changelog-"$DATE.html
+CHANGE_FILE=$STORAGE/$VER/$TODAY-"changelog-"$BRANCH.html
 # Path to root of the ROM project directory
 PROJECT_DIR=$SAUCE
 PROJECT_LIST=$SAUCE/.repo/project.list
 
 NOW=$(date -u)
-SINCE=$(date -u --date "-5 days")
+SINCE=$(date -u --date "-30 days")
 
 generatechangelog() {
 	if [ -f "$CHANGE_FILE" ]; then
 	  echo "Changelog exist alrady, regenerating"
 	  rm "$CHANGE_FILE"
 	fi
-	echo "<!DOCTYPE html><html><body><h2><b><u>From $SINCE to $NOW</u></b></h2><br>" > "$CHANGE_FILE"
+	echo "<!DOCTYPE html><html><body><h2><b><u>$BRANCH: From $SINCE to $NOW</u></b></h2><br>" > "$CHANGE_FILE"
 
 	for REPOPATH in $REPOS ; do
 	    if [ ! "$REPOPATH" == "" ]; then
 	      if [ -d "$PROJECT_DIR"/"$REPOPATH" ]; then
         cd "$PROJECT_DIR"/"$REPOPATH"
-	        GITOUT=$(git log HEAD --pretty="<li>%h %s (%an)</li>" --since="5 days ago")
+	        GITOUT=$(git log HEAD --pretty="<li>%h %s (%an)</li>" --since="30 days ago")
 	        if [ ! "$GITOUT" == "" ]; then
 	          echo "<font size="4"><b>$REPOPATH</b></font>" >> "$CHANGE_FILE"
 	          echo '<ul style="list-style-type:square">' >> "$CHANGE_FILE"
