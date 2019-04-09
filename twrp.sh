@@ -120,7 +120,9 @@ startcompile() {
 			fi
 			git fetch omnirom
 			git checkout omnirom/android-9.0
-			git am *.patch || git am --abort
+			# exclude TWRP App
+			git fetch https://github.com/omni-security/android_bootable_recovery android-9.0
+			git cherry-pick d833364d088e175fc3e20368ca7a67f9e8ecf01d^..ff10f623e405bb17cdd6f9d592c521a9da215901
 		fi
 		cd $SAUCE
 	fi
