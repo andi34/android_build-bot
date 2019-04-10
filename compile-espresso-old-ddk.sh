@@ -81,6 +81,7 @@ if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
 	mkdir -p $WORKINGOUTDIR/modules/system/lib/modules
 	cp $WORKINGDIR/arch/arm/boot/zImage $WORKINGOUTDIR/
 	find $WORKINGDIR/ -type f -name *.ko -exec cp {} $WORKINGOUTDIR/modules/system/lib/modules/ \;
+	cp $WORKINGDIR/.config $WORKINGOUTDIR/
 
 	info "Files moved!"
 

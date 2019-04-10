@@ -69,6 +69,7 @@ if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
 	info "Creating directory..."
 	mkdir -p $WORKINGOUTDIR
 	cp $WORKINGDIR/arch/arm/boot/zImage $WORKINGOUTDIR/
+	cp $WORKINGDIR/.config $WORKINGOUTDIR/
 
 	info "zImage moved!"
 if [ -f $WORKINGDIR/arch/arm/boot/zImage-dtb ]; then

@@ -71,6 +71,7 @@ if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
 	mkdir -p $WORKINGOUTDIR/modules/system/lib/modules
 	cp $WORKINGDIR/arch/arm/boot/zImage $WORKINGOUTDIR/
 	find $WORKINGDIR/ -type f -name *.ko -exec cp {} $WORKINGOUTDIR/modules/system/lib/modules/ \;
+	cp $WORKINGDIR/.config $WORKINGOUTDIR/
 
 	info "Properly stripping the kernel modules for smaller size (implified as stm command inside build.env)..."
 	cd $WORKINGOUTDIR/modules/system/lib/modules
