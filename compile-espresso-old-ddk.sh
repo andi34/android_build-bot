@@ -31,6 +31,20 @@ setbuildjobs() {
 	info "Set build jobs to $JOBS"
 }
 
+if [ -n "$VARIANTDEFCONFIG" ]; then
+	WORKINGDIR=$SAUCE/out/$DEFCONFIGNAME
+	WORKINGOUTDIR=$SAUCE/$DEFCONFIGNAME-bin
+else
+
+	if [ "$DEFCONFIGNAME" = "espresso_kitkat_defconfig" ]; then
+		WORKINGDIR=$SAUCE/out/$VARIANTDEFCONFIG-kitkat
+		WORKINGOUTDIR=$SAUCE/$VARIANTDEFCONFIG-bin-kitkat
+	else
+		WORKINGDIR=$SAUCE/out/$VARIANTDEFCONFIG
+		WORKINGOUTDIR=$SAUCE/$VARIANTDEFCONFIG-bin
+	fi
+fi
+
 info "Kernel source path: $KERNELSOURCE"
 info "PVR Source path: $PVRSAUCE"
 info "Working directory: $WORKINGDIR"
