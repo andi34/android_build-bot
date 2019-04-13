@@ -31,6 +31,17 @@ setbuildjobs() {
 	info "Set build jobs to $JOBS"
 }
 
+read -p "Using new DDK? [y/N] " yn
+case $yn in
+    [Yy]* )
+         NEWDDK=y
+         echo "Using new DDK";;
+    [Nn]* )
+         NEWDDK=n
+         echo "Using old DDK";;
+    * ) echo "Please answer y or n.";;
+esac
+
 info "Kernel source path: $KERNELSOURCE"
 info "PVR Source path: $PVRSAUCE"
 info "Working directory: $WORKINGDIR"
@@ -81,20 +92,38 @@ if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
 
 	warn "Make sure the PVR source clean."
 	warn "Running 'make clean'..."
-	make clean -C $PVRSAUCE/build/linux2/omap_android
+	if [ "$NEWDDK" = "y" ]; then
+		make clean -C $PVRSAUCE/build/linux2/omap_android
 
-	info "Building the PVR module..."
-	# we now use the default libion, our kernel was updated
-	make -j8 -C $PVRSAUCE/build/linux2/omap_android TARGET_DEVICE="tuna" PLATFORM_RELEASE="4.4" PLATFORM_CODENAME="REL"
+		info "Building the PVR module..."
+		# we now use the default libion, our kernel was updated
+		make -j8 -C $PVRSAUCE/build/linux2/omap_android TARGET_DEVICE="blaze_tablet" PLATFORM_RELEASE="4.4" PLATFORM_CODENAME="REL"
 
-	info "Copying the resulting PVR module to: $WORKINGOUTDIR"
-	cp -fr $PVRSAUCE/binary2_omap_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/system/lib/modules/pvrsrvkm_sgx540_120.ko
-	mv $PVRSAUCE/binary2_omap_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/system/lib/modules/
-	mv $PVRSAUCE/binary2_omap_android_release/target/omaplfb.ko $WORKINGOUTDIR/modules/system/lib/modules/
+		info "Copying the resulting PVR module to: $WORKINGOUTDIR"
+		cp -fr $PVRSAUCE/binary2_omap_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/system/lib/modules/pvrsrvkm_sgx540_120.ko
+		mv $PVRSAUCE/binary2_omap_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/system/lib/modules/
+		mv $PVRSAUCE/binary2_omap_android_release/target/omaplfb.ko $WORKINGOUTDIR/modules/system/lib/modules/
 
-	warn "Don't leave any module objects in PVR source!"
-	warn "Running 'make clean'..."
-	make clean -C $PVRSAUCE/build/linux2/omap_android
+		warn "Don't leave any module objects in PVR source!"
+		warn "Running 'make clean'..."
+		make clean -C $PVRSAUCE/build/linux2/omap_android
+
+	else
+
+		make clean -C $PVRSAUCE/build/linux2/omap4430_android
+
+		info "Building the PVR module..."
+		# we now use the default libion, our kernel was updated
+		make -j8 -C $PVRSAUCE/build/linux2/omap4430_android TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.1
+
+		info "Copying the resulting PVR module to: $WORKINGOUTDIR"
+		cp -fr $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/system/lib/modules/pvrsrvkm_sgx540_120.ko
+		mv $PVRSAUCE/binary2_omap4430_android_release/target/pvrsrvkm.ko $WORKINGOUTDIR/modules/system/lib/modules/
+
+		warn "Don't leave any module objects in PVR source!"
+		warn "Running 'make clean'..."
+		make clean -C $PVRSAUCE/build/linux2/omap4430_android
+	fi
 
 	info "Properly stripping the kernel modules for smaller size (implified as stm command inside build.env)..."
 	cd $WORKINGOUTDIR/modules/system/lib/modules
