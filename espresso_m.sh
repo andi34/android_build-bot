@@ -1,8 +1,10 @@
 #!/bin/bash
+dir=${PWD}
+parentdir="$(dirname "$dir")"
 
-SAUCE=~/android2/kernelcompile
-PVRSAUCE=~/android2/official/omap4/stable/pvr-source/eurasiacon
-KERNELSOURCE=~/android2/official/kernel/android_kernel_ti_omap4
+SAUCE=$parentdir
+PVRSAUCE=$SAUCE/pvr-source/ddk-1.14/eurasiacon
+KERNELSOURCE=$SAUCE/kernel/ti/omap4
 TOOLCHAIN="gcc4.8"
 DEFCONFIGNAME=espresso_defconfig
 

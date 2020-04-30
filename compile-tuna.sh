@@ -54,7 +54,7 @@ cd $KERNELSOURCE
 
 info "Import toolchain environment setup"
 info "Toolchain: $TOOLCHAIN"
-source  $SAUCE/build-$TOOLCHAIN.env
+source  $SAUCE/build/build-$TOOLCHAIN.env
 
 info "Create a buid directory, known as KERNEL_OUT directory"
 # then always use "O=$SAUCE/tuna" in kernel compilation

@@ -42,9 +42,9 @@ case $yn in
     * ) echo "Please answer y or n.";;
 esac
 
-if [ -n "$VARIANTDEFCONFIG" ]; then
+if [ -z "$VARIANTDEFCONFIG" ]; then
 	WORKINGDIR=$SAUCE/out/$DEFCONFIGNAME
-	WORKINGOUTDIR=$SAUCE/$DEFCONFIGNAME-bin
+	WORKINGOUTDIR=$SAUCE/AnyKernel2-espresso/$DEFCONFIGNAME-bin
 else
 
 	if [ "$DEFCONFIGNAME" = "espresso_kitkat_defconfig" ]; then
@@ -68,7 +68,7 @@ cd $KERNELSOURCE
 
 info "Import toolchain environment setup"
 info "Toolchain: $TOOLCHAIN"
-source  $SAUCE/build-$TOOLCHAIN.env
+source  $SAUCE/build/build-$TOOLCHAIN.env
 
 info "Create a buid directory, known as KERNEL_OUT directory"
 # then always use "O=$SAUCE/espresso" in kernel compilation
