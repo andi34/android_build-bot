@@ -10,5 +10,5 @@ To initialize your local repository using theese trees, use a command like this:
 
 Then to sync up:
 
-    repo sync
+    repo sync -d -c -q --force-sync --jobs=8 --no-tags
 
