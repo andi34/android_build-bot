@@ -39,7 +39,7 @@
   <project path="pvr-source/ddk-1.14-oc" name="android_omap4_pvr-source" remote="andi34priv" revision="ddk-1.14-oc" />
 
   <!-- Kernel Source -->
-  <project path="kernel/ti/omap4" name="andi34/android_kernel_ti_omap4" remote="andi34" revision="3.0/common" />
-  <project path="kernel/ti/omap4-oc" name="andi34/android_kernel_ti_omap4" remote="andi34" revision="3.0/common-oc" />
+  <project path="kernel/ti/omap4" name="android_kernel_ti_omap4" remote="andi34" revision="3.0/common" />
+  <project path="kernel/ti/omap4-oc" name="android_kernel_ti_omap4" remote="andi34" revision="3.0/common-oc" />
 
 </manifest>
