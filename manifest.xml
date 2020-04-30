@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+
+  <!-- Remotes -->
+  <remote  name="andi34"
+           fetch="https://github.com/andi34/"
+           review="gerrit.unlegacy-android.org" />
+
+  <remote  name="andi34priv"
+           fetch="ssh://git@github.com/andi34/"
+           review="gerrit.unlegacy-android.org" />
+
+  <remote  name="aosp"
+           fetch="https://android.googlesource.com/"
+           review="https://android-review.googlesource.com/"
+           revision="master" />
+
+
+  <!-- Build scripts -->
+  <project path="build" name="android_build-bot" remote="andi34" revision="kernelcompile" />
+
+  <!-- AnyKernel2 -->
+  <project path="AnyKernel2-espresso" name="AnyKernel2" remote="andi34" revision="espresso" />
+  <project path="AnyKernel2-tuna" name="AnyKernel2" remote="andi34" revision="tuna" />
+
+  <!-- Toolchains -->
+  <project path="arm-eabi-4.7" name="platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7" remote="aosp" />
+  <project path="arm-eabi-4.8" name="platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8" remote="aosp" />
+  <project path="arm-linux-androideabi-4.9" name="platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9" revision="nougat-iot-release" remote="aosp" />
+  <project path="linaro-4.7-13.04" name="android_toolchains" remote="andi34" revision="linaro-4.7-13.04" />
+  <project path="linaro-4.7-14.01" name="android_toolchains" remote="andi34" revision="linaro-4.7-14.01" />
+
+  <!-- PVR Source -->
+  <project path="pvr-source/ddk-1.9" name="android_omap4_pvr-source" remote="andi34priv" revision="ddk-1.9" />
+  <project path="pvr-source/ddk-1.9-oc" name="android_omap4_pvr-source" remote="andi34priv" revision="ddk-1.9-oc" />
+  <project path="pvr-source/ddk-1.14" name="android_omap4_pvr-source" remote="andi34priv" revision="ddk-1.14" />
+  <project path="pvr-source/ddk-1.14-oc" name="android_omap4_pvr-source" remote="andi34priv" revision="ddk-1.14-oc" />
+
+  <!-- Kernel Source -->
+  <project path="kernel/ti/omap4" name="andi34/android_kernel_ti_omap4" remote="andi34" revision="3.0/common" />
+  <project path="kernel/ti/omap4-oc" name="andi34/android_kernel_ti_omap4" remote="andi34" revision="3.0/common-oc" />
+
+</manifest>
