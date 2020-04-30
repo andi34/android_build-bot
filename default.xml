@@ -22,17 +22,17 @@
   <project path="build" name="android_build-bot" remote="andi34" revision="kernelcompile" />
 
   <!-- AnyKernel2 -->
-  <project path="AnyKernel2-espresso" name="AnyKernel2" remote="andi34" revision="espresso" />
-  <project path="AnyKernel2-tuna" name="AnyKernel2" remote="andi34" revision="tuna" />
-  <project path="AnyKernel2-golden" name="AnyKernel2" remote="andi34" revision="golden" />
-  <project path="AnyKernel2-bacon" name="AnyKernel2" remote="andi34" revision="bacon" />
+  <project path="AnyKernel2/espresso" name="AnyKernel2" remote="andi34" revision="espresso" />
+  <project path="AnyKernel2/tuna" name="AnyKernel2" remote="andi34" revision="tuna" />
+  <project path="AnyKernel2/golden" name="AnyKernel2" remote="andi34" revision="golden" />
+  <project path="AnyKernel2/bacon" name="AnyKernel2" remote="andi34" revision="bacon" />
 
   <!-- Toolchains -->
-  <project path="arm-eabi-4.7" name="platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7" remote="aosp" />
-  <project path="arm-eabi-4.8" name="platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8" remote="aosp" />
-  <project path="arm-linux-androideabi-4.9" name="platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9" revision="nougat-iot-release" remote="aosp" />
-  <project path="linaro-4.7-13.04" name="android_toolchains" remote="andi34" revision="linaro-4.7-13.04" />
-  <project path="linaro-4.7-14.01" name="android_toolchains" remote="andi34" revision="linaro-4.7-14.01" />
+  <project path="toolchain/arm-eabi-4.7" name="platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7" remote="aosp" />
+  <project path="toolchain/arm-eabi-4.8" name="platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8" remote="aosp" />
+  <project path="toolchain/arm-linux-androideabi-4.9" name="platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9" revision="nougat-iot-release" remote="aosp" />
+  <project path="toolchain/linaro-4.7-13.04" name="android_toolchains" remote="andi34" revision="linaro-4.7-13.04" />
+  <project path="toolchain/linaro-4.7-14.01" name="android_toolchains" remote="andi34" revision="linaro-4.7-14.01" />
 
   <!-- PVR Source -->
   <project path="pvr-source/ddk-1.9" name="android_omap4_pvr-source" remote="andi34priv" revision="ddk-1.9" />
