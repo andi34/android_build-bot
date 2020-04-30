@@ -24,6 +24,8 @@
   <!-- AnyKernel2 -->
   <project path="AnyKernel2-espresso" name="AnyKernel2" remote="andi34" revision="espresso" />
   <project path="AnyKernel2-tuna" name="AnyKernel2" remote="andi34" revision="tuna" />
+  <project path="AnyKernel2-golden" name="AnyKernel2" remote="andi34" revision="golden" />
+  <project path="AnyKernel2-bacon" name="AnyKernel2" remote="andi34" revision="bacon" />
 
   <!-- Toolchains -->
   <project path="arm-eabi-4.7" name="platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7" remote="aosp" />
@@ -41,5 +43,7 @@
   <!-- Kernel Source -->
   <project path="kernel/ti/omap4" name="android_kernel_ti_omap4" remote="andi34" revision="3.0/common" />
   <project path="kernel/ti/omap4-oc" name="android_kernel_ti_omap4" remote="andi34" revision="3.0/common-oc" />
+  <project path="kernel/samsung/golden" name="android_kernel_samsung_golden" remote="andi34" revision="blackhawk2.1" />
+  <project path="kernel/oneplus/msm8974" name="android_kernel_oneplus_msm8974" remote="andi34" revision="mm6.0-kcal" />
 
 </manifest>
