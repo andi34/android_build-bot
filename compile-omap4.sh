@@ -72,6 +72,14 @@ info "lets build the kernel"
 make -j$JOBS O=$WORKINGDIR
 
 if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
+
+	if [[ -d "$WORKINGOUTDIR" ]]; then
+		info "$WORKINGOUTDIR exist already! Removing directory..."
+		rm -rf $WORKINGOUTDIR
+		info "Re-creating directory..."
+		mkdir -p $WORKINGOUTDIR
+	fi
+
 	info "Copying the resulting zImage and modules to: $WORKINGOUTDIR"
 	info "Creating directory..."
 	mkdir -p $WORKINGOUTDIR
@@ -124,6 +132,13 @@ if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
 	info "Properly stripping the kernel modules for smaller size (implified as stm command inside build.env)..."
 	cd $WORKINGOUTDIR/modules/system/lib/modules
 	stm
+
+	if [ -n "$ANYKERNEL_DEVICE" ]; then
+		info "Generating AnyKernel"
+		cd $SAUCE/AnyKernel2/$ANYKERNEL_DEVICE
+		. $ANYKERNEL_SCRIPT
+		info " ****** Find your AnyKernel at $SAUCE/AnyKernel2/$ANYKERNEL_DEVICE ******"
+	fi
 
 	info "####################"
 	info "#       Done!      #"

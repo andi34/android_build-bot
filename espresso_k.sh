@@ -10,6 +10,10 @@ TOOLCHAIN="gcc4.8"
 DEFCONFIGNAME=espresso_kitkat_defconfig
 
 WORKINGDIR=$SAUCE/out/$DEFCONFIGNAME
-WORKINGOUTDIR=$SAUCE/AnyKernel2/espresso/$DEFCONFIGNAME-bin
+WORKINGOUTDIR=$SAUCE/AnyKernel2/espresso/espresso_kitkat_defconfig-bin
+
+# AnyKernel2
+ANYKERNEL_DEVICE=espresso
+ANYKERNEL_SCRIPT=make_kk_anykernel.sh
 
 . `dirname $0`/compile-omap4.sh

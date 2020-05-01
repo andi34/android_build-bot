@@ -10,6 +10,10 @@ TOOLCHAIN="gcc4.7"
 DEFCONFIGNAME=tuna_kitkat_defconfig
 
 WORKINGDIR=$SAUCE/out/$DEFCONFIGNAME
-WORKINGOUTDIR=$SAUCE/AnyKernel2/tuna/$DEFCONFIGNAME-bin
+WORKINGOUTDIR=$SAUCE/AnyKernel2/tuna/tuna_kitkat_defconfig-bin
+
+# AnyKernel2
+ANYKERNEL_DEVICE=tuna
+ANYKERNEL_SCRIPT=make_kk_anykernel.sh
 
 . `dirname $0`/compile-omap4.sh

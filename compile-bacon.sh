@@ -65,6 +65,14 @@ info "lets build the kernel"
 make -j$JOBS O=$WORKINGDIR
 
 if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
+
+	if [[ -d "$WORKINGOUTDIR" ]]; then
+		info "$WORKINGOUTDIR exist already! Removing directory..."
+		rm -rf $WORKINGOUTDIR
+		info "Re-creating directory..."
+		mkdir -p $WORKINGOUTDIR
+	fi
+
 	info "Copying the resulting zImage to: $WORKINGOUTDIR"
 	info "Creating directory..."
 	mkdir -p $WORKINGOUTDIR
@@ -72,14 +80,23 @@ if [ -f $WORKINGDIR/arch/arm/boot/zImage ]; then
 	cp $WORKINGDIR/.config $WORKINGOUTDIR/
 
 	info "zImage moved!"
-if [ -f $WORKINGDIR/arch/arm/boot/zImage-dtb ]; then
-	info "Copying the resulting zImage-dtb to: $WORKINGOUTDIR"
-	info "Creating directory..."
-	mkdir -p $WORKINGOUTDIR
-	cp $WORKINGDIR/arch/arm/boot/zImage-dtb $WORKINGOUTDIR/
 
-	info "zImage-dtb moved!"
-fi
+	if [ -f $WORKINGDIR/arch/arm/boot/zImage-dtb ]; then
+		info "Copying the resulting zImage-dtb to: $WORKINGOUTDIR"
+		info "Creating directory..."
+		mkdir -p $WORKINGOUTDIR
+		cp $WORKINGDIR/arch/arm/boot/zImage-dtb $WORKINGOUTDIR/
+
+		info "zImage-dtb moved!"
+	fi
+
+	if [ -n "$ANYKERNEL_DEVICE" ]; then
+		info "Generating AnyKernel"
+		cd $SAUCE/AnyKernel2/$ANYKERNEL_DEVICE
+		. $ANYKERNEL_SCRIPT
+		info " ****** Find your AnyKernel at $SAUCE/AnyKernel2/$ANYKERNEL_DEVICE ******"
+	fi
+
 	info "####################"
 	info "#       Done!      #"
 	info "####################"
