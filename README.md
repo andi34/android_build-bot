@@ -1,3 +1,5 @@
+# Standalone kernel compilation by Andreas Blaesius
+
 Getting Started
 ---------------
 
