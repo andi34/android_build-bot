@@ -8,6 +8,8 @@ NEWDDK="y"
 KERNELSOURCE=$SAUCE/kernel/ti/omap4
 TOOLCHAIN="gcc4.8"
 DEFCONFIGNAME=espresso_defconfig
+KERNEL_MODULES=y
+OMAP_DEVICE=y
 
 WORKINGDIR=$SAUCE/out/$DEFCONFIGNAME
 WORKINGOUTDIR=$SAUCE/AnyKernel2/espresso/espresso_defconfig-bin
@@ -16,4 +18,4 @@ WORKINGOUTDIR=$SAUCE/AnyKernel2/espresso/espresso_defconfig-bin
 ANYKERNEL_DEVICE=espresso
 ANYKERNEL_SCRIPT=make_anykernel.sh
 
-. `dirname $0`/compile-omap4.sh
+. `dirname $0`/compile.sh

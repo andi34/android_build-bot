@@ -58,6 +58,8 @@ For all supported Devices an AnyKernel2 is generated automatically and can be fo
 | WORKINGOUTDIR    | Folder to store compiled zImage and modules after compilation. **Gets removed on re-compilation**.                              |
 | ANYKERNEL_DEVICE | Name used for AnyKernel generation (Path need to exist at `AnyKernel/$ANYKERNEL_DEVICE`).                                       |
 | ANYKERNEL_SCRIPT | Script to run to generate AnyKernel after compilation. Need to exist inside `AnyKernel/$ANYKERNEL_DEVICE/`.                     |
+| KERNEL_MODULES   | Options: `y` (kernel modules used), `n` (no kernel modules used).                                                               |
+| OMAP_DEVICE      | Options: `y` (OMAP4 devices using PVR Source), `n` (no OMAP4 device).                                                           |
 
 ### OMAP4 specific options
 

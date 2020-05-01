@@ -8,6 +8,8 @@ NEWDDK="y"
 KERNELSOURCE=$SAUCE/kernel/ti/omap4
 TOOLCHAIN="gcc4.7"
 DEFCONFIGNAME=tuna_defconfig
+KERNEL_MODULES=y
+OMAP_DEVICE=y
 
 WORKINGDIR=$SAUCE/out/$DEFCONFIGNAME
 WORKINGOUTDIR=$SAUCE/AnyKernel2/tuna/tuna_defconfig-bin
@@ -16,4 +18,4 @@ WORKINGOUTDIR=$SAUCE/AnyKernel2/tuna/tuna_defconfig-bin
 ANYKERNEL_DEVICE=tuna
 ANYKERNEL_SCRIPT=make_anykernel.sh
 
-. `dirname $0`/compile-omap4.sh
+. `dirname $0`/compile.sh

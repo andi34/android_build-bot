@@ -6,6 +6,8 @@ SAUCE=$parentdir
 KERNELSOURCE=$parentdir/kernel/oneplus/msm8974
 TOOLCHAIN="gcc4.9"
 DEFCONFIGNAME=bacon_defconfig
+KERNEL_MODULES=n
+OMAP_DEVICE=n
 
 WORKINGDIR=$SAUCE/out/$DEFCONFIGNAME
 WORKINGOUTDIR=$SAUCE/AnyKernel2/bacon/bacon_defconfig-bin
@@ -14,4 +16,4 @@ WORKINGOUTDIR=$SAUCE/AnyKernel2/bacon/bacon_defconfig-bin
 ANYKERNEL_DEVICE=bacon
 ANYKERNEL_SCRIPT=make_anykernel.sh
 
-. `dirname $0`/compile-bacon.sh
+. `dirname $0`/compile.sh
