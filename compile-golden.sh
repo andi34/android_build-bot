@@ -102,4 +102,4 @@ else
 	warn "####################"
 fi
 
-cd $SAUCE
+cd $SAUCE/build
