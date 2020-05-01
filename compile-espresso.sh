@@ -44,7 +44,7 @@ esac
 
 if [ -z "$VARIANTDEFCONFIG" ]; then
 	WORKINGDIR=$SAUCE/out/$DEFCONFIGNAME
-	WORKINGOUTDIR=$SAUCE/AnyKernel2-espresso/$DEFCONFIGNAME-bin
+	WORKINGOUTDIR=$SAUCE/AnyKernel2/espresso/$DEFCONFIGNAME-bin
 else
 
 	if [ "$DEFCONFIGNAME" = "espresso_kitkat_defconfig" ]; then

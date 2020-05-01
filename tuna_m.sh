@@ -9,6 +9,6 @@ TOOLCHAIN="gcc4.7"
 DEFCONFIGNAME=tuna_defconfig
 
 WORKINGDIR=$SAUCE/out/$DEFCONFIGNAME
-WORKINGOUTDIR=$SAUCE/AnyKernel2-tuna/$DEFCONFIGNAME-bin
+WORKINGOUTDIR=$SAUCE/AnyKernel2/tuna/$DEFCONFIGNAME-bin
 
 . `dirname $0`/compile-tuna.sh
