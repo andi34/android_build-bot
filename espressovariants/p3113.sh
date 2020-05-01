@@ -1,5 +1,4 @@
 #!/bin/bash
-
 VARIANTDEFCONFIG=p3113_defconfig
 
-. `dirname $0`/espresso_m.sh
+. ${PWD}/espresso_m.sh
