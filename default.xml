@@ -35,10 +35,10 @@
   <project path="toolchain/linaro-4.7-14.01" name="android_toolchains" remote="andi34" revision="linaro-4.7-14.01" />
 
   <!-- PVR Source -->
-  <project path="pvr-source/ddk-1.9" name="android_omap4_pvr-source" remote="andi34priv" revision="ddk-1.9" />
-  <project path="pvr-source/ddk-1.9-oc" name="android_omap4_pvr-source" remote="andi34priv" revision="ddk-1.9-oc" />
-  <project path="pvr-source/ddk-1.14" name="android_omap4_pvr-source" remote="andi34priv" revision="ddk-1.14" />
-  <project path="pvr-source/ddk-1.14-oc" name="android_omap4_pvr-source" remote="andi34priv" revision="ddk-1.14-oc" />
+  <project path="pvr-source/ddk-1.9" name="android_omap4_pvr-source" remote="andi34" revision="ddk-1.9" />
+  <project path="pvr-source/ddk-1.9-oc" name="android_omap4_pvr-source" remote="andi34" revision="ddk-1.9-oc" />
+  <project path="pvr-source/ddk-1.14" name="android_omap4_pvr-source" remote="andi34" revision="ddk-1.14" />
+  <project path="pvr-source/ddk-1.14-oc" name="android_omap4_pvr-source" remote="andi34" revision="ddk-1.14-oc" />
 
   <!-- Kernel Source -->
   <project path="kernel/ti/omap4" name="android_kernel_ti_omap4" remote="andi34" revision="3.0/common" />
