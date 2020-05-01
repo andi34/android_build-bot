@@ -12,4 +12,4 @@ DEFCONFIGNAME=espresso_kitkat_defconfig
 WORKINGDIR=$SAUCE/out/$DEFCONFIGNAME
 WORKINGOUTDIR=$SAUCE/AnyKernel2/espresso/$DEFCONFIGNAME-bin
 
-. `dirname $0`/compile-espresso.sh
+. `dirname $0`/compile-omap4.sh

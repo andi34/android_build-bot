@@ -46,9 +46,6 @@ info "Toolchain: $TOOLCHAIN"
 source  $SAUCE/build/build-$TOOLCHAIN.env
 
 info "Create a buid directory, known as KERNEL_OUT directory"
-# then always use "O=$SAUCE/espresso" in kernel compilation
-
-info "create working directory"
 mkdir -p $WORKINGDIR
 
 warn "Make sure the kernel source clean on first compilation"
