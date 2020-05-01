@@ -8,6 +8,6 @@ TOOLCHAIN="gcc4.7"
 DEFCONFIGNAME=blackhawk_golden_defconfig
 
 WORKINGDIR=$SAUCE/out/$DEFCONFIGNAME
-WORKINGOUTDIR=$SAUCE/$DEFCONFIGNAME-bin
+WORKINGOUTDIR=$SAUCE/AnyKernel2/golden/$DEFCONFIGNAME-bin
 
 . `dirname $0`/compile-golden.sh
