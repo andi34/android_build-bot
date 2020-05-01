@@ -31,17 +31,6 @@ setbuildjobs() {
 	info "Set build jobs to $JOBS"
 }
 
-read -p "Using new DDK? [y/N] " yn
-case $yn in
-    [Yy]* )
-         NEWDDK=y
-         echo "Using new DDK";;
-    [Nn]* )
-         NEWDDK=n
-         echo "Using old DDK";;
-    * ) echo "Please answer y or n.";;
-esac
-
 if [ -z "$VARIANTDEFCONFIG" ]; then
 	WORKINGDIR=$SAUCE/out/$DEFCONFIGNAME
 	WORKINGOUTDIR=$SAUCE/AnyKernel2/espresso/$DEFCONFIGNAME-bin

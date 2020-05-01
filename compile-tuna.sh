@@ -31,17 +31,6 @@ setbuildjobs() {
 	info "Set build jobs to $JOBS"
 }
 
-read -p "Using new DDK? [y/N] " yn
-case $yn in
-    [Yy]* )
-         NEWDDK=y
-         echo "Using new DDK";;
-    [Nn]* )
-         NEWDDK=n
-         echo "Using old DDK";;
-    * ) echo "Please answer y or n.";;
-esac
-
 info "Kernel source path: $KERNELSOURCE"
 info "PVR Source path: $PVRSAUCE"
 info "Working directory: $WORKINGDIR"
