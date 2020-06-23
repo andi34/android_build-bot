@@ -6,7 +6,7 @@ VER=6.0.1
 ROM=lineage-13.0
 PATCHROM=y
 STABLEKERNEL=n
-PRIVATEKERNEL=y
+PRIVATEKERNEL=n
 LUNCHROM=lineage
 LUNCHTYPE=user
 JAVAVERTARGET=7
@@ -14,6 +14,7 @@ CLEAN_TARGETS=clobber
 BUILD_TARGETS="target-files-package"
 OTANAME=$ROM
 OTA_TYPE="full"
+SAUCE=~/android/$BRANCH
 
 if [[ ! -z $1 ]]; then
 	ONEDEVICEONLY=y

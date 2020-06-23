@@ -1,20 +1,20 @@
 #!/bin/bash
 
-BRANCH=cm-11.0
-STORAGE=~/android2/roms/lineage
-VER=4.4.4
-ROM=lineage-11
+BRANCH=efoundation
+STORAGE=~/android2/roms/efoundation
+VER=7.1.2
+ROM="e-"
 PATCHROM=y
 STABLEKERNEL=n
 PRIVATEKERNEL=n
 LUNCHROM=lineage
-LUNCHTYPE=user
-JAVAVERTARGET=7
+LUNCHTYPE=userdebug
+JAVAVERTARGET=8
 CLEAN_TARGETS=clobber
 BUILD_TARGETS="bacon"
 OTANAME=$ROM
 OTA_TYPE="full"
-SAUCE=~/android/$BRANCH
+SAUCE=~/android2/$BRANCH
 
 if [[ ! -z $1 ]]; then
 	ONEDEVICEONLY=y

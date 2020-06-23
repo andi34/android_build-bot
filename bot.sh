@@ -36,6 +36,9 @@ info() {
 	echo "$txtrst${grn}$*$txtrst"
 }
 
+# Fix flex on Ubuntu 18 https://review.lineageos.org/c/LineageOS/android_prebuilts_misc/+/225953
+# export LC_ALL=C
+
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
 
@@ -71,15 +74,26 @@ fi
 if [ "$BRANCH" = "mm6.0" ]; then
 	PRODUCT[2]="tuna"
 	PRODUCT[3]="bacon"
+	PRODUCT[4]="d2att"
 fi
 
 if [ "$BRANCH" = "ng7.1" ]; then
 	PRODUCT[2]="tuna"
 fi
 
+if [ "$BRANCH" = "efoundation" ]; then
+	PRODUCT[2]="tuna"
+fi
+
 fi
 fi
 
+if [ -z "$SAUCE" ]; then
+	err "Path to source not defined! Please define SAUCE=/path/to/source"
+	err "Press Enter to close this terminal."
+	read
+	exit
+fi
 #---------------------Build Settings------------------#
 
 # use ccache
@@ -94,9 +108,6 @@ OUTPATH=/ssd2/out
 
 # should they be moved out of the output folder?
 MOVE=y
-
-
-SAUCE=~/android/$BRANCH
 
 if [ -z "$BUILD_TARGETS" ]; then
 	info "BUILD_TARGETS not specified, using otapackage as default..."
@@ -133,7 +144,7 @@ setbuildjobs() {
 javacheck() {
 if [ "$JAVAVERTARGET" == "7" ]; then
   echo "Setting default jdk to 1.7"
-  echo 2 | sudo /usr/bin/update-alternatives --config java > /dev/null
+  echo 3 | sudo /usr/bin/update-alternatives --config java > /dev/null
   echo 2 | sudo /usr/bin/update-alternatives --config javac > /dev/null
   echo 2 | sudo /usr/bin/update-alternatives --config javadoc > /dev/null
   echo 2 | sudo /usr/bin/update-alternatives --config javap > /dev/null
@@ -159,7 +170,10 @@ sourcesync() {
 	if [ -f "$SAUCE/.repo/local_manifests/slim_manifest.xml" ]; then
 		rm -rf $SAUCE/.repo/local_manifests/slim_manifest.xml
 	fi
+
 	repo sync -d -c -q --force-sync --jobs=8 --no-tags
+
+	cd $SAUCE
 	info "done!"
 }
 

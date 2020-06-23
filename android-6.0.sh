@@ -6,7 +6,7 @@ VER=6.0.1
 ROM="omni-"
 PATCHROM=y
 STABLEKERNEL=n
-PRIVATEKERNEL=y
+PRIVATEKERNEL=n
 LUNCHROM=omni
 LUNCHTYPE=user
 JAVAVERTARGET=7
@@ -14,6 +14,7 @@ CLEAN_TARGETS=clobber
 BUILD_TARGETS="target-files-package"
 OTANAME=omni
 OTA_TYPE="full"
+SAUCE=~/android/$BRANCH
 
 if [[ ! -z $1 ]]; then
 	ONEDEVICEONLY=y

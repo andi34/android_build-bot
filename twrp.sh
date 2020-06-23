@@ -39,7 +39,7 @@ info() {
 RECNAME1="TWRP"
 
 # recovery version number
-export TW_DEVICE_VERSION=0
+export TW_DEVICE_VERSION=2
 RECVER="3.3.0-$TW_DEVICE_VERSION"
 
 # path to move the *.tar.md5 
