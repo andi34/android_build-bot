@@ -37,7 +37,12 @@ info() {
 }
 
 # Fix flex on Ubuntu 18 https://review.lineageos.org/c/LineageOS/android_prebuilts_misc/+/225953
-# export LC_ALL=C
+if [ "$VER" != "4.4.4" ]; then
+	info "Fix flex on Ubuntu 18"
+	export LC_ALL=C
+else
+	info "Android 4.4.4 does not need the flex fix"
+fi
 
 #-------------------ROMS To Be Built------------------#
 # Instructions and examples below:
